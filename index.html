@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090b0c">
+  <meta name="description" content="An unofficial interactive catalogue of the 9×9 glyph sequences found in EVE Frontier Archive broadcasts.">
+  <meta property="og:title" content="Frontier Archive // Glyph Explorer">
+  <meta property="og:description" content="Explore 146 glyphs, 29 recordings, sequence contexts, near-twins, and decoding signals.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/glyph-atlas.png">
+  <title>Frontier Archive // Glyph Explorer</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#atlas">Skip to glyph atlas</a>
+  <div class="ambient-grid" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="brand-block">
+      <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div>
+        <p class="eyebrow">FRONTIER ARCHIVE / VISUAL SIGNAL INDEX</p>
+        <h1>Glyph Explorer</h1>
+      </div>
+    </div>
+    <nav class="primary-nav" aria-label="Primary navigation">
+      <a href="#atlas">01 Atlas</a>
+      <a href="#sequences">02 Sequences</a>
+      <a href="#analysis">03 Analysis</a>
+      <a href="#method">04 Method</a>
+    </nav>
+    <p class="unofficial">Community research tool · Unofficial</p>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow">INTERCEPT STATUS / CORPUS ASSEMBLED</p>
+        <h2 id="hero-title">Read the signal.<br><span>Find the structure.</span></h2>
+        <p class="hero-intro">A searchable catalogue of the evolving 9×9 patterns embedded in Frontier Archive broadcasts. Inspect payload cells, compare near-twins, and trace every symbol through its sequence context.</p>
+      </div>
+      <div class="hero-telemetry" aria-label="Catalogue summary">
+        <article><span id="stat-glyphs">146</span><small>Canonical glyphs</small></article>
+        <article><span id="stat-recordings">29</span><small>Video records</small></article>
+        <article><span id="stat-occurrences">768</span><small>Occurrences</small></article>
+        <article><span id="stat-cells">55 / 81</span><small>Payload positions</small></article>
+      </div>
+    </section>
+
+    <section id="atlas" class="section atlas-section" aria-labelledby="atlas-title">
+      <div class="section-heading">
+        <div>
+          <p class="section-index">01 / CANONICAL CODEBOOK</p>
+          <h2 id="atlas-title">Glyph atlas</h2>
+        </div>
+        <p>Each tile is a canonical payload pattern. Select one to inspect provenance, recurring neighbours, and low-distance variants.</p>
+      </div>
+
+      <div class="control-deck" aria-label="Atlas controls">
+        <label class="field search-field">
+          <span>Search index</span>
+          <input id="search" type="search" placeholder="#40, E6C6, cluster D" autocomplete="off">
+        </label>
+        <label class="field">
+          <span>Signal class</span>
+          <select id="filter">
+            <option value="all">All glyphs</option>
+            <option value="repeated">Repeated</option>
+            <option value="singletons">Singletons</option>
+            <option value="near">One-cell near-twins</option>
+            <option value="cluster">Phrase-cluster members</option>
+            <option value="provisional">New video observations</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Order</span>
+          <select id="sort">
+            <option value="id">Glyph ID</option>
+            <option value="frequency">Frequency</option>
+            <option value="cells">Active cells</option>
+            <option value="family">Near-twin family</option>
+          </select>
+        </label>
+        <label class="switch-control">
+          <input id="carrier-toggle" type="checkbox">
+          <span>Carrier overlay</span>
+        </label>
+      </div>
+
+      <div class="atlas-layout">
+        <div>
+          <div class="result-line"><span id="result-count">146 glyphs</span><span>Click any signal to inspect</span></div>
+          <div id="glyph-grid" class="glyph-grid" aria-live="polite"></div>
+        </div>
+
+        <aside id="inspector" class="inspector" aria-labelledby="inspector-title">
+          <div class="inspector-header">
+            <div>
+              <p class="eyebrow">SELECTED SIGNAL</p>
+              <h3 id="inspector-title">Glyph #40</h3>
+            </div>
+            <span id="quality-tag" class="status-tag">CANONICAL</span>
+          </div>
+          <canvas id="selected-canvas" class="selected-glyph" width="360" height="360" aria-label="Selected glyph pattern"></canvas>
+          <div id="selected-stats" class="selected-stats"></div>
+          <div class="inspector-block">
+            <h4>Observed in</h4>
+            <div id="recording-list" class="token-list"></div>
+          </div>
+          <div class="inspector-block">
+            <h4>Sequence context</h4>
+            <div id="context-list" class="context-list"></div>
+          </div>
+          <div class="inspector-block">
+            <h4>Near-twins</h4>
+            <div id="near-list" class="near-list"></div>
+          </div>
+          <div class="inspector-actions">
+            <button id="copy-fingerprint" type="button" class="action-button">Copy 81-bit fingerprint</button>
+            <a id="permalink" class="text-action" href="?glyph=40#atlas">Link to glyph</a>
+          </div>
+          <p id="copy-status" class="copy-status" aria-live="polite"></p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section compare-section" aria-labelledby="compare-title">
+      <div class="section-heading compact">
+        <div>
+          <p class="section-index">DIFFERENTIAL VIEW</p>
+          <h2 id="compare-title">Compare patterns</h2>
+        </div>
+        <p>Use cell differences to separate probable variants from unrelated symbols.</p>
+      </div>
+      <div class="compare-controls">
+        <label class="field"><span>Left signal</span><select id="compare-left"></select></label>
+        <span class="compare-arrow" aria-hidden="true">↔</span>
+        <label class="field"><span>Right signal</span><select id="compare-right"></select></label>
+      </div>
+      <div class="compare-stage">
+        <article><h3 id="compare-left-title">#40</h3><canvas id="compare-left-canvas" width="300" height="300"></canvas></article>
+        <article class="difference-panel"><h3>Difference</h3><canvas id="compare-diff-canvas" width="300" height="300"></canvas><p id="compare-summary"></p></article>
+        <article><h3 id="compare-right-title">#131</h3><canvas id="compare-right-canvas" width="300" height="300"></canvas></article>
+      </div>
+    </section>
+
+    <section id="sequences" class="section" aria-labelledby="sequences-title">
+      <div class="section-heading">
+        <div>
+          <p class="section-index">02 / TRANSMISSION ORDER</p>
+          <h2 id="sequences-title">Sequence explorer</h2>
+        </div>
+        <p>Follow the exact token order within a recording. Shared blocks are the strongest evidence for a reusable symbolic channel.</p>
+      </div>
+      <div class="sequence-toolbar">
+        <label class="field sequence-picker"><span>Recording</span><select id="recording-select"></select></label>
+        <div id="sequence-meta" class="sequence-meta"></div>
+      </div>
+      <div id="sequence-strip" class="sequence-strip" aria-live="polite"></div>
+      <div class="legend"><span><i class="manual-dot"></i>Manual tag</span><span><i class="provisional-dot"></i>Provisional video read</span></div>
+    </section>
+
+    <section id="analysis" class="section" aria-labelledby="analysis-title">
+      <div class="section-heading">
+        <div>
+          <p class="section-index">03 / SIGNAL CHARACTERISTICS</p>
+          <h2 id="analysis-title">Decoding signals</h2>
+        </div>
+        <p>The corpus behaves more like a structured token stream than a letter-for-letter substitution alphabet.</p>
+      </div>
+      <div id="analysis-metrics" class="analysis-metrics"></div>
+      <div class="analysis-grid">
+        <article class="analysis-panel">
+          <div class="panel-heading"><h3>Recurring blocks</h3><span>Longest + most supported</span></div>
+          <div id="repeated-blocks" class="block-list"></div>
+        </article>
+        <article class="analysis-panel">
+          <div class="panel-heading"><h3>Cell activation</h3><span>Across 146 canonical glyphs</span></div>
+          <canvas id="cell-heatmap" class="heatmap" width="450" height="450" aria-label="Cell activation heatmap"></canvas>
+          <p class="panel-note">The dictionary uses 55 of 81 locations. Dark positions never activate and likely belong to the carrier mask.</p>
+        </article>
+      </div>
+      <div class="interpretation">
+        <p class="eyebrow">WORKING INTERPRETATION</p>
+        <h3>Not a simple alphabet. Possibly a reference language.</h3>
+        <p>Stable blocks may identify preserved memories, instructions, systems, or world entities. Variable prefixes and one-cell forks may act as selectors, source markers, states, or versions. This is a hypothesis explorer—not a claimed translation.</p>
+      </div>
+    </section>
+
+    <section id="method" class="section method-section" aria-labelledby="method-title">
+      <div class="section-heading">
+        <div>
+          <p class="section-index">04 / PROVENANCE</p>
+          <h2 id="method-title">Method and data</h2>
+        </div>
+      </div>
+      <div class="method-grid">
+        <article><span>01</span><h3>Carrier separated</h3><p>The large diamond and black centre holes are treated as registration graphics. The orange-ring state carries the 9×9 payload.</p></article>
+        <article><span>02</span><h3>Codebook reconciled</h3><p>Canonical patterns come from ArchiveInvest. Local Cycle 4–6 captures are retained separately and marked provisional where automatically classified.</p></article>
+        <article><span>03</span><h3>Context preserved</h3><p>Every occurrence retains its recording, ordinal position, timestamp, neighbours, and classification provenance.</p></article>
+      </div>
+      <div class="download-row">
+        <a href="data/glyph_catalogue.csv" download>Download glyph catalogue CSV</a>
+        <a href="data/glyph_occurrences.csv" download>Download occurrences CSV</a>
+        <a href="data/sequences.csv" download>Download sequences CSV</a>
+        <a href="data/catalogue.json" download>Download full JSON</a>
+      </div>
+      <p class="source-note">Canonical glyph research and manual tagging were created by George Peralta / QZRChedders in the community <a href="https://github.com/QZRChedders/ArchiveInvest">ArchiveInvest repository</a>. Supporting universe-data research references <a href="https://github.com/Scetrov/evefrontier_datasets">Scetrov/evefrontier_datasets</a>. See the <a href="credits.html">full credits and sources</a>. EVE Frontier and associated marks belong to their respective owners.</p>
+    </section>
+  </main>
+
+  <footer>
+    <span>FRONTIER ARCHIVE // GLYPH EXPLORER</span>
+    <span id="build-stamp">Dataset build 2026-08-22</span>
+    <span><a href="credits.html">Credits &amp; sources</a> · <a href="#atlas">Return to index ↑</a></span>
+  </footer>
+
+  <script src="data/catalogue.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

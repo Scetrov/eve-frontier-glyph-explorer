@@ -1,0 +1,526 @@
+(() => {
+  'use strict';
+
+  const data = window.GLYPH_DATA;
+  if (!data || !Array.isArray(data.glyphs)) {
+    document.body.innerHTML = '<main class="empty-state">Catalogue data could not be loaded.</main>';
+    return;
+  }
+
+  const glyphs = data.glyphs;
+  const byId = new Map(glyphs.map(glyph => [Number(glyph.id), glyph]));
+  const sequences = data.sequences.map(row => ({
+    ...row,
+    ids: String(row.glyph_ids).trim().split(/\s+/).filter(Boolean).map(Number)
+  }));
+  const sequenceByRecording = new Map(sequences.map(row => [row.recording, row]));
+
+  const rootStyle = getComputedStyle(document.documentElement);
+  const palette = {
+    background: rootStyle.getPropertyValue('--void-soft').trim() || '#0e1113',
+    inactive: rootStyle.getPropertyValue('--line').trim() || '#2b3236',
+    active: rootStyle.getPropertyValue('--signal').trim() || '#e8843e',
+    activeBright: rootStyle.getPropertyValue('--signal-bright').trim() || '#ffc16c',
+    cold: rootStyle.getPropertyValue('--cold').trim() || '#79b8c9',
+    frame: rootStyle.getPropertyValue('--line-bright').trim() || '#4b555a',
+    text: rootStyle.getPropertyValue('--text').trim() || '#ece9df'
+  };
+
+  const elements = {
+    grid: document.getElementById('glyph-grid'),
+    resultCount: document.getElementById('result-count'),
+    search: document.getElementById('search'),
+    filter: document.getElementById('filter'),
+    sort: document.getElementById('sort'),
+    carrier: document.getElementById('carrier-toggle'),
+    title: document.getElementById('inspector-title'),
+    quality: document.getElementById('quality-tag'),
+    selectedCanvas: document.getElementById('selected-canvas'),
+    selectedStats: document.getElementById('selected-stats'),
+    recordingList: document.getElementById('recording-list'),
+    contextList: document.getElementById('context-list'),
+    nearList: document.getElementById('near-list'),
+    copyFingerprint: document.getElementById('copy-fingerprint'),
+    copyStatus: document.getElementById('copy-status'),
+    permalink: document.getElementById('permalink'),
+    compareLeft: document.getElementById('compare-left'),
+    compareRight: document.getElementById('compare-right'),
+    compareLeftCanvas: document.getElementById('compare-left-canvas'),
+    compareRightCanvas: document.getElementById('compare-right-canvas'),
+    compareDiffCanvas: document.getElementById('compare-diff-canvas'),
+    compareLeftTitle: document.getElementById('compare-left-title'),
+    compareRightTitle: document.getElementById('compare-right-title'),
+    compareSummary: document.getElementById('compare-summary'),
+    recordingSelect: document.getElementById('recording-select'),
+    sequenceMeta: document.getElementById('sequence-meta'),
+    sequenceStrip: document.getElementById('sequence-strip'),
+    analysisMetrics: document.getElementById('analysis-metrics'),
+    repeatedBlocks: document.getElementById('repeated-blocks'),
+    heatmap: document.getElementById('cell-heatmap')
+  };
+
+  const state = {
+    selectedId: initialGlyphId(),
+    compareLeftId: 40,
+    compareRightId: 131,
+    carrier: false
+  };
+
+  function initialGlyphId() {
+    const requested = Number(new URLSearchParams(location.search).get('glyph'));
+    return byId.has(requested) ? requested : 40;
+  }
+
+  function setupCanvas(canvas, logicalSize) {
+    const ratio = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.round(logicalSize * ratio);
+    canvas.height = Math.round(logicalSize * ratio);
+    const context = canvas.getContext('2d');
+    context.setTransform(ratio, 0, 0, ratio, 0, 0);
+    context.imageSmoothingEnabled = false;
+    return context;
+  }
+
+  function drawGlyph(canvas, glyph, options = {}) {
+    const size = options.size || 240;
+    const context = setupCanvas(canvas, size);
+    const active = new Set(glyph.cell_indices);
+    const margin = size * 0.055;
+    const usable = size - margin * 2;
+    const pitch = usable / 9;
+    const square = pitch * 0.68;
+    const inset = (pitch - square) / 2;
+
+    context.clearRect(0, 0, size, size);
+    if (options.surface !== false) {
+      context.fillStyle = palette.background;
+      context.fillRect(0, 0, size, size);
+    }
+
+    for (let index = 0; index < 81; index += 1) {
+      const row = Math.floor(index / 9);
+      const column = index % 9;
+      const x = margin + column * pitch + inset;
+      const y = margin + row * pitch + inset;
+      context.fillStyle = active.has(index) ? palette.active : palette.inactive;
+      context.fillRect(Math.round(x), Math.round(y), Math.max(1, Math.round(square)), Math.max(1, Math.round(square)));
+    }
+
+    if (options.carrier) drawCarrier(context, size, margin, usable);
+  }
+
+  function drawCarrier(context, size, margin, usable) {
+    context.save();
+    context.strokeStyle = palette.frame;
+    context.lineWidth = Math.max(1, size / 180);
+    context.globalAlpha = 0.65;
+    const centre = size / 2;
+    const edge = margin + usable * 0.035;
+    context.beginPath();
+    context.moveTo(centre, edge);
+    context.lineTo(size - edge, centre);
+    context.lineTo(centre, size - edge);
+    context.lineTo(edge, centre);
+    context.closePath();
+    context.stroke();
+    context.beginPath();
+    context.arc(centre, centre, usable * 0.085, 0, Math.PI * 2);
+    context.stroke();
+    context.restore();
+  }
+
+  function drawDifference(canvas, leftGlyph, rightGlyph, options = {}) {
+    const size = options.size || 240;
+    const context = setupCanvas(canvas, size);
+    const left = new Set(leftGlyph.cell_indices);
+    const right = new Set(rightGlyph.cell_indices);
+    const margin = size * 0.055;
+    const usable = size - margin * 2;
+    const pitch = usable / 9;
+    const square = pitch * 0.68;
+    const inset = (pitch - square) / 2;
+    context.clearRect(0, 0, size, size);
+    context.fillStyle = palette.background;
+    context.fillRect(0, 0, size, size);
+
+    for (let index = 0; index < 81; index += 1) {
+      const row = Math.floor(index / 9);
+      const column = index % 9;
+      const x = margin + column * pitch + inset;
+      const y = margin + row * pitch + inset;
+      const inLeft = left.has(index);
+      const inRight = right.has(index);
+      if (inLeft && inRight) context.fillStyle = palette.frame;
+      else if (inLeft) context.fillStyle = palette.cold;
+      else if (inRight) context.fillStyle = palette.activeBright;
+      else context.fillStyle = palette.inactive;
+      context.fillRect(Math.round(x), Math.round(y), Math.max(1, Math.round(square)), Math.max(1, Math.round(square)));
+    }
+    if (options.carrier) drawCarrier(context, size, margin, usable);
+  }
+
+  function renderStats() {
+    document.getElementById('stat-glyphs').textContent = data.stats.canonical_glyphs;
+    document.getElementById('stat-recordings').textContent = data.stats.recordings;
+    document.getElementById('stat-occurrences').textContent = data.stats.occurrences.toLocaleString();
+    document.getElementById('stat-cells').textContent = `${data.stats.used_grid_cells} / 81`;
+  }
+
+  function filteredGlyphs() {
+    const query = elements.search.value.trim().toLowerCase().replace(/^#/, '');
+    const filter = elements.filter.value;
+    const sort = elements.sort.value;
+    const rows = glyphs.filter(glyph => {
+      const searchText = [
+        glyph.id,
+        glyph.recordings.join(' '),
+        glyph.broadcasts.join(' '),
+        glyph.cycles.join(' '),
+        glyph.phrases.join(' '),
+        glyph.phrase_roles.join(' '),
+        glyph.cells
+      ].join(' ').toLowerCase();
+      if (query && !searchText.includes(query)) return false;
+      if (filter === 'repeated' && glyph.occurrences < 2) return false;
+      if (filter === 'singletons' && glyph.occurrences !== 1) return false;
+      if (filter === 'near' && !glyph.near_twins.some(item => item.distance === 1)) return false;
+      if (filter === 'cluster' && glyph.phrases.length === 0) return false;
+      if (filter === 'provisional' && glyph.provisional_occurrences === 0) return false;
+      return true;
+    });
+    rows.sort((left, right) => {
+      if (sort === 'frequency') return right.occurrences - left.occurrences || left.id - right.id;
+      if (sort === 'cells') return right.n_cells - left.n_cells || left.id - right.id;
+      if (sort === 'family') return right.family_size - left.family_size || left.family_id - right.family_id || left.id - right.id;
+      return left.id - right.id;
+    });
+    return rows;
+  }
+
+  function renderGrid() {
+    const rows = filteredGlyphs();
+    const fragment = document.createDocumentFragment();
+    elements.grid.replaceChildren();
+    elements.resultCount.textContent = `${rows.length} glyph${rows.length === 1 ? '' : 's'}`;
+
+    if (!rows.length) {
+      const empty = document.createElement('div');
+      empty.className = 'empty-state';
+      empty.textContent = 'No glyphs match the current signal filters.';
+      elements.grid.appendChild(empty);
+      return;
+    }
+
+    rows.forEach(glyph => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'glyph-tile';
+      button.dataset.glyphId = glyph.id;
+      button.setAttribute('aria-pressed', String(glyph.id === state.selectedId));
+      button.setAttribute('aria-label', `Glyph ${glyph.id}, ${glyph.occurrences} occurrences, ${glyph.n_cells} active cells`);
+      const canvas = document.createElement('canvas');
+      canvas.width = 180;
+      canvas.height = 180;
+      canvas.setAttribute('aria-hidden', 'true');
+      const meta = document.createElement('span');
+      meta.className = 'tile-meta';
+      meta.innerHTML = `<span class="tile-id">#${glyph.id}</span><span class="tile-count">N=${glyph.occurrences}</span>`;
+      button.append(canvas, meta);
+      button.addEventListener('click', () => selectGlyph(glyph.id, true));
+      drawGlyph(canvas, glyph, { size: 112, carrier: state.carrier });
+      fragment.appendChild(button);
+    });
+    elements.grid.appendChild(fragment);
+  }
+
+  function selectGlyph(id, updateAddress = false) {
+    const glyph = byId.get(Number(id));
+    if (!glyph) return;
+    state.selectedId = glyph.id;
+    elements.title.textContent = `Glyph #${glyph.id}`;
+    elements.quality.textContent = glyph.provisional_occurrences ? 'CANONICAL + NEW READS' : 'CANONICAL';
+    drawGlyph(elements.selectedCanvas, glyph, { size: 330, carrier: state.carrier });
+    elements.selectedCanvas.setAttribute('aria-label', `Glyph ${glyph.id}, ${glyph.n_cells} active cells`);
+
+    elements.selectedStats.innerHTML = [
+      [glyph.n_cells, 'Active cells'],
+      [glyph.occurrences, 'Occurrences'],
+      [glyph.recording_count, 'Recordings'],
+      [glyph.phrases.length ? glyph.phrases.join(', ') : '—', 'Phrase cluster'],
+      [glyph.nearest_neighbour_distance, 'Nearest distance'],
+      [`${glyph.family_id} / ${glyph.family_size}`, 'Family / size']
+    ].map(([value, label]) => `<div><strong>${value}</strong><span>${label}</span></div>`).join('');
+
+    elements.recordingList.replaceChildren();
+    glyph.recordings.forEach(recording => {
+      const item = document.createElement('span');
+      item.textContent = recording;
+      elements.recordingList.appendChild(item);
+    });
+    if (!glyph.recordings.length) elements.recordingList.textContent = 'No occurrence record';
+
+    renderContexts(glyph);
+    renderNearTwins(glyph);
+    elements.permalink.href = `${location.pathname}?glyph=${glyph.id}#atlas`;
+    elements.permalink.textContent = `Link to #${glyph.id}`;
+    state.compareLeftId = glyph.id;
+    elements.compareLeft.value = String(glyph.id);
+    updateComparison();
+    document.querySelectorAll('.glyph-tile').forEach(tile => {
+      tile.setAttribute('aria-pressed', String(Number(tile.dataset.glyphId) === glyph.id));
+    });
+
+    if (updateAddress) {
+      const url = new URL(location.href);
+      url.searchParams.set('glyph', glyph.id);
+      history.replaceState(null, '', `${url.pathname}${url.search}#atlas`);
+    }
+  }
+
+  function renderContexts(glyph) {
+    elements.contextList.replaceChildren();
+    let rendered = 0;
+    for (const sequence of sequences) {
+      sequence.ids.forEach((id, index) => {
+        if (id !== glyph.id || rendered >= 8) return;
+        const row = document.createElement('div');
+        row.className = 'context-row';
+        const label = document.createElement('span');
+        label.textContent = sequence.recording;
+        label.title = sequence.recording;
+        const tokens = document.createElement('div');
+        tokens.className = 'context-tokens';
+        const start = Math.max(0, index - 3);
+        const end = Math.min(sequence.ids.length, index + 4);
+        sequence.ids.slice(start, end).forEach((tokenId, offset) => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.textContent = `#${tokenId}`;
+          if (start + offset === index) button.className = 'current';
+          button.addEventListener('click', () => selectGlyph(tokenId, true));
+          tokens.appendChild(button);
+        });
+        row.append(label, tokens);
+        elements.contextList.appendChild(row);
+        rendered += 1;
+      });
+      if (rendered >= 8) break;
+    }
+    if (!rendered) elements.contextList.textContent = 'No sequence context catalogued.';
+  }
+
+  function renderNearTwins(glyph) {
+    elements.nearList.replaceChildren();
+    if (!glyph.near_twins.length) {
+      elements.nearList.textContent = 'No glyph within two cells.';
+      return;
+    }
+    glyph.near_twins.forEach(item => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'near-button';
+      button.textContent = `#${item.id} / ${item.distance} cell${item.distance === 1 ? '' : 's'}`;
+      button.addEventListener('click', () => selectGlyph(item.id, true));
+      elements.nearList.appendChild(button);
+    });
+  }
+
+  async function copyFingerprint() {
+    const glyph = byId.get(state.selectedId);
+    try {
+      await navigator.clipboard.writeText(glyph.fingerprint);
+      elements.copyStatus.textContent = 'Fingerprint copied to clipboard.';
+    } catch {
+      const temporary = document.createElement('textarea');
+      temporary.value = glyph.fingerprint;
+      temporary.style.position = 'fixed';
+      temporary.style.opacity = '0';
+      document.body.appendChild(temporary);
+      temporary.select();
+      document.execCommand('copy');
+      temporary.remove();
+      elements.copyStatus.textContent = 'Fingerprint copied to clipboard.';
+    }
+    window.setTimeout(() => { elements.copyStatus.textContent = ''; }, 2200);
+  }
+
+  function populateComparators() {
+    const options = glyphs.map(glyph => `<option value="${glyph.id}">#${glyph.id} · ${glyph.n_cells} cells · N=${glyph.occurrences}</option>`).join('');
+    elements.compareLeft.innerHTML = options;
+    elements.compareRight.innerHTML = options;
+    elements.compareLeft.value = String(state.compareLeftId);
+    elements.compareRight.value = String(state.compareRightId);
+  }
+
+  function updateComparison() {
+    state.compareLeftId = Number(elements.compareLeft.value);
+    state.compareRightId = Number(elements.compareRight.value);
+    const left = byId.get(state.compareLeftId);
+    const right = byId.get(state.compareRightId);
+    if (!left || !right) return;
+    elements.compareLeftTitle.textContent = `#${left.id}`;
+    elements.compareRightTitle.textContent = `#${right.id}`;
+    drawGlyph(elements.compareLeftCanvas, left, { size: 280, carrier: state.carrier });
+    drawGlyph(elements.compareRightCanvas, right, { size: 280, carrier: state.carrier });
+    drawDifference(elements.compareDiffCanvas, left, right, { size: 280, carrier: state.carrier });
+    const leftCells = new Set(left.cell_indices);
+    const rightCells = new Set(right.cell_indices);
+    const onlyLeft = [...leftCells].filter(cell => !rightCells.has(cell));
+    const onlyRight = [...rightCells].filter(cell => !leftCells.has(cell));
+    const distance = onlyLeft.length + onlyRight.length;
+    const format = cells => cells.length ? cells.map(cell => `(${Math.floor(cell / 9)},${cell % 9})`).join(' ') : 'none';
+    elements.compareSummary.textContent = `${distance} changed cell${distance === 1 ? '' : 's'} · only #${left.id}: ${format(onlyLeft)} · only #${right.id}: ${format(onlyRight)}`;
+  }
+
+  function populateSequences() {
+    const sorted = [...sequences].sort((left, right) => left.recording.localeCompare(right.recording, undefined, { numeric: true }));
+    elements.recordingSelect.innerHTML = sorted.map(row => `<option value="${escapeAttribute(row.recording)}">${escapeText(row.recording)}</option>`).join('');
+    const preferred = sequenceByRecording.has('E6C6-21') ? 'E6C6-21' : sorted[0].recording;
+    elements.recordingSelect.value = preferred;
+    renderSequence(preferred);
+  }
+
+  function renderSequence(recording) {
+    const sequence = sequenceByRecording.get(recording);
+    if (!sequence) return;
+    elements.sequenceMeta.innerHTML = [
+      `<span><strong>${sequence.n_glyphs}</strong> glyphs</span>`,
+      `<span><strong>${escapeText(sequence.cycle)}</strong> cycle</span>`,
+      `<span><strong>${escapeText(sequence.track)}</strong> track</span>`,
+      `<span><strong>${escapeText(sequence.source)}</strong></span>`,
+      sequence.uncertain_gt2 ? `<span><strong>${sequence.uncertain_gt2}</strong> reads &gt;2 cells away</span>` : ''
+    ].join('');
+    const fragment = document.createDocumentFragment();
+    sequence.ids.forEach((id, index) => {
+      const glyph = byId.get(id);
+      if (!glyph) return;
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = `sequence-token${String(sequence.source).startsWith('provisional') ? ' provisional' : ''}`;
+      button.setAttribute('aria-label', `Position ${index + 1}, glyph ${id}`);
+      const canvas = document.createElement('canvas');
+      const label = document.createElement('span');
+      label.textContent = `${String(index + 1).padStart(2, '0')} / #${id}`;
+      button.append(canvas, label);
+      button.addEventListener('click', () => {
+        selectGlyph(id, true);
+        document.getElementById('inspector').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      drawGlyph(canvas, glyph, { size: 72, carrier: state.carrier });
+      fragment.appendChild(button);
+    });
+    elements.sequenceStrip.replaceChildren(fragment);
+  }
+
+  function renderAnalysis() {
+    const metrics = [
+      [data.stats.token_entropy_bits.toFixed(2), 'Bits per token', `${(data.stats.normalised_entropy * 100).toFixed(1)}% of maximum`],
+      [data.stats.index_of_coincidence.toFixed(4), 'Index of coincidence', 'Low for plaintext substitution'],
+      [data.stats.distance_one_pairs, 'One-cell pairs', 'Potential selector variants'],
+      [data.stats.adjacent_mean_hamming.toFixed(2), 'Adjacent Hamming distance', `Random pairs: ${data.stats.all_pair_mean_hamming.toFixed(2)}`]
+    ];
+    elements.analysisMetrics.innerHTML = metrics.map(([value, label, note]) => `<article><strong>${value}</strong><span>${label}</span><small>${note}</small></article>`).join('');
+
+    const fragment = document.createDocumentFragment();
+    data.repeated_blocks.slice(0, 8).forEach((block, index) => {
+      const row = document.createElement('div');
+      row.className = 'block-row';
+      const rank = document.createElement('div');
+      rank.className = 'block-rank';
+      rank.textContent = `${String(index + 1).padStart(2, '0')} / L${block.length} / N${block.n_broadcasts}`;
+      const tokens = document.createElement('div');
+      tokens.className = 'block-tokens';
+      block.glyph_ids.forEach(id => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = `#${id}`;
+        button.addEventListener('click', () => selectGlyph(id, true));
+        tokens.appendChild(button);
+      });
+      const videos = document.createElement('div');
+      videos.className = 'block-videos';
+      videos.textContent = block.broadcasts.join(' · ');
+      row.append(rank, tokens, videos);
+      fragment.appendChild(row);
+    });
+    elements.repeatedBlocks.replaceChildren(fragment);
+    drawHeatmap();
+  }
+
+  function drawHeatmap() {
+    const canvas = elements.heatmap;
+    const size = 420;
+    const context = setupCanvas(canvas, size);
+    const usage = data.cell_usage;
+    const maximum = Math.max(...usage);
+    const margin = 22;
+    const pitch = (size - margin * 2) / 9;
+    context.fillStyle = palette.background;
+    context.fillRect(0, 0, size, size);
+    context.font = '10px "Cascadia Mono", monospace';
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    for (let index = 0; index < 81; index += 1) {
+      const row = Math.floor(index / 9);
+      const column = index % 9;
+      const value = usage[index];
+      const strength = maximum ? value / maximum : 0;
+      const x = margin + column * pitch + 3;
+      const y = margin + row * pitch + 3;
+      const square = pitch - 6;
+      context.fillStyle = value ? `rgba(232,132,62,${0.13 + strength * 0.87})` : palette.inactive;
+      context.fillRect(x, y, square, square);
+      context.fillStyle = strength > 0.58 ? '#090b0c' : palette.text;
+      context.fillText(String(value), x + square / 2, y + square / 2);
+    }
+  }
+
+  function escapeText(value) {
+    return String(value)
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#039;');
+  }
+
+  function escapeAttribute(value) {
+    return escapeText(value);
+  }
+
+  function redrawAllCanvases() {
+    renderGrid();
+    selectGlyph(state.selectedId, false);
+    updateComparison();
+    renderSequence(elements.recordingSelect.value);
+    drawHeatmap();
+  }
+
+  elements.search.addEventListener('input', renderGrid);
+  elements.filter.addEventListener('change', renderGrid);
+  elements.sort.addEventListener('change', renderGrid);
+  elements.carrier.addEventListener('change', () => {
+    state.carrier = elements.carrier.checked;
+    redrawAllCanvases();
+  });
+  elements.copyFingerprint.addEventListener('click', copyFingerprint);
+  elements.compareLeft.addEventListener('change', updateComparison);
+  elements.compareRight.addEventListener('change', updateComparison);
+  elements.recordingSelect.addEventListener('change', event => renderSequence(event.target.value));
+
+  window.addEventListener('keydown', event => {
+    if (event.target.matches('input, select, button, textarea')) return;
+    if (event.key === '[' || event.key === ']') {
+      const delta = event.key === '[' ? -1 : 1;
+      const next = Math.min(glyphs.length, Math.max(1, state.selectedId + delta));
+      selectGlyph(next, true);
+    }
+  });
+
+  renderStats();
+  populateComparators();
+  populateSequences();
+  renderAnalysis();
+  renderGrid();
+  selectGlyph(state.selectedId, false);
+})();
