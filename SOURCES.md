@@ -23,6 +23,7 @@
 
 - [FFmpeg](https://ffmpeg.org/) — video decoding and frame extraction.
 - [CyberChef](https://gchq.github.io/CyberChef/) by GCHQ — inspiration for standard binary and transform-oriented decoding tests. CyberChef code is not bundled here.
+- **Vision-registration feasibility work** — the isolated research spike uses the pretrained outdoor checkpoint from [LoFTR by Jiaming Sun, Zehong Shen, Yuang Wang, Hujun Bao and Xiaowei Zhou](https://github.com/zju3dv/LoFTR), accessed through [Kornia](https://github.com/kornia/kornia), with robust homography estimation from [OpenCV](https://opencv.org/). The checkpoint is downloaded by the reproducer, verified by SHA-256, and is not committed or used by the published explorer. Experimental outputs remain separate from canonical evidence.
 
 ## Interface typography
 

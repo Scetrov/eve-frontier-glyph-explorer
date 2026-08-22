@@ -24,10 +24,10 @@ No build step, package manager, server, API key, or database is required. The si
 - `data/source_integrity.json` publishes SHA-256 and FFprobe metadata for every available raw source without redistributing the media.
 - `data/disputed_cell_audit.json` records the registered multi-frame review of glyphs #130 and #140.
 - `data/cycles.json` is the reviewed UTC reference for phases and cycles; `data/cycles.js` lets the standalone reference page work without fetch.
-- `evidence/` contains one 480×480 audit image for each of the 768 occurrence records.
+- `evidence/` contains one 480×480 audit image for each of the 835 occurrence records.
 - The CSV files are downloadable from the Method section.
 
-Every evidence record names its source video, exact source-frame number, timestamp, matching basis, and canonical/observed Hamming distance. The 181 automatically extracted local-video occurrences are marked provisional. Canonical dictionary patterns and manual tags are derived from [QZRChedders/ArchiveInvest](https://github.com/QZRChedders/ArchiveInvest).
+Every evidence record names its source video, exact source-frame number, timestamp, matching basis, and canonical/observed Hamming distance. The 248 automatically extracted local-video occurrences are marked provisional. Canonical dictionary patterns and manual tags are derived from [QZRChedders/ArchiveInvest](https://github.com/QZRChedders/ArchiveInvest).
 
 Two singleton carrier-edge marks were corrected after seven-frame median review: `(2,6)` in glyph #130 was checked in two independently hashed E6C4-17 variants, and `(5,2)` in glyph #140 was checked in E6C4-35. The explorer retains stable glyph IDs and publishes the audit inputs/results.
 
@@ -49,6 +49,8 @@ python pipeline\run_pipeline.py `
 ```
 
 Use `--check-inputs` first to validate the source layout without modifying generated files. The [pipeline guide](pipeline/README.md) includes exact filenames, a fresh-fork setup, FFmpeg examples, and worked manual/provisional source additions.
+
+An isolated [LoFTR registration spike](research/vision-registration-spike/README.md) evaluates reference-frame geometry propagation across four exact, integrity-verified recordings. Its outputs are explicitly experimental and are not used by the catalogue or evidence overlays.
 
 Run the repository validator before every data or evidence release:
 

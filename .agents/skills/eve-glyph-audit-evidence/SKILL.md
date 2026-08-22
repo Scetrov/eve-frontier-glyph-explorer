@@ -60,6 +60,12 @@ Do not patch only the JPEG or only the manifest. Regenerate every occurrence for
 
 For a disputed cell, independently register the 9×9 lattice for each source variant and use multiple settled frames. Publish the sampled frame numbers, per-source SHA-256, registration geometry, a median image, quantitative score, threshold, and verdict. Keep stable glyph IDs when correcting a false cell unless an upstream ID migration is explicitly coordinated.
 
+## Optional learned-registration proposal
+
+When classical lattice fitting cannot cover crop or zoom variation, use `pipeline/vision_registration_spike.py` only as a proposal generator. Install its isolated `pipeline/requirements-vision-spike.txt`, verify the checkpoint SHA-256 declared by `pipeline/vision_spike_config.json`, and run it only after the normal raw-source integrity check passes.
+
+Do not treat LoFTR match count, inlier ratio, or homography reprojection error as proof. The committed E6C4-35 counterexample produces plausible match metrics while landing one repeating grid period away. Keep model coordinates experimental until an independent grid/diamond fit, adjacent-frame temporal agreement, and human review all support them. Never train or select registration from corpus fingerprints.
+
 ## Validate the correction
 
 - View the disputed frame after regeneration.

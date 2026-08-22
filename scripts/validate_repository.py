@@ -276,9 +276,33 @@ def main() -> int:
     if len(integrity_csv) != len(integrity_rows):
         fail(errors, "Source integrity JSON/CSV counts differ")
     available_names = {row.get("filename") for row in integrity_rows}
+    hashes_by_filename = {row.get("filename"): row.get("sha256") for row in integrity_rows}
     unknown_source_videos = sorted({row["source_video"] for row in evidence} - available_names)
     if unknown_source_videos:
         fail(errors, f"Evidence filenames absent from source integrity manifest: {unknown_source_videos}")
+
+    vision_config_path = ROOT / "pipeline" / "vision_spike_config.json"
+    vision_results_path = ROOT / "research" / "vision-registration-spike" / "results.json"
+    if not vision_config_path.is_file() or not vision_results_path.is_file():
+        fail(errors, "Vision registration spike is missing its config or committed results")
+    else:
+        vision_config = read_json(vision_config_path)
+        vision_results = read_json(vision_results_path)
+        checkpoint = vision_config.get("checkpoint", {})
+        if not sha_pattern.fullmatch(str(checkpoint.get("sha256", ""))) or checkpoint.get("size_bytes", 0) <= 0:
+            fail(errors, "Vision spike checkpoint identity is invalid")
+        if vision_results.get("status") != "experimental-not-canonical":
+            fail(errors, "Vision spike results must remain explicitly non-canonical")
+        if vision_results.get("checkpoint", {}).get("sha256") != checkpoint.get("sha256"):
+            fail(errors, "Vision spike config/results checkpoint hashes differ")
+        for row in vision_results.get("results", []):
+            if hashes_by_filename.get(row.get("source_video")) != row.get("source_sha256"):
+                fail(errors, f"Vision spike source hash differs from integrity manifest: {row.get('source_video')}")
+            if any(key in row for key in ("fingerprint", "glyph_id", "cell_values")):
+                fail(errors, "Vision spike result improperly contains corpus-derived values")
+            render = ROOT / "research" / "vision-registration-spike" / row.get("render", "")
+            if not render.is_file():
+                fail(errors, f"Missing vision spike render: {row.get('render')}")
 
     audit = read_json(DATA / "disputed_cell_audit.json")
     audit_js = read_js_payload(DATA / "disputed_cell_audit.js", "GLYPH_CELL_AUDIT")
@@ -401,9 +425,9 @@ def main() -> int:
         fail(errors, "Disket Mono provenance must identify Rostype and must not identify void-eid")
 
     pipeline_files = (
-        "pipeline/corpus.json", "pipeline/requirements.txt", "pipeline/README.md",
+        "pipeline/corpus.json", "pipeline/requirements.txt", "pipeline/requirements-vision-spike.txt", "pipeline/README.md",
         "pipeline/common.py", "pipeline/analyze_sources.py", "pipeline/build_site.py", "pipeline/run_pipeline.py",
-        "pipeline/inventory_sources.py", "pipeline/audit_disputed_cells.py",
+        "pipeline/inventory_sources.py", "pipeline/audit_disputed_cells.py", "pipeline/vision_registration_spike.py",
     )
     for relative in pipeline_files:
         if not (ROOT / relative).is_file():

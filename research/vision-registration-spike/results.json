@@ -1,0 +1,1126 @@
+{
+  "schema_version": 1,
+  "status": "experimental-not-canonical",
+  "method": "kornia-loftr-outdoor-plus-usac-magsac-homography",
+  "geometry_labels": "manual normalized grid corners; corpus bits and glyph IDs excluded",
+  "checkpoint": {
+    "url": "http://cmp.felk.cvut.cz/~mishkdmy/models/loftr_outdoor.ckpt",
+    "sha256": "21f5bec5968178e8bc8b7633441836fe5de4f47d861dd2cd7dc38e271b0479ec",
+    "size_bytes": 46341978,
+    "local_sha256_verified": true
+  },
+  "environment": {
+    "python": "3.12.13",
+    "torch": "2.13.0+cpu",
+    "kornia": "0.8.3",
+    "opencv": "5.0.0",
+    "device": "cpu"
+  },
+  "acceptance": {
+    "minimum_matches": 40,
+    "minimum_inliers": 20,
+    "minimum_inlier_ratio": 0.2,
+    "maximum_median_reprojection_error_px": 2.5,
+    "maximum_manual_corner_rmse_px": 8.0
+  },
+  "summary": {
+    "registrations": 15,
+    "by_strategy": {
+      "all-correspondences": {
+        "pairs": 8,
+        "accepted": 5,
+        "rejected": 3,
+        "median_manual_corner_rmse_px": 4.4108
+      },
+      "reference-carrier-only": {
+        "pairs": 7,
+        "accepted": 4,
+        "rejected": 3,
+        "median_manual_corner_rmse_px": 7.0612
+      }
+    },
+    "median_inference_seconds_per_pair": 3.4328
+  },
+  "results": [
+    {
+      "recording": "E6C4-16",
+      "source_video": "E6C4-16.mp4",
+      "source_sha256": "89cbadc01206d71a83e5cb15854f5206d179c323afb374980e7293a9a027c33b",
+      "reference_frame": 491,
+      "target_frame": 575,
+      "strategy": "all-correspondences",
+      "loftr_matches": 1458,
+      "matches": 1458,
+      "inliers": 1133,
+      "inlier_ratio": 0.7771,
+      "median_reprojection_error_px": 1.0544,
+      "p95_reprojection_error_px": 2.1921,
+      "manual_corner_rmse_px": 1.6637,
+      "manual_corner_max_error_px": 2.1819,
+      "elapsed_seconds": 3.6768,
+      "homography": [
+        [
+          1.27086065,
+          -0.00130686,
+          -65.96913147
+        ],
+        [
+          -9.538e-05,
+          1.26564771,
+          -75.28348589
+        ],
+        [
+          -3.09e-06,
+          -7.69e-06,
+          1.0
+        ]
+      ],
+      "predicted_grid_corners": [
+        [
+          15.899999618530273,
+          52.88600158691406
+        ],
+        [
+          459.0870056152344,
+          52.90999984741211
+        ],
+        [
+          459.864013671875,
+          495.59100341796875
+        ],
+        [
+          15.486000061035156,
+          495.0889892578125
+        ]
+      ],
+      "manual_grid_corners": [
+        [
+          16.511999130249023,
+          52.512001037597656
+        ],
+        [
+          461.23199462890625,
+          52.512001037597656
+        ],
+        [
+          461.23199462890625,
+          496.5119934082031
+        ],
+        [
+          16.511999130249023,
+          496.5119934082031
+        ]
+      ],
+      "accepted": true,
+      "render": "renders/E6C4-16_f000491_to_f000575_all-correspondences.jpg"
+    },
+    {
+      "recording": "E6C4-16",
+      "source_video": "E6C4-16.mp4",
+      "source_sha256": "89cbadc01206d71a83e5cb15854f5206d179c323afb374980e7293a9a027c33b",
+      "reference_frame": 491,
+      "target_frame": 575,
+      "strategy": "reference-carrier-only",
+      "loftr_matches": 1458,
+      "matches": 163,
+      "inliers": 50,
+      "inlier_ratio": 0.3067,
+      "median_reprojection_error_px": 1.3183,
+      "p95_reprojection_error_px": 2.3327,
+      "manual_corner_rmse_px": 7.0612,
+      "manual_corner_max_error_px": 13.3471,
+      "elapsed_seconds": 3.6768,
+      "homography": [
+        [
+          1.21332341,
+          -0.00528385,
+          -60.69019333
+        ],
+        [
+          -0.01026483,
+          1.22479335,
+          -68.56920855
+        ],
+        [
+          -0.00010587,
+          -4.04e-05,
+          1.0
+        ]
+      ],
+      "predicted_grid_corners": [
+        [
+          17.23699951171875,
+          55.361000061035156
+        ],
+        [
+          461.3190002441406,
+          53.75199890136719
+        ],
+        [
+          466.27099609375,
+          508.8710021972656
+        ],
+        [
+          15.600000381469727,
+          493.3070068359375
+        ]
+      ],
+      "manual_grid_corners": [
+        [
+          16.511999130249023,
+          52.512001037597656
+        ],
+        [
+          461.23199462890625,
+          52.512001037597656
+        ],
+        [
+          461.23199462890625,
+          496.5119934082031
+        ],
+        [
+          16.511999130249023,
+          496.5119934082031
+        ]
+      ],
+      "accepted": true,
+      "render": "renders/E6C4-16_f000491_to_f000575_reference-carrier-only.jpg"
+    },
+    {
+      "recording": "E6C4-16",
+      "source_video": "E6C4-16.mp4",
+      "source_sha256": "89cbadc01206d71a83e5cb15854f5206d179c323afb374980e7293a9a027c33b",
+      "reference_frame": 491,
+      "target_frame": 653,
+      "strategy": "all-correspondences",
+      "loftr_matches": 661,
+      "matches": 661,
+      "inliers": 317,
+      "inlier_ratio": 0.4796,
+      "median_reprojection_error_px": 1.1908,
+      "p95_reprojection_error_px": 2.2995,
+      "manual_corner_rmse_px": 2.6415,
+      "manual_corner_max_error_px": 3.3746,
+      "elapsed_seconds": 3.503,
+      "homography": [
+        [
+          1.52898047,
+          0.00258577,
+          -128.0863462
+        ],
+        [
+          -0.00041351,
+          1.5235543,
+          -146.50950978
+        ],
+        [
+          1.87e-06,
+          9.5e-07,
+          1.0
+        ]
+      ],
+      "predicted_grid_corners": [
+        [
+          -29.180999755859375,
+          7.695000171661377
+        ],
+        [
+          502.4620056152344,
+          7.546000003814697
+        ],
+        [
+          503.19500732421875,
+          537.1060180664062
+        ],
+        [
+          -28.27199935913086,
+          537.5989990234375
+        ]
+      ],
+      "manual_grid_corners": [
+        [
+          -31.488000869750977,
+          5.23199987411499
+        ],
+        [
+          503.23199462890625,
+          5.23199987411499
+        ],
+        [
+          503.23199462890625,
+          537.1199951171875
+        ],
+        [
+          -31.488000869750977,
+          537.1199951171875
+        ]
+      ],
+      "accepted": true,
+      "render": "renders/E6C4-16_f000491_to_f000653_all-correspondences.jpg"
+    },
+    {
+      "recording": "E6C4-16",
+      "source_video": "E6C4-16.mp4",
+      "source_sha256": "89cbadc01206d71a83e5cb15854f5206d179c323afb374980e7293a9a027c33b",
+      "reference_frame": 491,
+      "target_frame": 653,
+      "strategy": "reference-carrier-only",
+      "loftr_matches": 661,
+      "matches": 7,
+      "inliers": 5,
+      "inlier_ratio": 0.7143,
+      "median_reprojection_error_px": 0.0,
+      "p95_reprojection_error_px": 1.2578,
+      "manual_corner_rmse_px": 827.1131,
+      "manual_corner_max_error_px": 1356.6836,
+      "elapsed_seconds": 3.503,
+      "homography": [
+        [
+          0.17937171,
+          -0.59654951,
+          29.88675327
+        ],
+        [
+          0.00104666,
+          -0.14454547,
+          15.21681651
+        ],
+        [
+          2.032e-05,
+          -0.0104646,
+          1.0
+        ]
+      ],
+      "predicted_grid_corners": [
+        [
+          326.16900634765625,
+          -11.227999687194824
+        ],
+        [
+          -853.218017578125,
+          -19.93199920654297
+        ],
+        [
+          44.44200134277344,
+          13.347000122070312
+        ],
+        [
+          61.229000091552734,
+          13.420000076293945
+        ]
+      ],
+      "manual_grid_corners": [
+        [
+          -31.488000869750977,
+          5.23199987411499
+        ],
+        [
+          503.23199462890625,
+          5.23199987411499
+        ],
+        [
+          503.23199462890625,
+          537.1199951171875
+        ],
+        [
+          -31.488000869750977,
+          537.1199951171875
+        ]
+      ],
+      "accepted": false,
+      "render": "renders/E6C4-16_f000491_to_f000653_reference-carrier-only.jpg"
+    },
+    {
+      "recording": "E6C4-13",
+      "source_video": "E6C4-13.mp4",
+      "source_sha256": "4362933796f3b31683f7831238a5f72f7b8419779d252bea9a139a52e87b823f",
+      "reference_frame": 415,
+      "target_frame": 445,
+      "strategy": "all-correspondences",
+      "loftr_matches": 1118,
+      "matches": 1118,
+      "inliers": 758,
+      "inlier_ratio": 0.678,
+      "median_reprojection_error_px": 0.9062,
+      "p95_reprojection_error_px": 2.0323,
+      "manual_corner_rmse_px": 2.2975,
+      "manual_corner_max_error_px": 3.1123,
+      "elapsed_seconds": 3.5327,
+      "homography": [
+        [
+          1.23072066,
+          -0.00221266,
+          -54.82330117
+        ],
+        [
+          -0.00132353,
+          1.22882734,
+          -63.89230068
+        ],
+        [
+          3.88e-06,
+          -1.8e-07,
+          1.0
+        ]
+      ],
+      "predicted_grid_corners": [
+        [
+          99.83499908447266,
+          139.54800415039062
+        ],
+        [
+          379.9739990234375,
+          139.1230010986328
+        ],
+        [
+          379.4880065917969,
+          418.0530090332031
+        ],
+        [
+          99.33599853515625,
+          418.7239990234375
+        ]
+      ],
+      "manual_grid_corners": [
+        [
+          101.23200225830078,
+          139.48800659179688
+        ],
+        [
+          378.0,
+          139.48800659179688
+        ],
+        [
+          378.0,
+          416.2560119628906
+        ],
+        [
+          101.23200225830078,
+          416.2560119628906
+        ]
+      ],
+      "accepted": true,
+      "render": "renders/E6C4-13_f000415_to_f000445_all-correspondences.jpg"
+    },
+    {
+      "recording": "E6C4-13",
+      "source_video": "E6C4-13.mp4",
+      "source_sha256": "4362933796f3b31683f7831238a5f72f7b8419779d252bea9a139a52e87b823f",
+      "reference_frame": 415,
+      "target_frame": 445,
+      "strategy": "reference-carrier-only",
+      "loftr_matches": 1118,
+      "matches": 421,
+      "inliers": 95,
+      "inlier_ratio": 0.2257,
+      "median_reprojection_error_px": 1.3752,
+      "p95_reprojection_error_px": 2.3831,
+      "manual_corner_rmse_px": 2.2811,
+      "manual_corner_max_error_px": 2.9044,
+      "elapsed_seconds": 3.5327,
+      "homography": [
+        [
+          1.2264334,
+          0.00061054,
+          -55.19680256
+        ],
+        [
+          -0.0087064,
+          1.22880443,
+          -62.21735422
+        ],
+        [
+          -1.303e-05,
+          1.163e-05,
+          1.0
+        ]
+      ],
+      "predicted_grid_corners": [
+        [
+          99.40699768066406,
+          140.31199645996094
+        ],
+        [
+          380.0820007324219,
+          138.74000549316406
+        ],
+        [
+          379.21600341796875,
+          417.6669921875
+        ],
+        [
+          99.28299713134766,
+          418.40899658203125
+        ]
+      ],
+      "manual_grid_corners": [
+        [
+          101.23200225830078,
+          139.48800659179688
+        ],
+        [
+          378.0,
+          139.48800659179688
+        ],
+        [
+          378.0,
+          416.2560119628906
+        ],
+        [
+          101.23200225830078,
+          416.2560119628906
+        ]
+      ],
+      "accepted": true,
+      "render": "renders/E6C4-13_f000415_to_f000445_reference-carrier-only.jpg"
+    },
+    {
+      "recording": "E6C4-13",
+      "source_video": "E6C4-13.mp4",
+      "source_sha256": "4362933796f3b31683f7831238a5f72f7b8419779d252bea9a139a52e87b823f",
+      "reference_frame": 415,
+      "target_frame": 537,
+      "strategy": "all-correspondences",
+      "loftr_matches": 897,
+      "matches": 897,
+      "inliers": 634,
+      "inlier_ratio": 0.7068,
+      "median_reprojection_error_px": 1.1018,
+      "p95_reprojection_error_px": 2.2708,
+      "manual_corner_rmse_px": 1.6519,
+      "manual_corner_max_error_px": 2.0373,
+      "elapsed_seconds": 3.4328,
+      "homography": [
+        [
+          1.49018152,
+          -0.0021923,
+          -118.05347688
+        ],
+        [
+          -2.627e-05,
+          1.49162501,
+          -138.8437204
+        ],
+        [
+          3.22e-06,
+          -7.91e-06,
+          1.0
+        ]
+      ],
+      "predicted_grid_corners": [
+        [
+          69.40899658203125,
+          108.47899627685547
+        ],
+        [
+          409.177001953125,
+          108.39299774169922
+        ],
+        [
+          409.4150085449219,
+          448.27398681640625
+        ],
+        [
+          69.03399658203125,
+          448.6099853515625
+        ]
+      ],
+      "manual_grid_corners": [
+        [
+          69.74400329589844,
+          108.76799774169922
+        ],
+        [
+          411.02398681640625,
+          108.76799774169922
+        ],
+        [
+          411.02398681640625,
+          447.02398681640625
+        ],
+        [
+          69.74400329589844,
+          447.02398681640625
+        ]
+      ],
+      "accepted": true,
+      "render": "renders/E6C4-13_f000415_to_f000537_all-correspondences.jpg"
+    },
+    {
+      "recording": "E6C4-13",
+      "source_video": "E6C4-13.mp4",
+      "source_sha256": "4362933796f3b31683f7831238a5f72f7b8419779d252bea9a139a52e87b823f",
+      "reference_frame": 415,
+      "target_frame": 537,
+      "strategy": "reference-carrier-only",
+      "loftr_matches": 897,
+      "matches": 234,
+      "inliers": 63,
+      "inlier_ratio": 0.2692,
+      "median_reprojection_error_px": 1.6592,
+      "p95_reprojection_error_px": 2.475,
+      "manual_corner_rmse_px": 2.0247,
+      "manual_corner_max_error_px": 3.1239,
+      "elapsed_seconds": 3.4328,
+      "homography": [
+        [
+          1.47611238,
+          0.00368259,
+          -116.77080392
+        ],
+        [
+          -0.01160595,
+          1.49572574,
+          -136.50992391
+        ],
+        [
+          -2.879e-05,
+          2.009e-05,
+          1.0
+        ]
+      ],
+      "predicted_grid_corners": [
+        [
+          69.85099792480469,
+          109.96800231933594
+        ],
+        [
+          409.1919860839844,
+          108.03099822998047
+        ],
+        [
+          408.1579895019531,
+          448.26800537109375
+        ],
+        [
+          70.36599731445312,
+          447.97198486328125
+        ]
+      ],
+      "manual_grid_corners": [
+        [
+          69.74400329589844,
+          108.76799774169922
+        ],
+        [
+          411.02398681640625,
+          108.76799774169922
+        ],
+        [
+          411.02398681640625,
+          447.02398681640625
+        ],
+        [
+          69.74400329589844,
+          447.02398681640625
+        ]
+      ],
+      "accepted": true,
+      "render": "renders/E6C4-13_f000415_to_f000537_reference-carrier-only.jpg"
+    },
+    {
+      "recording": "E6C4-35",
+      "source_video": "E6C4-35.mp4",
+      "source_sha256": "1d94b5df7be3f4b04b91862b00f0ffd93d9860bdcc6c9c54435fa6544fa110b2",
+      "reference_frame": 57,
+      "target_frame": 159,
+      "strategy": "all-correspondences",
+      "loftr_matches": 574,
+      "matches": 574,
+      "inliers": 135,
+      "inlier_ratio": 0.2352,
+      "median_reprojection_error_px": 1.5167,
+      "p95_reprojection_error_px": 2.4502,
+      "manual_corner_rmse_px": 37.7123,
+      "manual_corner_max_error_px": 39.2454,
+      "elapsed_seconds": 3.265,
+      "homography": [
+        [
+          1.3657134,
+          -0.0074064,
+          -86.11448092
+        ],
+        [
+          0.0075094,
+          1.35749141,
+          -90.20157984
+        ],
+        [
+          3.074e-05,
+          -3.07e-05,
+          1.0
+        ]
+      ],
+      "predicted_grid_corners": [
+        [
+          92.23400115966797,
+          60.41600036621094
+        ],
+        [
+          387.51800537109375,
+          61.64099884033203
+        ],
+        [
+          388.5010070800781,
+          359.1239929199219
+        ],
+        [
+          91.22699737548828,
+          359.8999938964844
+        ]
+      ],
+      "manual_grid_corners": [
+        [
+          90.76799774169922,
+          97.48799896240234
+        ],
+        [
+          391.4880065917969,
+          97.48799896240234
+        ],
+        [
+          391.4880065917969,
+          398.2560119628906
+        ],
+        [
+          90.76799774169922,
+          398.2560119628906
+        ]
+      ],
+      "accepted": false,
+      "render": "renders/E6C4-35_f000057_to_f000159_all-correspondences.jpg"
+    },
+    {
+      "recording": "E6C4-35",
+      "source_video": "E6C4-35.mp4",
+      "source_sha256": "1d94b5df7be3f4b04b91862b00f0ffd93d9860bdcc6c9c54435fa6544fa110b2",
+      "reference_frame": 57,
+      "target_frame": 159,
+      "strategy": "reference-carrier-only",
+      "loftr_matches": 574,
+      "matches": 293,
+      "inliers": 87,
+      "inlier_ratio": 0.2969,
+      "median_reprojection_error_px": 1.4213,
+      "p95_reprojection_error_px": 2.4006,
+      "manual_corner_rmse_px": 38.5657,
+      "manual_corner_max_error_px": 39.4809,
+      "elapsed_seconds": 3.265,
+      "homography": [
+        [
+          1.36308765,
+          -0.00808444,
+          -83.9391689
+        ],
+        [
+          0.01234204,
+          1.37085958,
+          -94.51053353
+        ],
+        [
+          4.203e-05,
+          -3.014e-05,
+          1.0
+        ]
+      ],
+      "predicted_grid_corners": [
+        [
+          93.84400177001953,
+          58.12699890136719
+        ],
+        [
+          387.1510009765625,
+          60.26300048828125
+        ],
+        [
+          387.9330139160156,
+          359.4200134277344
+        ],
+        [
+          92.68800354003906,
+          360.0270080566406
+        ]
+      ],
+      "manual_grid_corners": [
+        [
+          90.76799774169922,
+          97.48799896240234
+        ],
+        [
+          391.4880065917969,
+          97.48799896240234
+        ],
+        [
+          391.4880065917969,
+          398.2560119628906
+        ],
+        [
+          90.76799774169922,
+          398.2560119628906
+        ]
+      ],
+      "accepted": false,
+      "render": "renders/E6C4-35_f000057_to_f000159_reference-carrier-only.jpg"
+    },
+    {
+      "recording": "E6C4-35",
+      "source_video": "E6C4-35.mp4",
+      "source_sha256": "1d94b5df7be3f4b04b91862b00f0ffd93d9860bdcc6c9c54435fa6544fa110b2",
+      "reference_frame": 57,
+      "target_frame": 340,
+      "strategy": "all-correspondences",
+      "loftr_matches": 193,
+      "matches": 193,
+      "inliers": 16,
+      "inlier_ratio": 0.0829,
+      "median_reprojection_error_px": 0.9629,
+      "p95_reprojection_error_px": 2.457,
+      "manual_corner_rmse_px": 54.2594,
+      "manual_corner_max_error_px": 61.2913,
+      "elapsed_seconds": 3.2173,
+      "homography": [
+        [
+          1.98328828,
+          -0.17726592,
+          -214.28235232
+        ],
+        [
+          0.01676457,
+          1.7807948,
+          -219.7598208
+        ],
+        [
+          0.00020411,
+          -0.00046284,
+          1.0
+        ]
+      ],
+      "predicted_grid_corners": [
+        [
+          27.10099983215332,
+          -21.743999481201172
+        ],
+        [
+          450.16900634765625,
+          -17.20800018310547
+        ],
+        [
+          457.5780029296875,
+          405.2380065917969
+        ],
+        [
+          -14.149999618530273,
+          421.6990051269531
+        ]
+      ],
+      "manual_grid_corners": [
+        [
+          21.743999481201172,
+          28.511999130249023
+        ],
+        [
+          459.02398681640625,
+          28.511999130249023
+        ],
+        [
+          459.02398681640625,
+          466.5119934082031
+        ],
+        [
+          21.743999481201172,
+          466.5119934082031
+        ]
+      ],
+      "accepted": false,
+      "render": "renders/E6C4-35_f000057_to_f000340_all-correspondences.jpg"
+    },
+    {
+      "recording": "E6C4-35",
+      "source_video": "E6C4-35.mp4",
+      "source_sha256": "1d94b5df7be3f4b04b91862b00f0ffd93d9860bdcc6c9c54435fa6544fa110b2",
+      "reference_frame": 57,
+      "target_frame": 340,
+      "strategy": "reference-carrier-only",
+      "loftr_matches": 193,
+      "matches": 53,
+      "inliers": 7,
+      "inlier_ratio": 0.1321,
+      "median_reprojection_error_px": 0.372,
+      "p95_reprojection_error_px": 1.3723,
+      "manual_corner_rmse_px": 154.0297,
+      "manual_corner_max_error_px": 257.5183,
+      "elapsed_seconds": 3.2173,
+      "homography": [
+        [
+          0.70999291,
+          -0.10140702,
+          26.43983659
+        ],
+        [
+          0.25055756,
+          1.10276966,
+          -223.53656611
+        ],
+        [
+          -0.00110435,
+          -0.00027641,
+          1.0
+        ]
+      ],
+      "predicted_grid_corners": [
+        [
+          131.4980010986328,
+          -83.76000213623047
+        ],
+        [
+          451.35101318359375,
+          -24.645999908447266
+        ],
+        [
+          461.12799072265625,
+          434.1889953613281
+        ],
+        [
+          112.85299682617188,
+          225.6490020751953
+        ]
+      ],
+      "manual_grid_corners": [
+        [
+          21.743999481201172,
+          28.511999130249023
+        ],
+        [
+          459.02398681640625,
+          28.511999130249023
+        ],
+        [
+          459.02398681640625,
+          466.5119934082031
+        ],
+        [
+          21.743999481201172,
+          466.5119934082031
+        ]
+      ],
+      "accepted": false,
+      "render": "renders/E6C4-35_f000057_to_f000340_reference-carrier-only.jpg"
+    },
+    {
+      "recording": "E6C2-1K",
+      "source_video": "E6C2-1K zoomed.mp4",
+      "source_sha256": "678cbc8989d975d610dfa69ff33385a02037ca794807a4aedda5e330a7f02325",
+      "reference_frame": 238,
+      "target_frame": 310,
+      "strategy": "all-correspondences",
+      "loftr_matches": 624,
+      "matches": 624,
+      "inliers": 277,
+      "inlier_ratio": 0.4439,
+      "median_reprojection_error_px": 1.4321,
+      "p95_reprojection_error_px": 2.3724,
+      "manual_corner_rmse_px": 6.1802,
+      "manual_corner_max_error_px": 7.7578,
+      "elapsed_seconds": 3.3277,
+      "homography": [
+        [
+          1.77411525,
+          0.00460973,
+          -188.79234312
+        ],
+        [
+          0.00412115,
+          1.7701188,
+          -186.96804812
+        ],
+        [
+          2.894e-05,
+          -1.22e-05,
+          1.0
+        ]
+      ],
+      "predicted_grid_corners": [
+        [
+          88.41899871826172,
+          77.6240005493164
+        ],
+        [
+          400.85400390625,
+          77.95500183105469
+        ],
+        [
+          402.5690002441406,
+          397.6700134277344
+        ],
+        [
+          89.4520034790039,
+          398.98199462890625
+        ]
+      ],
+      "manual_grid_corners": [
+        [
+          84.0,
+          84.0
+        ],
+        [
+          399.02398681640625,
+          84.0
+        ],
+        [
+          399.02398681640625,
+          400.5119934082031
+        ],
+        [
+          84.0,
+          400.5119934082031
+        ]
+      ],
+      "accepted": true,
+      "render": "renders/E6C2-1K_f000238_to_f000310_all-correspondences.jpg"
+    },
+    {
+      "recording": "E6C2-1K",
+      "source_video": "E6C2-1K zoomed.mp4",
+      "source_sha256": "678cbc8989d975d610dfa69ff33385a02037ca794807a4aedda5e330a7f02325",
+      "reference_frame": 238,
+      "target_frame": 310,
+      "strategy": "reference-carrier-only",
+      "loftr_matches": 624,
+      "matches": 169,
+      "inliers": 42,
+      "inlier_ratio": 0.2485,
+      "median_reprojection_error_px": 1.4403,
+      "p95_reprojection_error_px": 2.2539,
+      "manual_corner_rmse_px": 4.4231,
+      "manual_corner_max_error_px": 5.4902,
+      "elapsed_seconds": 3.3277,
+      "homography": [
+        [
+          1.76835056,
+          0.00114713,
+          -188.08516717
+        ],
+        [
+          0.03044553,
+          1.73679515,
+          -183.76429452
+        ],
+        [
+          8.72e-05,
+          -7.103e-05,
+          1.0
+        ]
+      ],
+      "predicted_grid_corners": [
+        [
+          87.68499755859375,
+          79.93099975585938
+        ],
+        [
+          394.9540100097656,
+          84.0270004272461
+        ],
+        [
+          400.22601318359375,
+          398.6369934082031
+        ],
+        [
+          89.03800201416016,
+          399.4119873046875
+        ]
+      ],
+      "manual_grid_corners": [
+        [
+          84.0,
+          84.0
+        ],
+        [
+          399.02398681640625,
+          84.0
+        ],
+        [
+          399.02398681640625,
+          400.5119934082031
+        ],
+        [
+          84.0,
+          400.5119934082031
+        ]
+      ],
+      "accepted": true,
+      "render": "renders/E6C2-1K_f000238_to_f000310_reference-carrier-only.jpg"
+    },
+    {
+      "recording": "E6C2-1K",
+      "source_video": "E6C2-1K zoomed.mp4",
+      "source_sha256": "678cbc8989d975d610dfa69ff33385a02037ca794807a4aedda5e330a7f02325",
+      "reference_frame": 238,
+      "target_frame": 389,
+      "strategy": "all-correspondences",
+      "loftr_matches": 264,
+      "matches": 264,
+      "inliers": 48,
+      "inlier_ratio": 0.1818,
+      "median_reprojection_error_px": 1.6374,
+      "p95_reprojection_error_px": 2.4461,
+      "manual_corner_rmse_px": 7.1595,
+      "manual_corner_max_error_px": 8.5622,
+      "elapsed_seconds": 3.2556,
+      "homography": [
+        [
+          2.60913214,
+          0.00726113,
+          -391.65971344
+        ],
+        [
+          0.00141768,
+          2.61145936,
+          -391.68703379
+        ],
+        [
+          2.928e-05,
+          6.1e-06,
+          1.0
+        ]
+      ],
+      "predicted_grid_corners": [
+        [
+          16.358999252319336,
+          -1.7430000305175781
+        ],
+        [
+          475.1310119628906,
+          -1.4850000143051147
+        ],
+        [
+          475.91400146484375,
+          467.0669860839844
+        ],
+        [
+          17.649999618530273,
+          469.23199462890625
+        ]
+      ],
+      "manual_grid_corners": [
+        [
+          10.51200008392334,
+          4.51200008392334
+        ],
+        [
+          471.02398681640625,
+          4.51200008392334
+        ],
+        [
+          471.02398681640625,
+          467.23199462890625
+        ],
+        [
+          10.51200008392334,
+          467.23199462890625
+        ]
+      ],
+      "accepted": false,
+      "render": "renders/E6C2-1K_f000238_to_f000389_all-correspondences.jpg"
+    }
+  ]
+}

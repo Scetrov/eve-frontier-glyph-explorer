@@ -1,0 +1,5 @@
+# Optional, isolated dependencies for vision_registration_spike.py.
+# These are not production/site runtime dependencies.
+torch==2.13.0
+kornia==0.8.3
+opencv-python-headless==5.0.0.93

@@ -120,6 +120,22 @@ python pipeline\analyze_manual_geometry.py `
 
 The detector fits and reads the image before comparing its result with the corpus fingerprint; the tag never influences geometry or classification. The script never enables an overlay. The current v1 backfill yields 4 exact and 26 distance-1/2 results from 587 manual occurrences, with a median distance of 17. This primarily demonstrates that v1 registration is not robust across crop/zoom variants; it is not evidence that the remaining corpus tags are wrong.
 
+## Reproduce the optional LoFTR registration spike
+
+The experimental [`vision_registration_spike.py`](vision_registration_spike.py) asks a narrower question: can pretrained LoFTR correspondences propagate reviewed grid geometry between exact frames in one recording? It does not load corpus fingerprints or glyph IDs and cannot promote an overlay. Its PyTorch/Kornia packages are intentionally separated in [`requirements-vision-spike.txt`](requirements-vision-spike.txt).
+
+Install those packages in an isolated environment, download the checkpoint identified in [`vision_spike_config.json`](vision_spike_config.json), verify source integrity, then run:
+
+```powershell
+.\.vision-venv\Scripts\python.exe pipeline\vision_registration_spike.py `
+  --archive-invest ..\ArchiveInvest `
+  --video-dir ..\source-videos `
+  --ffmpeg C:\tools\ffmpeg\bin\ffmpeg.exe `
+  --checkpoint .\loftr_outdoor.ckpt
+```
+
+The runner verifies both source-video and checkpoint SHA-256 values. It writes only to `.pipeline-work/vision-spike/run/` unless `--output-dir` is supplied. Current methodology, metrics, counterexamples and reviewed renders are preserved in [`research/vision-registration-spike/`](../research/vision-registration-spike/README.md). The E6C4-35 false lock proves that low homography reprojection error is not sufficient acceptance evidence on a repeating lattice.
+
 ## Add a provisional capture: worked example
 
 Suppose `E6C7-AB.mov` has a visible glyph interval whose transitions begin at decoded frame 600 and end at 720, with a six-frame cadence. First establish the exact-file contract:
