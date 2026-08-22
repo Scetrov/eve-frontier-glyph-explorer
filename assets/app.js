@@ -175,17 +175,23 @@
     const centerY = Number(record.overlay_center_y);
     const pitch = Number(record.overlay_pitch);
     if (Number.isFinite(centerX) && Number.isFinite(centerY) && Number.isFinite(pitch) && pitch > 0) {
-      return { centerX, centerY, pitch, calibrated: true };
+      return { centerX, centerY, pitch, registration: record.overlay_registration || 'unlabelled registration' };
     }
-    return { centerX: 240, centerY: 240, pitch: 28, calibrated: false };
+    return null;
   }
 
   function drawEvidenceOverlay(svg, record) {
     if (!svg) return;
     const observed = String(record.observed_fingerprint || '');
     const canonical = String(record.canonical_fingerprint || '');
-    const { centerX, centerY, pitch, calibrated } = overlayGeometry(record);
-    const square = pitch * 0.72;
+    const geometry = overlayGeometry(record);
+    if (!geometry) {
+      svg.replaceChildren();
+      svg.setAttribute('aria-label', 'QA cell overlay unavailable: this record has no image registration.');
+      return;
+    }
+    const { centerX, centerY, pitch, registration } = geometry;
+    const square = pitch * 0.8;
     let positiveCount = 0;
     let negativeCount = 0;
     let differenceCount = 0;
@@ -218,7 +224,7 @@
       }));
     }
     svg.replaceChildren(fragment);
-    svg.setAttribute('aria-label', `${positiveCount} observed positive payload cells, ${negativeCount} observed negative payload cells, ${differenceCount} differing payload cells; ${calibrated ? 'detector-calibrated' : 'nominal'} registration.`);
+    svg.setAttribute('aria-label', `${positiveCount} observed positive payload cells, ${negativeCount} observed negative payload cells, ${differenceCount} differing payload cells; ${registration}.`);
   }
 
   function createEvidenceImageStage(record) {
@@ -495,9 +501,11 @@
     elements.evidenceDialogImage.alt = `Actual frame ${record.frame} from ${record.source_video}`;
     drawEvidenceOverlay(elements.evidenceDialogOverlay, record);
     const confidence = Number(record.confidence);
-    const registration = overlayGeometry(record).calibrated
-      ? 'detector-calibrated grid registration'
-      : 'nominal centre registration; manual tags do not retain detector geometry';
+    const registration = overlayGeometry(record)?.registration === 'detector-ring-fit'
+      ? 'detector-ring registration'
+      : overlayGeometry(record)?.registration === 'image-edge-fit'
+        ? 'image-edge registration fitted to this exact 480×480 crop'
+        : 'no valid image registration';
     elements.evidenceDialogSourceCaption.textContent = Number.isFinite(confidence)
       ? `Observed-state QA overlay · orange: positive · pale dashed: negative · hatched: excluded carrier · detector separation score ${confidence.toFixed(4)} (not a probability) · ${registration}`
       : `Observed-state QA overlay · orange: positive · pale dashed: negative · hatched: excluded carrier · manual tag: no detector score · ${registration}`;
