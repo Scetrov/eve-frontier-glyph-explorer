@@ -248,6 +248,16 @@ def main() -> int:
                 fail(errors, "Manual geometry candidates must remain pending with overlays disabled")
             if not row.get("source_sha256") or not row.get("method"):
                 fail(errors, "Manual geometry candidate lacks source identity or method")
+            corpus = row.get("corpus_fingerprint", "")
+            detected = row.get("detected_fingerprint", "")
+            if len(corpus) != 81 or set(corpus) - {"0", "1"} or len(detected) != 81 or set(detected) - {"0", "1"}:
+                fail(errors, "Manual detection backfill has an invalid fingerprint")
+            distance = sum(left != right for left, right in zip(corpus, detected))
+            if row.get("hamming_to_corpus") != distance:
+                fail(errors, "Manual detection backfill has an invalid Hamming distance")
+            expected_comparison = "exact support" if distance == 0 else "near support" if distance <= 2 else "disagreement"
+            if row.get("comparison") != expected_comparison:
+                fail(errors, "Manual detection backfill has an invalid comparison label")
 
     integrity = read_json(DATA / "source_integrity.json")
     integrity_rows = integrity.get("entries", [])

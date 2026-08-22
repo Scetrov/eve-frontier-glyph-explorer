@@ -110,7 +110,7 @@ The audit independently registers each source lattice, takes a pixelwise median 
 
 ## Produce manual-frame geometry candidates
 
-Manual ArchiveInvest tags do not contain the detector coordinates needed for a trustworthy QA overlay. Generate independent source-frame grid-line candidates separately; this writes `data/manual_geometry_review.json` and `.csv` with source SHA-256, decoded frame, candidate centre/pitches, fit scores, method, and a mandatory `pending` review state:
+Manual ArchiveInvest tags do not contain the detector coordinates needed for a trustworthy QA overlay. Generate a blind source-frame backfill separately; this writes `data/manual_geometry_review.json` and `.csv` with source SHA-256, decoded frame, candidate centre/pitches, fit scores, independently detected fingerprint, corpus fingerprint, Hamming distance, detector separation, and a mandatory `pending` review state:
 
 ```powershell
 python pipeline\analyze_manual_geometry.py `
@@ -118,7 +118,7 @@ python pipeline\analyze_manual_geometry.py `
   --ffmpeg C:\tools\ffmpeg\bin\ffmpeg.exe
 ```
 
-The script never reads a glyph fingerprint and never enables an overlay. Review each candidate against its unmasked source frame before promoting it through a future approved-geometry workflow.
+The detector fits and reads the image before comparing its result with the corpus fingerprint; the tag never influences geometry or classification. The script never enables an overlay. The current v1 backfill yields 4 exact and 26 distance-1/2 results from 587 manual occurrences, with a median distance of 17. This primarily demonstrates that v1 registration is not robust across crop/zoom variants; it is not evidence that the remaining corpus tags are wrong.
 
 ## Add a provisional capture: worked example
 

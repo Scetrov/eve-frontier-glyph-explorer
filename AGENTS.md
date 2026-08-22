@@ -48,7 +48,7 @@ The explorer is an unofficial research tool. Do not present a speculative decodi
 | `data/source_integrity.json`, `.csv` | Published source identity, SHA-256, and media metadata | Contains logical filenames, never private absolute paths. |
 | `data/official_artifacts.json`, `.js` | Supplied official artifact API snapshot and browser lookup index | Preserve returned URLs and `createdAt` verbatim; it is artifact-record time, not broadcast time. |
 | `data/disputed_cell_audit.json`, `.csv` | Reproducible multi-frame audit of carrier-edge cells | Records hashes, frames, registration, scores, thresholds, and verdicts. |
-| `data/manual_geometry_review.json`, `.csv` | Independent manual-frame lattice candidates | Review ledger only; `overlay_enabled` must remain false until a coordinate is approved. |
+| `data/manual_geometry_review.json`, `.csv` | Blind manual-frame lattice and payload-read backfill | Retains source hash, two fingerprints, Hamming distance, and fit metrics; review ledger only. |
 | `data/cycles.json`, `.js` | Reviewed Phase and Era/Cycle UTC timeline reference | JS wrapper must equal JSON exactly; Pre-era values are not availability windows, Era 5 onward is 24/7, and cycle short names must be unique. |
 | `evidence/<recording-slug>/` | 480×480 JPEG audit frames | Filename form is `gNNN_fNNNNNN.jpg`. Paths are unique per occurrence. |
 | `evidence/audits/` | Multi-frame median audit images | Derived review artifacts, not additional occurrence records. |
@@ -56,7 +56,7 @@ The explorer is an unofficial research tool. Do not present a speculative decodi
 | `pipeline/corpus.json` | Exact source registry, sampling intervals, overrides, and corrections | Treat filename/frame mappings as reviewed data. |
 | `pipeline/run_pipeline.py` | End-to-end input check, analysis, generation, and validation | This is the supported rebuild entry point. |
 | `pipeline/analyze_sources.py` | FFmpeg frame extraction and provisional 9×9 classification | Review contact sheets and high-distance reads. |
-| `pipeline/analyze_manual_geometry.py` | Independent grid-line analysis for ArchiveInvest-tagged source frames | Records candidates and fit metrics; never promotes an overlay automatically. |
+| `pipeline/analyze_manual_geometry.py` | Blind grid-line and ring-state analysis for ArchiveInvest-tagged frames | Compares with the tag only after detection and never promotes an overlay automatically. |
 | `pipeline/build_site.py` | Catalogue derivation, codex rendering, and occurrence evidence generation | Regenerates the full artifact contract together. |
 | `pipeline/inventory_sources.py` | Generate/verify deterministic SHA-256 and FFprobe manifests | Run before any media analysis. |
 | `pipeline/audit_disputed_cells.py` | Registered seven-frame carrier-edge re-audit | Requires a verified integrity manifest. |

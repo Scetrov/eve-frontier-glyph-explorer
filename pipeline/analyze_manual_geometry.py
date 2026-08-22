@@ -1,8 +1,9 @@
-"""Record independent 9x9 lattice candidates for manual corpus frames.
+"""Record blind lattice and payload-read candidates for manual corpus frames.
 
 This is deliberately a review producer, not an overlay publisher. ArchiveInvest
 manual tags do not carry detector coordinates, so a candidate must be reviewed
-before it can be promoted into evidence.json.
+before it can be promoted into evidence.json. Corpus tags are compared only after
+the image read and never influence geometry or classification.
 """
 from __future__ import annotations
 
@@ -16,7 +17,8 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
-from common import find_executable, load_config, read_csv, resolve_manual_video, run
+from analyze_sources import DIAMOND, ring_values
+from common import fingerprint_from_cells, find_executable, load_config, parse_cells, read_csv, resolve_manual_video, run
 
 
 def grid_line_fit(image_path: Path) -> dict[str, float]:
@@ -48,6 +50,22 @@ def grid_line_fit(image_path: Path) -> dict[str, float]:
     }
 
 
+def blind_payload_read(image_path: Path, fit: dict[str, float]) -> tuple[str, float]:
+    """Read cell states from the independent lattice before comparing with a tag."""
+    with Image.open(image_path) as image:
+        gray = np.asarray(image.convert("L"), dtype=np.uint8)
+    pitch = (fit["pitch_x"] + fit["pitch_y"]) / 2
+    values = ring_values(gray, pitch, fit["center_x"], fit["center_y"])
+    fractions = (values < 80).mean(axis=2)
+    bits = [
+        "0" if (row, column) in DIAMOND else ("1" if fractions[row, column] > 0.50 else "0")
+        for row in range(9) for column in range(9)
+    ]
+    usable = [fractions[row, column] for row in range(9) for column in range(9) if (row, column) not in DIAMOND]
+    confidence = float(np.mean(np.abs(np.asarray(usable) - 0.5)))
+    return "".join(bits), round(confidence, 4)
+
+
 def main() -> int:
     root = Path(__file__).resolve().parents[1]
     parser = argparse.ArgumentParser(description="Create independent manual-frame lattice review candidates.")
@@ -62,16 +80,29 @@ def main() -> int:
     for pattern in sorted((args.archive_invest / "PatternCSVs").glob("*_patterns.csv")):
         recording = pattern.stem.removesuffix("_patterns")
         video = resolve_manual_video(args.archive_invest, recording, config)
-        frames = [int(float(row["frame"])) for row in read_csv(pattern)]
+        pattern_rows = read_csv(pattern)
+        frames = [int(float(row["frame"])) for row in pattern_rows]
         with tempfile.TemporaryDirectory(prefix="manual-geometry-") as temporary:
             target = Path(temporary)
             selection = "+".join(f"eq(n\\,{frame})" for frame in dict.fromkeys(frames))
             filters = f"select={selection},crop='min(iw,ih)':'min(iw,ih)':'(iw-min(iw,ih))/2':'(ih-min(iw,ih))/2',scale=480:480:flags=lanczos"
             run([ffmpeg, "-hide_banner", "-loglevel", "error", "-i", str(video), "-vf", filters, "-fps_mode", "vfr", "-q:v", "2", str(target / "frame_%04d.jpg")])
             images = dict(zip(dict.fromkeys(frames), sorted(target.glob("frame_*.jpg"))))
-            for ordinal, frame in enumerate(frames, 1):
+            for ordinal, (frame, pattern_row) in enumerate(zip(frames, pattern_rows), 1):
                 fit = grid_line_fit(images[frame])
-                rows.append({"recording": recording, "ordinal": ordinal, "frame": frame, "source_video": video.name, "source_sha256": hashes.get(video.name), "method": "independent-grid-line-candidate-v1", "review_status": "pending", "overlay_enabled": False, **fit})
+                detected, confidence = blind_payload_read(images[frame], fit)
+                corpus = fingerprint_from_cells(parse_cells(pattern_row.get("cells", "")))
+                distance = sum(left != right for left, right in zip(detected, corpus))
+                comparison = "exact support" if distance == 0 else "near support" if distance <= 2 else "disagreement"
+                rows.append({
+                    "recording": recording, "ordinal": ordinal, "frame": frame,
+                    "source_video": video.name, "source_sha256": hashes.get(video.name),
+                    "method": "independent-grid-line-plus-ring-read-v1",
+                    "review_status": "pending", "overlay_enabled": False,
+                    "corpus_fingerprint": corpus, "detected_fingerprint": detected,
+                    "hamming_to_corpus": distance, "detector_separation": confidence,
+                    "comparison": comparison, **fit,
+                })
     args.output.write_text(json.dumps(rows, indent=2) + "\n", encoding="utf-8")
     args.output.with_suffix(".js").write_text(
         f"window.MANUAL_GEOMETRY_REVIEW={json.dumps(rows, separators=(',', ':'))};\n", encoding="utf-8"
@@ -80,7 +111,14 @@ def main() -> int:
     with csv_path.open("w", newline="", encoding="utf-8-sig") as handle:
         writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
         writer.writeheader(); writer.writerows(rows)
-    print(json.dumps({"rows": len(rows), "output": str(args.output)}))
+    summary = {
+        "rows": len(rows),
+        "exact_support": sum(row["comparison"] == "exact support" for row in rows),
+        "near_support": sum(row["comparison"] == "near support" for row in rows),
+        "disagreement": sum(row["comparison"] == "disagreement" for row in rows),
+        "output": str(args.output),
+    }
+    print(json.dumps(summary))
     return 0
 
 
