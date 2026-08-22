@@ -83,8 +83,11 @@ def main() -> int:
         fail(errors, "Each cycle interval requires Name, ShortName, StartDateTime, and EndDateTime strings")
     else:
         by_name = {row["Name"]: row for row in cycle_rows}
-        if by_name.get("Era 6, Cycle 6", {}).get("ShortName") != "e6c5":
-            fail(errors, "Cycle reference must preserve the supplied duplicated E6C6 short name")
+        if by_name.get("Era 6, Cycle 6", {}).get("ShortName") != "e6c6":
+            fail(errors, "Cycle reference must identify Era 6 Cycle 6 as e6c6")
+        short_names = [row["ShortName"] for row in cycle_rows]
+        if len(short_names) != len(set(short_names)):
+            fail(errors, "Cycle reference short names must be unique")
         era6_cycles = [by_name.get(f"Era 6, Cycle {number}") for number in range(1, 7)]
         if any(not cycle or not cycle["StartDateTime"].endswith("T12:00:00+00:00") for cycle in era6_cycles):
             fail(errors, "Every Era 6 cycle must begin at the reviewed noon UTC boundary")

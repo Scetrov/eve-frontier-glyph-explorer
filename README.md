@@ -4,7 +4,7 @@ An unofficial, static explorer for the 9×9 glyph sequences found in EVE Frontie
 
 Source, release history, and issue reporting live at [Scetrov/eve-frontier-glyph-explorer](https://github.com/Scetrov/eve-frontier-glyph-explorer). The explorer supplies prefilled GitHub Issue links for selected glyphs, individual frame evidence, and reviewed cells; use them to preserve the exact context needed to reproduce a concern.
 
-The published [Cycle reference](cycles.html) records UTC start/end dates for Phases 1–5 and Era 5–6 cycles. Its `data/cycles.json` source aligns Era 6 boundaries to confirmed whole-hour noon UTC cutovers while retaining the supplied duplicate E6C6 short name for review.
+The published [Cycle reference](cycles.html) records UTC start/end dates for Phases 1–5 and Era 5–6 cycles. Its `data/cycles.json` source aligns Era 6 boundaries to confirmed whole-hour noon UTC cutovers.
 
 ## Publish with GitHub Pages
 

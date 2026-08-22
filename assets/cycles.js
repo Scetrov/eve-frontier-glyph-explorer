@@ -8,7 +8,7 @@
 
   const exactUtc = value => String(value).replace('T', ' ').replace('+00:00', ' UTC');
   const noteFor = cycle => {
-    if (cycle.Name === 'Era 6, Cycle 6') return 'Open-ended. Supplied short name repeats e6c5.';
+    if (cycle.Name === 'Era 6, Cycle 6') return 'Open-ended.';
     return '—';
   };
 

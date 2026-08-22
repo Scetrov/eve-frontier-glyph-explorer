@@ -47,7 +47,7 @@ The explorer is an unofficial research tool. Do not present a speculative decodi
 | `data/evidence_manifest.csv` | Downloadable flat evidence manifest | Must describe the exact source filename and frame. |
 | `data/source_integrity.json`, `.csv` | Published source identity, SHA-256, and media metadata | Contains logical filenames, never private absolute paths. |
 | `data/disputed_cell_audit.json`, `.csv` | Reproducible multi-frame audit of carrier-edge cells | Records hashes, frames, registration, scores, thresholds, and verdicts. |
-| `data/cycles.json`, `.js` | Reviewed Phase and Era/Cycle UTC date reference | JS wrapper must equal JSON exactly; duplicate supplied short names are valid data. |
+| `data/cycles.json`, `.js` | Reviewed Phase and Era/Cycle UTC date reference | JS wrapper must equal JSON exactly; cycle short names must be unique. |
 | `evidence/<recording-slug>/` | 480×480 JPEG audit frames | Filename form is `gNNN_fNNNNNN.jpg`. Paths are unique per occurrence. |
 | `evidence/audits/` | Multi-frame median audit images | Derived review artifacts, not additional occurrence records. |
 | `scripts/validate_repository.py` | Dependency-free structural/data validator | Run before every commit that touches data, evidence, or skills. |
@@ -173,7 +173,7 @@ The validator checks structural invariants, not semantic correctness. A passing 
 - Load only the evidence for the selected glyph in the interface; do not eagerly render all 768 images.
 - Keep generated JSON readable and generated JavaScript compact.
 - Do not hand-edit `catalogue.js`, `evidence.js`, or `cycles.js` independently of their JSON counterparts.
-- Treat `data/cycles.json` as a reviewed temporal reference, not a derived timeline. Preserve timestamp precision, offsets, and duplicate codes. Correct a boundary only when supported by operational evidence, document the basis in the source note/page, and enforce the result in the validator.
+- Treat `data/cycles.json` as a reviewed temporal reference, not a derived timeline. Preserve timestamp precision and offsets. Correct a boundary or code only when supported by operational evidence, document the basis in the source note/page, and enforce the result in the validator.
 
 ## Provenance and source additions
 

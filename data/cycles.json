@@ -16,6 +16,6 @@
     { "Name": "Era 6, Cycle 3", "ShortName": "e6c3", "StartDateTime": "2025-10-15T12:00:00+00:00", "EndDateTime": "2025-12-10T12:00:00+00:00" },
     { "Name": "Era 6, Cycle 4", "ShortName": "e6c4", "StartDateTime": "2025-12-10T12:00:00+00:00", "EndDateTime": "2026-03-11T12:00:00+00:00" },
     { "Name": "Era 6, Cycle 5", "ShortName": "e6c5", "StartDateTime": "2026-03-11T12:00:00+00:00", "EndDateTime": "2026-06-24T12:00:00+00:00" },
-    { "Name": "Era 6, Cycle 6", "ShortName": "e6c5", "StartDateTime": "2026-06-24T12:00:00+00:00", "EndDateTime": "9999-12-31T23:59:59+00:00" }
+    { "Name": "Era 6, Cycle 6", "ShortName": "e6c6", "StartDateTime": "2026-06-24T12:00:00+00:00", "EndDateTime": "9999-12-31T23:59:59+00:00" }
   ]
 }
