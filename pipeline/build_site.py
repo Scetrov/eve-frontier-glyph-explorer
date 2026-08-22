@@ -28,7 +28,7 @@ from common import (
 
 OCCURRENCE_FIELDS = [
     "glyph_id", "recording", "broadcast", "cycle", "track", "ordinal", "frame", "time_s",
-    "source", "provisional", "hamming_distance", "confidence", "assignment_basis", "verification_status", "observed_fingerprint",
+    "source", "provisional", "hamming_distance", "confidence", "overlay_center_x", "overlay_center_y", "overlay_pitch", "assignment_basis", "verification_status", "observed_fingerprint",
 ]
 
 
@@ -149,6 +149,7 @@ def load_inputs(config: dict, archive: Path, automatic_csv: Path) -> tuple[dict[
                 "frame": int(float(row.get("frame") or 0)), "time_s": round(float(row.get("time_s") or 0), 4),
                 "source": "ArchiveInvest manual", "provisional": False, "hamming_distance": distance,
                 "confidence": "", "assignment_basis": basis, "verification_status": verification, "observed_fingerprint": fingerprint,
+                "overlay_center_x": None, "overlay_center_y": None, "overlay_pitch": None,
             })
 
     corrections = config.get("context_corrections", {})
@@ -167,6 +168,9 @@ def load_inputs(config: dict, archive: Path, automatic_csv: Path) -> tuple[dict[
             "assignment_basis": "sequence consensus" if glyph_id != nearest else "automatic nearest glyph",
             "verification_status": "provisional automatic read",
             "observed_fingerprint": row["fingerprint"],
+            "overlay_center_x": round(float(row["center_x"]) * 4 / 9, 4),
+            "overlay_center_y": round(float(row["center_y"]) * 4 / 9, 4),
+            "overlay_pitch": round(float(row["pitch_px"]) * 4 / 9, 4),
         })
     occurrence_counts = Counter(row["glyph_id"] for row in occurrences)
     for row in occurrences:
@@ -357,6 +361,7 @@ def evidence_record(row: dict, video: Path, destination: Path, site: Path, dicti
         "source_video": video.name, "ordinal": row["ordinal"], "frame": row["frame"], "time_s": row["time_s"],
         "source": row["source"], "provisional": row["provisional"], "reported_hamming": row["hamming_distance"],
         "assigned_hamming": len(differences), "confidence": row["confidence"] if row["confidence"] != "" else None,
+        "overlay_center_x": row.get("overlay_center_x"), "overlay_center_y": row.get("overlay_center_y"), "overlay_pitch": row.get("overlay_pitch"),
         "assignment_basis": row["assignment_basis"], "verification_status": row["verification_status"], "difference_cells": [f"({index // 9},{index % 9})" for index in differences],
         "image": destination.relative_to(site).as_posix(), "observed_fingerprint": observed, "canonical_fingerprint": canonical,
     }
@@ -439,7 +444,7 @@ def build_evidence(site: Path, archive: Path, video_dir: Path, analysis: Path, c
     data_dir = site / "data"
     (data_dir / "evidence.json").write_text(json.dumps(records, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     (data_dir / "evidence.js").write_text(f"window.GLYPH_EVIDENCE={json.dumps(records, separators=(',', ':'), ensure_ascii=False)};\n", encoding="utf-8")
-    fields = ["evidence_id", "glyph_id", "recording", "broadcast", "source_video", "ordinal", "frame", "time_s", "source", "provisional", "reported_hamming", "assigned_hamming", "confidence", "assignment_basis", "verification_status", "difference_cells", "image", "observed_fingerprint", "canonical_fingerprint"]
+    fields = ["evidence_id", "glyph_id", "recording", "broadcast", "source_video", "ordinal", "frame", "time_s", "source", "provisional", "reported_hamming", "assigned_hamming", "confidence", "overlay_center_x", "overlay_center_y", "overlay_pitch", "assignment_basis", "verification_status", "difference_cells", "image", "observed_fingerprint", "canonical_fingerprint"]
     csv_rows = [{**record, "difference_cells": " ".join(record["difference_cells"])} for record in records]
     write_csv(data_dir / "evidence_manifest.csv", csv_rows, fields)
 

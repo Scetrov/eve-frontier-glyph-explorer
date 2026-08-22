@@ -287,7 +287,15 @@ main { position: relative; z-index: 1; }
 .evidence-card { min-width: 0; padding: 0; border: 1px solid var(--line); border-radius: 0; background: var(--void-soft); color: var(--text); text-align: left; cursor: pointer; overflow: hidden; }
 .evidence-card:hover, .evidence-card:focus-visible { border-color: var(--signal); }
 .evidence-card-difference { border-bottom-color: var(--signal-dim); }
-.evidence-card img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; background: var(--crude); }
+.evidence-image-stage { position: relative; display: block; width: 100%; aspect-ratio: 1; overflow: hidden; background: var(--crude); }
+.evidence-image-stage img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.evidence-card > img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; background: var(--crude); }
+.evidence-overlay { position: absolute; inset: 0; display: block; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.evidence-overlay-cell { fill: none; stroke-width: 1.35; vector-effect: non-scaling-stroke; }
+.evidence-overlay-positive { fill: rgba(255, 71, 0, .10); stroke: var(--signal); stroke-opacity: .92; }
+.evidence-overlay-negative { stroke: var(--neutral); stroke-dasharray: 3 3; stroke-opacity: .38; }
+.evidence-overlay-excluded { fill: rgba(250, 250, 229, .025); stroke: var(--line-bright); stroke-dasharray: 1.5 2.5; stroke-opacity: .25; }
+.evidence-overlay-difference { stroke: var(--neutral); stroke-width: 2.25; stroke-opacity: .92; }
 .evidence-card-meta { display: grid; gap: 4px; padding: 7px; }
 .evidence-card-meta strong { overflow: hidden; text-overflow: ellipsis; color: var(--text); font: 500 8px/1.2 var(--font-mono); white-space: nowrap; }
 .evidence-card-meta > span { color: var(--muted); font: 500 7px/1.3 var(--font-mono); letter-spacing: .02em; }
@@ -302,7 +310,8 @@ main { position: relative; z-index: 1; }
 .evidence-dialog-header button:hover { border-color: var(--signal); color: var(--signal-bright); }
 .evidence-dialog-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 20px 0; }
 .evidence-dialog figure { margin: 0; min-width: 0; }
-.evidence-dialog img, .evidence-dialog canvas { display: block; width: 100%; aspect-ratio: 1; object-fit: contain; background: var(--crude); border: 1px solid var(--line); }
+.evidence-dialog .evidence-image-stage, .evidence-dialog canvas { display: block; width: 100%; aspect-ratio: 1; background: var(--crude); border: 1px solid var(--line); }
+.evidence-dialog .evidence-image-stage img { object-fit: contain; }
 .evidence-dialog figcaption { padding-top: 7px; color: var(--muted); font: 500 8px/1.2 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
 .evidence-dialog-meta { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
 .evidence-dialog-meta div { padding: 11px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); min-width: 0; }

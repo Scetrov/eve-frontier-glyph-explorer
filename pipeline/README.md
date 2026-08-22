@@ -20,7 +20,7 @@ Manual ArchiveInvest tags remain canonical corpus evidence. Automatically read c
 - Python 3.11 or newer;
 - FFmpeg available on `PATH`, or an explicit `--ffmpeg` path;
 - a clone of [QZRChedders/ArchiveInvest](https://github.com/QZRChedders/ArchiveInvest) including its `Videos/` directory;
-- the eight additional source captures named in `corpus.json`, held in one local directory.
+- the eleven additional source captures named in `corpus.json`, held in one local directory.
 
 From the repository root:
 
@@ -35,7 +35,8 @@ Place the additional captures in `..\source-videos\` with these exact names:
 
 ```text
 E6C4-2T.webm   E6C4-30.webm   E6C5-13.mp4   E6C5-2J.webm
-E6C6-11.webm   E6C6-1R.mov    E6C6-21.mov   E6C6-D.mov
+E6C5-3L.webm   E6C6-1.webm    E6C6-11.webm  E6C6-1R.mov
+E6C6-21.mov    E6C6-D.mov     E6C6-N.webm
 ```
 
 ## Check inputs without changing generated files
@@ -93,7 +94,7 @@ data/source_integrity.json   data/source_integrity.csv
 data/disputed_cell_audit.json data/disputed_cell_audit.csv
 ```
 
-For the current corpus, a successful build reports 146 canonical glyphs, 768 occurrences, 29 recording records, 53 used payload positions, and 768 occurrence evidence images. Treat a count change as a review trigger, not automatically as an error.
+For the current corpus, a successful build reports 146 canonical glyphs, 835 occurrences, 32 recording records, 53 used payload positions, and 835 occurrence evidence images. Treat a count change as a review trigger, not automatically as an error.
 
 ## Reproduce the disputed-cell audit
 

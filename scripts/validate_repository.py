@@ -216,6 +216,12 @@ def main() -> int:
             fail(errors, f"{row['evidence_id']} assigned_hamming is incorrect")
         if not row.get("source_video"):
             fail(errors, f"{row['evidence_id']} has no exact source filename")
+        geometry = [row.get("overlay_center_x"), row.get("overlay_center_y"), row.get("overlay_pitch")]
+        if row.get("provisional"):
+            if not all(isinstance(value, (int, float)) and value > 0 for value in geometry):
+                fail(errors, f"{row['evidence_id']} has no calibrated QA-overlay geometry")
+        elif any(value is not None for value in geometry):
+            fail(errors, f"{row['evidence_id']} manual evidence must not claim detector calibration")
         image = ROOT / row["image"]
         if not image.is_file():
             fail(errors, f"Missing evidence image: {row['image']}")
@@ -284,6 +290,8 @@ def main() -> int:
     for element_id in ("cell-heatmap", "cell-review", "cell-pattern-list", "cell-evidence-list"):
         if f'id="{element_id}"' not in index_text:
             fail(errors, f"index.html is missing Cell Activation element #{element_id}")
+    if 'id="evidence-dialog-overlay"' not in index_text or 'id="evidence-dialog-source-caption"' not in index_text:
+        fail(errors, "Explorer is missing the evidence QA overlay surface")
     repository_url = "https://github.com/Scetrov/eve-frontier-glyph-explorer"
     for element_id in ("report-glyph", "report-evidence", "report-cell"):
         if f'id="{element_id}"' not in index_text:
@@ -303,7 +311,7 @@ def main() -> int:
         fail(errors, "Credits page does not explain official artifact provenance")
 
     app_text = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
-    for behavior in ("selectCell", "renderCellReview", "createEvidenceCard", "officialArtifactFor", "officialArtifactMeta", "issueUrl", "glyphIssueBody", "frameIssueBody", "cellIssueBody"):
+    for behavior in ("selectCell", "renderCellReview", "createEvidenceCard", "createEvidenceImageStage", "drawEvidenceOverlay", "overlayGeometry", "officialArtifactFor", "officialArtifactMeta", "issueUrl", "glyphIssueBody", "frameIssueBody", "cellIssueBody"):
         if behavior not in app_text:
             fail(errors, f"assets/app.js is missing Cell Activation behavior {behavior}")
 

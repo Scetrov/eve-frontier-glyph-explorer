@@ -253,8 +253,11 @@
     </div>
     <div class="evidence-dialog-grid">
       <figure>
-        <img id="evidence-dialog-image" alt="">
-        <figcaption>Actual cropped video frame</figcaption>
+        <div class="evidence-image-stage evidence-image-stage-dialog">
+          <img id="evidence-dialog-image" alt="">
+          <svg id="evidence-dialog-overlay" class="evidence-overlay" viewBox="0 0 480 480" preserveAspectRatio="none" aria-hidden="true"></svg>
+        </div>
+        <figcaption id="evidence-dialog-source-caption">Actual cropped video frame with observed-state QA overlay</figcaption>
       </figure>
       <figure>
         <canvas id="evidence-dialog-canonical" width="480" height="480" aria-label="Canonical matched glyph"></canvas>

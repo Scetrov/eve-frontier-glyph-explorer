@@ -31,6 +31,7 @@
     43, 44, 46, 47, 51, 52, 56, 57, 59, 60, 66, 67, 68, 76
   ]);
   const auditedCarrierCells = new Set([24, 47]);
+  const svgNamespace = 'http://www.w3.org/2000/svg';
 
   const rootStyle = getComputedStyle(document.documentElement);
   const palette = {
@@ -89,6 +90,8 @@
     evidenceDialog: document.getElementById('evidence-dialog'),
     evidenceDialogClose: document.getElementById('evidence-dialog-close'),
     evidenceDialogImage: document.getElementById('evidence-dialog-image'),
+    evidenceDialogOverlay: document.getElementById('evidence-dialog-overlay'),
+    evidenceDialogSourceCaption: document.getElementById('evidence-dialog-source-caption'),
     evidenceDialogCanonical: document.getElementById('evidence-dialog-canonical'),
     evidenceDialogTitle: document.getElementById('evidence-dialog-title'),
     evidenceDialogMeta: document.getElementById('evidence-dialog-meta'),
@@ -159,6 +162,74 @@
     context.setTransform(ratio, 0, 0, ratio, 0, 0);
     context.imageSmoothingEnabled = false;
     return context;
+  }
+
+  function svgNode(name, attributes = {}) {
+    const node = document.createElementNS(svgNamespace, name);
+    Object.entries(attributes).forEach(([key, value]) => node.setAttribute(key, String(value)));
+    return node;
+  }
+
+  function overlayGeometry(record) {
+    const centerX = Number(record.overlay_center_x);
+    const centerY = Number(record.overlay_center_y);
+    const pitch = Number(record.overlay_pitch);
+    if (Number.isFinite(centerX) && Number.isFinite(centerY) && Number.isFinite(pitch) && pitch > 0) {
+      return { centerX, centerY, pitch, calibrated: true };
+    }
+    return { centerX: 240, centerY: 240, pitch: 28, calibrated: false };
+  }
+
+  function drawEvidenceOverlay(svg, record) {
+    if (!svg) return;
+    const observed = String(record.observed_fingerprint || '');
+    const canonical = String(record.canonical_fingerprint || '');
+    const { centerX, centerY, pitch, calibrated } = overlayGeometry(record);
+    const square = pitch * 0.72;
+    let positiveCount = 0;
+    let negativeCount = 0;
+    let differenceCount = 0;
+    const fragment = document.createDocumentFragment();
+
+    for (let index = 0; index < 81; index += 1) {
+      const row = Math.floor(index / 9);
+      const column = index % 9;
+      const excluded = carrierCells.has(index);
+      const positive = observed[index] === '1';
+      const differs = observed[index] !== canonical[index];
+      const x = centerX + (column - 4) * pitch - square / 2;
+      const y = centerY + (row - 4) * pitch - square / 2;
+      const classes = ['evidence-overlay-cell'];
+      if (excluded) classes.push('evidence-overlay-excluded');
+      else if (positive) {
+        classes.push('evidence-overlay-positive');
+        positiveCount += 1;
+      } else {
+        classes.push('evidence-overlay-negative');
+        negativeCount += 1;
+      }
+      if (differs && !excluded) {
+        classes.push('evidence-overlay-difference');
+        differenceCount += 1;
+      }
+      fragment.appendChild(svgNode('rect', {
+        x: x.toFixed(2), y: y.toFixed(2), width: square.toFixed(2), height: square.toFixed(2),
+        class: classes.join(' '), 'data-cell': `(${row},${column})`
+      }));
+    }
+    svg.replaceChildren(fragment);
+    svg.setAttribute('aria-label', `${positiveCount} observed positive payload cells, ${negativeCount} observed negative payload cells, ${differenceCount} differing payload cells; ${calibrated ? 'detector-calibrated' : 'nominal'} registration.`);
+  }
+
+  function createEvidenceImageStage(record) {
+    const stage = document.createElement('span');
+    stage.className = 'evidence-image-stage';
+    const overlay = svgNode('svg', {
+      class: 'evidence-overlay', viewBox: '0 0 480 480', preserveAspectRatio: 'none', 'aria-hidden': 'true'
+    });
+    drawEvidenceOverlay(overlay, record);
+    stage.append(image, overlay);
+    return stage;
   }
 
   function drawGlyph(canvas, glyph, options = {}) {
@@ -394,7 +465,7 @@
       ? `${record.assigned_hamming} CELL${record.assigned_hamming === 1 ? '' : 'S'} FROM ASSIGNED GLYPH`
       : record.verification_status || 'MATCHES CORPUS TAG';
     meta.append(source, reference, status);
-    button.append(image, meta);
+    button.append(createEvidenceImageStage(record), meta);
     button.addEventListener('click', () => openEvidence(record));
     return button;
   }
@@ -422,6 +493,14 @@
     elements.evidenceDialogTitle.textContent = `${record.source_video} / frame ${record.frame}`;
     elements.evidenceDialogImage.src = record.image;
     elements.evidenceDialogImage.alt = `Actual frame ${record.frame} from ${record.source_video}`;
+    drawEvidenceOverlay(elements.evidenceDialogOverlay, record);
+    const confidence = Number(record.confidence);
+    const registration = overlayGeometry(record).calibrated
+      ? 'detector-calibrated grid registration'
+      : 'nominal centre registration; manual tags do not retain detector geometry';
+    elements.evidenceDialogSourceCaption.textContent = Number.isFinite(confidence)
+      ? `Observed-state QA overlay · orange: positive · pale dashed: negative · hatched: excluded carrier · detector separation score ${confidence.toFixed(4)} (not a probability) · ${registration}`
+      : `Observed-state QA overlay · orange: positive · pale dashed: negative · hatched: excluded carrier · manual tag: no detector score · ${registration}`;
     setReportLink(elements.reportEvidence, 'frame-report.md', `[Frame] ${record.source_video} / frame ${record.frame}`, 'report: frame', frameIssueBody(record));
     drawGlyph(elements.evidenceDialogCanonical, glyph, { size: 440, carrier: true });
     const changed = record.difference_cells.length ? record.difference_cells.join(' ') : 'none';

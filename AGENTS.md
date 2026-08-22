@@ -104,6 +104,8 @@ Every occurrence has exactly one evidence record. It repeats the occurrence iden
 - a unique relative `image` path;
 - canonical and observed fingerprints.
 
+Provisional evidence also retains `overlay_center_x`, `overlay_center_y`, and `overlay_pitch` in the 480×480 crop coordinate space. These are detector-calibrated registration values for the browser QA overlay. Manual tags intentionally leave them `null`; the UI must call its overlay nominal rather than pretending they were detector-calibrated. `confidence` is a detector separation score, not a calibrated probability, and must be labelled accordingly.
+
 The image is an audit artifact, not the source of truth for the structured fingerprint. If the image and tag disagree, flag the record for review; do not edit the image to resemble the tag.
 
 ## End-to-end corpus build
