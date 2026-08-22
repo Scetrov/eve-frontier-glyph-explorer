@@ -98,6 +98,9 @@ def main() -> int:
             fail(errors, "Every Era 6 cycle must begin at the reviewed noon UTC boundary")
         if any(not cycle or not cycle["EndDateTime"].endswith("T12:00:00+00:00") for cycle in era6_cycles[:5]):
             fail(errors, "Every completed Era 6 cycle must end at the reviewed noon UTC boundary")
+        cycle6 = by_name.get("Era 6, Cycle 6", {})
+        if "Expected September 2026" not in cycle6.get("EndStatus", "") or "placeholder only" not in source_note:
+            fail(errors, "Cycle 6 must describe its September 2026 end as unconfirmed, not open-ended")
 
     official_artifacts = read_json(DATA / "official_artifacts.json")
     artifact_rows = official_artifacts.get("artifacts", [])
