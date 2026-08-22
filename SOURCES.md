@@ -9,7 +9,7 @@
 ## Supporting datasets
 
 - **Scetrov** — creator and maintainer of [Scetrov/evefrontier_datasets](https://github.com/Scetrov/evefrontier_datasets), referenced for star-system and celestial-object hypotheses. The current explorer does not claim that this dataset decodes the glyphs.
-- **Cycle-date reference** — the Phase and Era/Cycle project-timeline markers in [`data/cycles.json`](data/cycles.json), plus the Pre-era development context displayed on the reference page, were supplied for this explorer. They are not server-availability windows. Era 6 boundaries were aligned to confirmed whole-hour noon UTC cutovers from server-transition context.
+- **Cycle-date reference** — the Phase and Era/Cycle project-timeline markers in [`data/cycles.json`](data/cycles.json), plus the Pre-era development context displayed on the reference page, were supplied for this explorer. The Phase dates are not server-availability windows; the 24/7 operating model began with Founders Access / Era 5. Era 6 boundaries were aligned to confirmed whole-hour noon UTC cutovers from server-transition context.
 
 ## Official context and design reference
 

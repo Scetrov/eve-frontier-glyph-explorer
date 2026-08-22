@@ -31,7 +31,7 @@ The explorer is an unofficial research tool. Do not present a speculative decodi
 | --- | --- | --- |
 | `index.html` | Main explorer shell and accessible dialog markup | Keep it static and usable under a GitHub project-pages subpath. |
 | `credits.html` | Human-readable credits and source context | Update whenever a new contributor, dataset, or material source is added. |
-| `cycles.html` | Human-readable Phase and Era/Cycle UTC timeline reference | Never present timeline markers as an uptime ledger; record the evidence for any corrections and never silently alter short codes. |
+| `cycles.html` | Human-readable Phase and Era/Cycle UTC timeline reference | Explain that only Pre-era markers are not an uptime ledger; Era 5 onward is the 24/7 model. Record evidence for corrections and never silently alter short codes. |
 | `assets/app.js` | Filtering, rendering, glyph canvases, evidence gallery, modal behavior | Uses globals from generated `data/*.js`; no bundler is involved. |
 | `assets/cycles.js` | Renders the standalone cycle-date reference table | Uses `window.CYCLE_DATA`; show supplied anomalies as review notes. |
 | `assets/release.js` | Stamps the deployed commit into shared footers | Fetches release metadata only when a `#release-commit` element exists. |
@@ -47,7 +47,7 @@ The explorer is an unofficial research tool. Do not present a speculative decodi
 | `data/evidence_manifest.csv` | Downloadable flat evidence manifest | Must describe the exact source filename and frame. |
 | `data/source_integrity.json`, `.csv` | Published source identity, SHA-256, and media metadata | Contains logical filenames, never private absolute paths. |
 | `data/disputed_cell_audit.json`, `.csv` | Reproducible multi-frame audit of carrier-edge cells | Records hashes, frames, registration, scores, thresholds, and verdicts. |
-| `data/cycles.json`, `.js` | Reviewed Phase and Era/Cycle UTC timeline reference | JS wrapper must equal JSON exactly; values are not availability windows and cycle short names must be unique. |
+| `data/cycles.json`, `.js` | Reviewed Phase and Era/Cycle UTC timeline reference | JS wrapper must equal JSON exactly; Pre-era values are not availability windows, Era 5 onward is 24/7, and cycle short names must be unique. |
 | `evidence/<recording-slug>/` | 480×480 JPEG audit frames | Filename form is `gNNN_fNNNNNN.jpg`. Paths are unique per occurrence. |
 | `evidence/audits/` | Multi-frame median audit images | Derived review artifacts, not additional occurrence records. |
 | `scripts/validate_repository.py` | Dependency-free structural/data validator | Run before every commit that touches data, evidence, or skills. |
@@ -173,7 +173,7 @@ The validator checks structural invariants, not semantic correctness. A passing 
 - Load only the evidence for the selected glyph in the interface; do not eagerly render all 768 images.
 - Keep generated JSON readable and generated JavaScript compact.
 - Do not hand-edit `catalogue.js`, `evidence.js`, or `cycles.js` independently of their JSON counterparts.
-- Treat `data/cycles.json` as a reviewed project-timeline reference, not a server-availability ledger. Preserve timestamp precision and offsets. Correct a boundary or code only when supported by operational evidence, document the basis in the source note/page, and enforce the result in the validator. Do not infer continuous uptime from Phase dates.
+- Treat `data/cycles.json` as a reviewed project-timeline reference. Do not infer continuous uptime from Phase dates; Founders Access / Era 5 onward is the 24/7 operating model. Preserve timestamp precision and offsets. Correct a boundary or code only when supported by operational evidence, document the basis in the source note/page, and enforce the result in the validator.
 
 ## Provenance and source additions
 

@@ -4,7 +4,7 @@ An unofficial, static explorer for the 9×9 glyph sequences found in EVE Frontie
 
 Source, release history, and issue reporting live at [Scetrov/eve-frontier-glyph-explorer](https://github.com/Scetrov/eve-frontier-glyph-explorer). The explorer supplies prefilled GitHub Issue links for selected glyphs, individual frame evidence, and reviewed cells; use them to preserve the exact context needed to reproduce a concern.
 
-The published [Cycle reference](cycles.html) records UTC project-timeline markers for Phases 1–5 and Era 5–6 cycles. These dates are not a server-uptime ledger: Pre-era phases included intermittent testing and extended offline periods. The page also records the supplied early-development context and aligns Era 6 boundaries to confirmed whole-hour noon UTC cutovers.
+The published [Cycle reference](cycles.html) records UTC project-timeline markers for Phases 1–5 and Era 5–6 cycles. Pre-era phases included intermittent testing and extended offline periods; the 24/7 operating model began with Founders Access / Era 5. The page also records the supplied early-development context and aligns Era 6 boundaries to confirmed whole-hour noon UTC cutovers.
 
 ## Publish with GitHub Pages
 

@@ -1,7 +1,7 @@
 window.CYCLE_DATA={
   "reference_version": 1,
   "time_zone": "UTC",
-  "source_note": "Project timeline markers, not server-availability windows. Era 6 boundaries were aligned to confirmed noon UTC server-transition cutovers.",
+  "source_note": "Pre-era project timeline markers, not server-availability windows. From Founders Access / Era 5 onward, the server operates 24/7. Era 6 boundaries were aligned to confirmed noon UTC server-transition cutovers.",
   "cycles": [
     { "Name": "Phase 1", "ShortName": "p1", "StartDateTime": "2022-12-06T12:00:00+00:00", "EndDateTime": "2023-12-06T12:00:00+00:00" },
     { "Name": "Phase 2", "ShortName": "p2", "StartDateTime": "2023-12-06T12:00:00+00:00", "EndDateTime": "2024-05-21T12:00:00+00:00" },

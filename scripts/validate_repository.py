@@ -85,8 +85,9 @@ def main() -> int:
         by_name = {row["Name"]: row for row in cycle_rows}
         if by_name.get("Phase 1", {}).get("StartDateTime") != "2022-12-06T12:00:00+00:00":
             fail(errors, "Cycle reference must identify the 6 December 2022 Phase 1 start")
-        if "not server-availability windows" not in cycles.get("source_note", ""):
-            fail(errors, "Cycle source note must distinguish timeline markers from uptime windows")
+        source_note = cycles.get("source_note", "")
+        if "not server-availability windows" not in source_note or "24/7" not in source_note:
+            fail(errors, "Cycle source note must distinguish Pre-era timelines from the Era 5 24/7 model")
         if by_name.get("Era 6, Cycle 6", {}).get("ShortName") != "e6c6":
             fail(errors, "Cycle reference must identify Era 6 Cycle 6 as e6c6")
         short_names = [row["ShortName"] for row in cycle_rows]
