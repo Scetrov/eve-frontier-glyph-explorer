@@ -73,6 +73,9 @@ def main() -> int:
                 fit = grid_line_fit(images[frame])
                 rows.append({"recording": recording, "ordinal": ordinal, "frame": frame, "source_video": video.name, "source_sha256": hashes.get(video.name), "method": "independent-grid-line-candidate-v1", "review_status": "pending", "overlay_enabled": False, **fit})
     args.output.write_text(json.dumps(rows, indent=2) + "\n", encoding="utf-8")
+    args.output.with_suffix(".js").write_text(
+        f"window.MANUAL_GEOMETRY_REVIEW={json.dumps(rows, separators=(',', ':'))};\n", encoding="utf-8"
+    )
     csv_path = args.output.with_suffix(".csv")
     with csv_path.open("w", newline="", encoding="utf-8-sig") as handle:
         writer = csv.DictWriter(handle, fieldnames=list(rows[0]))

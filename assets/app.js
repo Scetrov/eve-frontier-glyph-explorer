@@ -10,6 +10,10 @@
   const glyphs = data.glyphs;
   const repositoryUrl = 'https://github.com/Scetrov/eve-frontier-glyph-explorer';
   const evidence = Array.isArray(window.GLYPH_EVIDENCE) ? window.GLYPH_EVIDENCE : [];
+  const manualGeometryByEvidence = new Map(
+    (Array.isArray(window.MANUAL_GEOMETRY_REVIEW) ? window.MANUAL_GEOMETRY_REVIEW : [])
+      .map(item => [`${item.recording}|${item.ordinal}|${item.frame}|${item.source_video}`, item])
+  );
   const officialArtifactIndex = window.OFFICIAL_ARTIFACT_INDEX && typeof window.OFFICIAL_ARTIFACT_INDEX === 'object'
     ? window.OFFICIAL_ARTIFACT_INDEX
     : {};
@@ -177,6 +181,14 @@
     if (Number.isFinite(centerX) && Number.isFinite(centerY) && Number.isFinite(pitch) && pitch > 0) {
       return { centerX, centerY, pitch, registration: record.overlay_registration || 'unlabelled registration' };
     }
+    const candidate = manualGeometryByEvidence.get(`${record.recording}|${record.ordinal}|${record.frame}|${record.source_video}`);
+    if (candidate) {
+      return {
+        centerX: Number(candidate.center_x), centerY: Number(candidate.center_y),
+        pitch: (Number(candidate.pitch_x) + Number(candidate.pitch_y)) / 2,
+        registration: candidate.method, candidate: true
+      };
+    }
     return null;
   }
 
@@ -190,7 +202,7 @@
       svg.setAttribute('aria-label', 'QA cell overlay unavailable: this record has no image registration.');
       return;
     }
-    const { centerX, centerY, pitch, registration } = geometry;
+    const { centerX, centerY, pitch, registration, candidate } = geometry;
     const square = pitch * 0.8;
     let positiveCount = 0;
     let negativeCount = 0;
@@ -206,7 +218,9 @@
       const x = centerX + (column - 4) * pitch - square / 2;
       const y = centerY + (row - 4) * pitch - square / 2;
       const classes = ['evidence-overlay-cell'];
-      if (excluded) classes.push('evidence-overlay-excluded');
+      if (candidate) {
+        classes.push('evidence-overlay-candidate');
+      } else if (excluded) classes.push('evidence-overlay-excluded');
       else if (positive) {
         classes.push('evidence-overlay-positive');
         positiveCount += 1;
@@ -224,7 +238,7 @@
       }));
     }
     svg.replaceChildren(fragment);
-    svg.setAttribute('aria-label', `${positiveCount} observed positive payload cells, ${negativeCount} observed negative payload cells, ${differenceCount} differing payload cells; ${registration}.`);
+    svg.setAttribute('aria-label', candidate ? `Pending independent grid-line candidate; ${registration}.` : `${positiveCount} observed positive payload cells, ${negativeCount} observed negative payload cells, ${differenceCount} differing payload cells; ${registration}.`);
   }
 
   function createEvidenceImageStage(record) {
@@ -503,8 +517,8 @@
     const confidence = record.confidence === null || record.confidence === '' ? Number.NaN : Number(record.confidence);
     const registration = overlayGeometry(record)?.registration === 'detector-ring-fit'
       ? 'detector-ring registration'
-      : overlayGeometry(record)?.registration === 'image-edge-fit'
-        ? 'image-edge registration fitted to this exact 480×480 crop'
+      : overlayGeometry(record)?.registration === 'independent-grid-line-candidate-v1'
+        ? 'pending independent grid-line candidate; lattice only, not an approved payload overlay'
         : 'no valid image registration';
     elements.evidenceDialogSourceCaption.textContent = Number.isFinite(confidence)
       ? `Observed-state QA overlay · orange: positive · pale dashed: negative · hatched: excluded carrier · detector separation score ${confidence.toFixed(4)} (not a probability) · ${registration}`
