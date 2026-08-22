@@ -8,9 +8,6 @@
 
   const exactUtc = value => String(value).replace('T', ' ').replace('+00:00', ' UTC');
   const noteFor = cycle => {
-    if (cycle.Name === 'Era 6, Cycle 2') return 'Ends one second before the confirmed noon UTC cutover.';
-    if (cycle.Name === 'Era 6, Cycle 3') return 'Starts at the confirmed noon UTC cutover.';
-    if (cycle.Name === 'Era 6, Cycle 5') return 'Ends one second before the confirmed noon UTC cutover.';
     if (cycle.Name === 'Era 6, Cycle 6') return 'Open-ended. Supplied short name repeats e6c5.';
     return '—';
   };

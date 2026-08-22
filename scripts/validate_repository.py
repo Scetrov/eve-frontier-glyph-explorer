@@ -85,14 +85,11 @@ def main() -> int:
         by_name = {row["Name"]: row for row in cycle_rows}
         if by_name.get("Era 6, Cycle 6", {}).get("ShortName") != "e6c5":
             fail(errors, "Cycle reference must preserve the supplied duplicated E6C6 short name")
-        if by_name.get("Era 6, Cycle 2", {}).get("EndDateTime") != "2025-10-15T11:59:59+00:00":
-            fail(errors, "Cycle reference must preserve the supplied E6C2 end timestamp")
-        if by_name.get("Era 6, Cycle 3", {}).get("StartDateTime") != "2025-10-15T12:00:00+00:00":
-            fail(errors, "Cycle reference must preserve the reviewed noon UTC E6C3 start timestamp")
-        if by_name.get("Era 6, Cycle 6", {}).get("StartDateTime") != "2026-06-24T12:00:00+00:00":
-            fail(errors, "Cycle reference must preserve the reviewed noon UTC E6C6 start timestamp")
-        if by_name.get("Era 6, Cycle 5", {}).get("EndDateTime") != "2026-06-24T11:59:59+00:00":
-            fail(errors, "Cycle reference must preserve the reviewed E6C5 pre-cutover end timestamp")
+        era6_cycles = [by_name.get(f"Era 6, Cycle {number}") for number in range(1, 7)]
+        if any(not cycle or not cycle["StartDateTime"].endswith("T12:00:00+00:00") for cycle in era6_cycles):
+            fail(errors, "Every Era 6 cycle must begin at the reviewed noon UTC boundary")
+        if any(not cycle or not cycle["EndDateTime"].endswith("T12:00:00+00:00") for cycle in era6_cycles[:5]):
+            fail(errors, "Every completed Era 6 cycle must end at the reviewed noon UTC boundary")
 
     glyphs = catalogue.get("glyphs", [])
     glyph_ids = [int(glyph["id"]) for glyph in glyphs]
