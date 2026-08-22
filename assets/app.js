@@ -224,6 +224,10 @@
   function createEvidenceImageStage(record) {
     const stage = document.createElement('span');
     stage.className = 'evidence-image-stage';
+    const image = document.createElement('img');
+    image.src = record.image;
+    image.loading = 'lazy';
+    image.alt = `Actual frame ${record.frame} from ${record.source_video}`;
     const overlay = svgNode('svg', {
       class: 'evidence-overlay', viewBox: '0 0 480 480', preserveAspectRatio: 'none', 'aria-hidden': 'true'
     });
@@ -449,10 +453,6 @@
     button.type = 'button';
     button.className = `evidence-card${record.assigned_hamming ? ' evidence-card-difference' : ''}`;
     button.setAttribute('aria-label', `${record.source_video}, frame ${record.frame}, matched to glyph ${glyph.id}`);
-    const image = document.createElement('img');
-    image.src = record.image;
-    image.loading = 'lazy';
-    image.alt = `Actual frame ${record.frame} from ${record.source_video}`;
     const meta = document.createElement('span');
     meta.className = 'evidence-card-meta';
     const source = document.createElement('strong');
