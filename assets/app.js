@@ -24,13 +24,13 @@
 
   const rootStyle = getComputedStyle(document.documentElement);
   const palette = {
-    background: rootStyle.getPropertyValue('--void-soft').trim() || '#0e1113',
-    inactive: rootStyle.getPropertyValue('--line').trim() || '#2b3236',
-    active: rootStyle.getPropertyValue('--signal').trim() || '#e8843e',
-    activeBright: rootStyle.getPropertyValue('--signal-bright').trim() || '#ffc16c',
-    cold: rootStyle.getPropertyValue('--cold').trim() || '#79b8c9',
-    frame: rootStyle.getPropertyValue('--line-bright').trim() || '#4b555a',
-    text: rootStyle.getPropertyValue('--text').trim() || '#ece9df'
+    background: rootStyle.getPropertyValue('--void-soft').trim() || '#151514',
+    inactive: rootStyle.getPropertyValue('--line').trim() || '#40403b',
+    active: rootStyle.getPropertyValue('--signal').trim() || '#ff4700',
+    activeBright: rootStyle.getPropertyValue('--signal-bright').trim() || '#fe6b2e',
+    cold: rootStyle.getPropertyValue('--cold').trim() || '#fafae5',
+    frame: rootStyle.getPropertyValue('--line-bright').trim() || '#6f6f66',
+    text: rootStyle.getPropertyValue('--text').trim() || '#fafae5'
   };
 
   const elements = {

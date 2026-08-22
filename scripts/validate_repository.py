@@ -193,11 +193,20 @@ def main() -> int:
             fail(errors, f"assets/app.js is missing Cell Activation behavior {behavior}")
 
     style_text = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
-    if 'font-family: "Diskette Mono"' not in style_text:
-        fail(errors, "Diskette Mono @font-face declarations are missing")
+    if 'font-family: "Disket Mono"' not in style_text:
+        fail(errors, "Disket Mono @font-face declarations are missing")
+    for token in ("--crude: #0b0b0b", "--martian-red: #ff4700", "--neutral: #fafae5"):
+        if token not in style_text:
+            fail(errors, f"Missing required colour token: {token}")
     for font_file in ("disket-mono-regular.woff2", "disket-mono-bold.woff2"):
         if not (ROOT / "assets" / "fonts" / font_file).is_file():
             fail(errors, f"Missing bundled font: assets/fonts/{font_file}")
+    provenance_text = "\n".join(
+        (ROOT / relative).read_text(encoding="utf-8")
+        for relative in ("SOURCES.md", "NOTICE.md", "credits.html")
+    )
+    if "https://rostype.com/disket/" not in provenance_text or "void-eid" in provenance_text:
+        fail(errors, "Disket Mono provenance must identify Rostype and must not identify void-eid")
 
     pipeline_files = (
         "pipeline/corpus.json", "pipeline/requirements.txt", "pipeline/README.md",

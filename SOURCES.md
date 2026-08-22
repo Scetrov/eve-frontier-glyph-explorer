@@ -23,7 +23,7 @@
 
 ## Interface typography
 
-- **Diskette Mono** — the bundled regular and bold WOFF2 files were sourced from [`Scetrov/void-eid/src/frontend/public/fonts`](https://github.com/Scetrov/void-eid/tree/main/src/frontend/public/fonts). That repository declares the font family as `Diskette Mono` and is distributed under the [MIT License](https://github.com/Scetrov/void-eid/blob/main/LICENSE).
+- **Disket Mono** — a display monospaced, grid-based typeface in regular and bold weights, designed by Mariano Diez with its Cyrillic set by Denis Ignatov. Typeface provenance, download, and usage information are provided by [Rostype](https://rostype.com/disket/).
 
 ## Licensing note
 

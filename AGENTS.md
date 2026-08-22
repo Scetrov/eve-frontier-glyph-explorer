@@ -148,6 +148,8 @@ The validator checks structural invariants, not semantic correctness. A passing 
 ## Site editing conventions
 
 - Use plain HTML, CSS, and browser JavaScript; do not introduce a framework or package manager without an explicit architectural decision.
+- Preserve the core interface palette declared in `:root`: `--crude: #0b0b0b`, `--martian-red: #ff4700`, and `--neutral: #fafae5`. Derive secondary surfaces and states from those colours; do not reintroduce unrelated accent hues.
+- The interface typeface is Disket Mono by Rostype, designed by Mariano Diez with its Cyrillic set by Denis Ignatov. Keep `SOURCES.md`, `NOTICE.md`, and `credits.html` pointed at `https://rostype.com/disket/`.
 - Keep user-facing counts derived from data rather than hard-coded where practical.
 - Preserve keyboard access, dialog close behavior, visible focus, alt text, responsive layouts, and reduced-motion expectations.
 - Load only the evidence for the selected glyph in the interface; do not eagerly render all 768 images.

@@ -266,23 +266,23 @@ def write_csv(path: Path, rows: list[dict], fields: list[str]) -> None:
 
 def render_atlas(glyphs: list[dict], path: Path) -> None:
     columns, tile_width, tile_height, margin_x, margin_y = 10, 178, 188, 28, 88
-    image = Image.new("RGB", (margin_x * 2 + columns * tile_width, margin_y + math.ceil(len(glyphs) / columns) * tile_height + 70), "#0d1117")
+    image = Image.new("RGB", (margin_x * 2 + columns * tile_width, margin_y + math.ceil(len(glyphs) / columns) * tile_height + 70), "#0b0b0b")
     draw, font, small = ImageDraw.Draw(image), ImageFont.load_default(size=18), ImageFont.load_default(size=13)
-    draw.text((margin_x, 22), f"EVE Frontier glyph atlas — {len(glyphs)} canonical payload patterns", fill="#e6edf3", font=font)
-    draw.text((margin_x, 50), "Orange = active payload cell; carrier diamond and video effects omitted", fill="#9da7b3", font=small)
+    draw.text((margin_x, 22), f"EVE Frontier glyph atlas — {len(glyphs)} canonical payload patterns", fill="#fafae5", font=font)
+    draw.text((margin_x, 50), "Martian red = active payload cell; carrier diamond and video effects omitted", fill="#fafae5", font=small)
     for index, glyph in enumerate(glyphs):
         row, column = divmod(index, columns)
         x0, y0 = margin_x + column * tile_width, margin_y + row * tile_height
-        draw.rounded_rectangle((x0 + 4, y0 + 4, x0 + tile_width - 8, y0 + tile_height - 10), radius=8, fill="#161b22", outline="#30363d")
-        draw.text((x0 + 15, y0 + 13), f"#{glyph['id']}", fill="#e6edf3", font=font)
-        draw.text((x0 + 88, y0 + 17), f"n={glyph['occurrences']}", fill="#9da7b3", font=small)
+        draw.rounded_rectangle((x0 + 4, y0 + 4, x0 + tile_width - 8, y0 + tile_height - 10), radius=8, fill="#0b0b0b", outline="#fafae5")
+        draw.text((x0 + 15, y0 + 13), f"#{glyph['id']}", fill="#fafae5", font=font)
+        draw.text((x0 + 88, y0 + 17), f"n={glyph['occurrences']}", fill="#fafae5", font=small)
         active = set(glyph["cell_indices"])
         for grid_row in range(9):
             for grid_column in range(9):
                 x, y = x0 + 26 + grid_column * 13, y0 + 48 + grid_row * 13
-                draw.rounded_rectangle((x, y, x + 9, y + 9), radius=2, fill="#f59e0b" if grid_row * 9 + grid_column in active else "#242b35")
+                draw.rounded_rectangle((x, y, x + 9, y + 9), radius=2, fill="#ff4700" if grid_row * 9 + grid_column in active else "#0b0b0b", outline="#fafae5")
         clusters = ",".join(glyph["phrases"]) if glyph["phrases"] else "-"
-        draw.text((x0 + 15, y0 + 169), f"{glyph['n_cells']} cells · cluster {clusters}", fill="#9da7b3", font=small)
+        draw.text((x0 + 15, y0 + 169), f"{glyph['n_cells']} cells · cluster {clusters}", fill="#fafae5", font=small)
     image.save(path, optimize=True)
 
 

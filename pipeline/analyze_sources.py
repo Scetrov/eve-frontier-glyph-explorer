@@ -116,7 +116,7 @@ def extract_frames(ffmpeg: str, video: Path, frames: list[int], temp_dir: Path) 
 
 def render_grid(marks, path: Path, label: str) -> None:
     cell, margin = 42, 48
-    image = Image.new("RGB", (cell * 9 + margin * 2, cell * 9 + margin + 72), "#090909")
+    image = Image.new("RGB", (cell * 9 + margin * 2, cell * 9 + margin + 72), "#0b0b0b")
     draw = ImageDraw.Draw(image)
     font = ImageFont.load_default(size=18)
     draw.text((margin, 12), label, fill="white", font=font)
@@ -124,11 +124,11 @@ def render_grid(marks, path: Path, label: str) -> None:
         for column in range(9):
             x, y = margin + column * cell, 48 + row * cell
             if (row, column) in DIAMOND:
-                fill, outline = "#6b5422", "#a78330"
+                fill, outline = "#0b0b0b", "#fafae5"
             elif (row, column) in marks:
-                fill, outline = "#f5a623", "#ffd27a"
+                fill, outline = "#ff4700", "#fafae5"
             else:
-                fill, outline = "#181818", "#4a4a4a"
+                fill, outline = "#0b0b0b", "#fafae5"
             draw.rectangle((x + 2, y + 2, x + cell - 3, y + cell - 3), fill=fill, outline=outline, width=2)
     image.save(path)
 
@@ -139,11 +139,11 @@ def render_contact_sheet(output: Path, recording_rows: list[dict], analysis_dir:
     for row in recording_rows:
         image = Image.open(analysis_dir / row["frame_file"]).convert("RGB")
         image.thumbnail((340, 340))
-        canvas = Image.new("RGB", (360, 405), "#111111")
+        canvas = Image.new("RGB", (360, 405), "#0b0b0b")
         canvas.paste(image, ((360 - image.width) // 2, 40))
         draw = ImageDraw.Draw(canvas)
         draw.text((8, 8), f"#{row['glyph_index']} f{row['frame']} {row['time_s']}s", fill="white", font=font)
-        draw.text((8, 375), f"{row['n_cells']} cells | nearest #{row['nearest_glyph_id']} d={row['hamming_distance']}", fill="#f5a623", font=font)
+        draw.text((8, 375), f"{row['n_cells']} cells | nearest #{row['nearest_glyph_id']} d={row['hamming_distance']}", fill="#ff4700", font=font)
         thumbs.append(canvas)
     columns = 5
     sheet = Image.new("RGB", (columns * 360, math.ceil(len(thumbs) / columns) * 405), "black")
