@@ -233,6 +233,8 @@ def main() -> int:
             fail(errors, f"index.html is missing issue-report link #{element_id}")
     if repository_url not in index_text:
         fail(errors, "Explorer does not link to its GitHub repository")
+    if 'id="release-commit"' not in index_text or "© 2026 SCETROV" not in index_text:
+        fail(errors, "Footer must identify the current release link and Scetrov copyright")
     credits_text = (ROOT / "credits.html").read_text(encoding="utf-8")
     if "https://fenris.com/products" not in index_text or "https://fenris.com/products" not in credits_text:
         fail(errors, "Fenris Creations puzzle credit is missing from the explorer or credits page")
@@ -240,9 +242,16 @@ def main() -> int:
         fail(errors, "Fenris Creations puzzle acknowledgement is incomplete")
 
     app_text = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
-    for behavior in ("selectCell", "renderCellReview", "createEvidenceCard", "issueUrl", "glyphIssueBody", "frameIssueBody", "cellIssueBody"):
+    for behavior in ("selectCell", "renderCellReview", "createEvidenceCard", "issueUrl", "glyphIssueBody", "frameIssueBody", "cellIssueBody", "renderReleaseCommit"):
         if behavior not in app_text:
             fail(errors, f"assets/app.js is missing Cell Activation behavior {behavior}")
+
+    release = read_json(DATA / "release.json")
+    if not isinstance(release.get("commit"), str) or not isinstance(release.get("short_commit"), str):
+        fail(errors, "data/release.json must define commit and short_commit strings")
+    pages_workflow = (ROOT / ".github" / "workflows" / "pages.yml").read_text(encoding="utf-8")
+    if "Stamp deployed commit" not in pages_workflow or "data/release.json" not in pages_workflow:
+        fail(errors, "Pages workflow does not stamp deployed commit metadata")
 
     template_dir = ROOT / ".github" / "ISSUE_TEMPLATE"
     expected_templates = {

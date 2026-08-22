@@ -25,6 +25,9 @@ jobs:
         uses: actions/checkout@v7
       - name: Configure Pages
         uses: actions/configure-pages@v6
+      - name: Stamp deployed commit
+        run: |
+          printf '{"commit":"%s","short_commit":"%.7s"}\n' "$GITHUB_SHA" "$GITHUB_SHA" > data/release.json
       - name: Upload static site
         uses: actions/upload-pages-artifact@v5
         with:

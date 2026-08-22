@@ -393,8 +393,8 @@ main { position: relative; z-index: 1; }
 .download-row a { padding: 11px 13px; border: 1px solid var(--line); text-decoration: none; color: var(--text); font: 500 9px/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; }
 .download-row a:hover { border-color: var(--signal); color: var(--signal-bright); }
 footer { width: var(--page); margin: 0 auto; border-top: 1px solid var(--line); color: var(--muted); }
-.footer-provenance { max-width: 1080px; padding: 24px 0 22px; }
-.footer-provenance p:last-child { max-width: 1000px; margin: 9px 0 0; font-size: 12px; line-height: 1.7; }
+.footer-provenance { padding: 24px 0 22px; }
+.footer-provenance p:last-child { margin: 9px 0 0; font-size: 12px; line-height: 1.7; }
 .footer-provenance a { color: var(--signal-bright); }
 .footer-bar { min-height: 64px; padding: 16px 0; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; gap: 22px; font: 500 9px/1.3 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
 .footer-bar a { color: var(--text); }
