@@ -10,6 +10,9 @@
   const glyphs = data.glyphs;
   const repositoryUrl = 'https://github.com/Scetrov/eve-frontier-glyph-explorer';
   const evidence = Array.isArray(window.GLYPH_EVIDENCE) ? window.GLYPH_EVIDENCE : [];
+  const hybridGeometryReview = Array.isArray(window.MANUAL_HYBRID_GEOMETRY_REVIEW?.records)
+    ? window.MANUAL_HYBRID_GEOMETRY_REVIEW.records
+    : [];
   const officialArtifactIndex = window.OFFICIAL_ARTIFACT_INDEX && typeof window.OFFICIAL_ARTIFACT_INDEX === 'object'
     ? window.OFFICIAL_ARTIFACT_INDEX
     : {};
@@ -19,6 +22,10 @@
     const glyphId = Number(item.glyph_id);
     if (!evidenceByGlyph.has(glyphId)) evidenceByGlyph.set(glyphId, []);
     evidenceByGlyph.get(glyphId).push(item);
+  });
+  const hybridGeometryByEvidence = new Map();
+  hybridGeometryReview.forEach(item => {
+    hybridGeometryByEvidence.set(`${item.recording}|${item.ordinal}|${item.frame}|${item.source_video}`, item);
   });
   const byId = new Map(glyphs.map(glyph => [Number(glyph.id), glyph]));
   const sequences = data.sequences.map(row => ({
@@ -94,6 +101,7 @@
     evidenceDialogSourceCaption: document.getElementById('evidence-dialog-source-caption'),
     evidenceDialogCanonical: document.getElementById('evidence-dialog-canonical'),
     evidenceDialogTitle: document.getElementById('evidence-dialog-title'),
+    evidenceDialogAssessment: document.getElementById('evidence-dialog-assessment'),
     evidenceDialogMeta: document.getElementById('evidence-dialog-meta'),
     reportEvidence: document.getElementById('report-evidence')
   };
@@ -178,6 +186,72 @@
       return { centerX, centerY, pitch, registration: record.overlay_registration || 'unlabelled registration' };
     }
     return null;
+  }
+
+  function geometryAssessmentFor(record) {
+    return hybridGeometryByEvidence.get(`${record.recording}|${record.ordinal}|${record.frame}|${record.source_video}`) || null;
+  }
+
+  function geometryAssessmentKind(assessment) {
+    if (!assessment) return 'unavailable';
+    if (assessment.operational_consensus) return 'candidate';
+    if (String(assessment.operational_status || '').startsWith('rejected:')) return 'rejected';
+    if (String(assessment.operational_status || '').startsWith('reviewed reference seed')) return 'seed';
+    return 'awaiting';
+  }
+
+  function geometryAssessmentLabel(assessment) {
+    const labels = {
+      candidate: 'GEOMETRY / CANDIDATE',
+      rejected: 'GEOMETRY / REJECTED',
+      seed: 'GEOMETRY / REFERENCE SEED',
+      awaiting: 'GEOMETRY / AWAITING REFERENCE',
+      unavailable: 'GEOMETRY / NOT ASSESSED'
+    };
+    return labels[geometryAssessmentKind(assessment)];
+  }
+
+  function measured(value, digits = 4, suffix = '') {
+    const number = Number(value);
+    return Number.isFinite(number) ? `${number.toFixed(digits)}${suffix}` : 'not available';
+  }
+
+  function checkSummary(check) {
+    if (!check) return 'not evaluated';
+    if (!check.usable) return check.reason || 'not usable';
+    const residual = measured(check.rms_residual_px, 2, ' px RMS');
+    if (Number.isFinite(Number(check.supported_sides_6px))) return `${residual} · ${check.supported_sides_6px}/4 sides supported`;
+    if (Number.isFinite(Number(check.weak_boundaries))) return `${residual} · ${check.weak_boundaries} weak boundaries`;
+    return residual;
+  }
+
+  function renderGeometryAssessment(record) {
+    const assessment = geometryAssessmentFor(record);
+    const kind = geometryAssessmentKind(assessment);
+    if (!assessment) {
+      elements.evidenceDialogAssessment.innerHTML = [
+        '<div class="assessment-heading"><span>GEOMETRY ASSESSMENT / READ ONLY</span><strong class="assessment-chip assessment-unavailable">NOT ASSESSED</strong></div>',
+        '<p>No hybrid geometry assessment is available for this record. The observed-state QA overlay, if present, remains independent of this research ledger.</p>'
+      ].join('');
+      return;
+    }
+    const details = [
+      ['Assessment', assessment.operational_status || 'not available'],
+      ['Decision type', 'deterministic threshold gate · not a probability'],
+      ['Review / overlay', `${assessment.review_status || 'pending'} · overlay disabled`],
+      ['Reference geometry', assessment.reference_frame === null ? 'awaiting reviewed reference' : `frame ${assessment.reference_frame} · ${assessment.reference_geometry_provenance || 'recorded source seed'}`],
+      ['Selected proposal', assessment.proposal_selected || 'none retained'],
+      ['Direct / temporal spread', Number.isFinite(Number(assessment.consensus_disagreement_cells)) ? `${measured(assessment.consensus_disagreement_cells, 4, ' cells')} · ${measured(assessment.consensus_disagreement_px, 2, ' px')}` : 'not evaluated'],
+      ['Temporal support', Number.isFinite(Number(assessment.minimum_temporal_step_inliers)) ? `${assessment.minimum_temporal_step_inliers} minimum inliers · ${measured(Number(assessment.minimum_temporal_step_inlier_ratio) * 100, 1, '%')}` : 'not evaluated'],
+      ['Lattice support', assessment.direct_lattice ? `direct: ${checkSummary(assessment.direct_lattice)} · temporal: ${checkSummary(assessment.temporal_lattice)}` : 'not evaluated'],
+      ['Diamond support', assessment.direct_diamond ? `direct: ${checkSummary(assessment.direct_diamond)} · temporal: ${checkSummary(assessment.temporal_diamond)}` : 'not evaluated'],
+      ['Verified source', assessment.source_sha256 ? `SHA-256 ${assessment.source_sha256}` : 'not available']
+    ];
+    elements.evidenceDialogAssessment.innerHTML = [
+      `<div class="assessment-heading"><span>GEOMETRY ASSESSMENT / READ ONLY</span><strong class="assessment-chip assessment-${kind}">${escapeText(geometryAssessmentLabel(assessment).replace('GEOMETRY / ', ''))}</strong></div>`,
+      '<p>Experimental registration evidence only. It neither changes the corpus tag nor draws a proposed geometry overlay.</p>',
+      `<div class="assessment-grid">${details.map(([label, value]) => `<div><span>${escapeText(label)}</span><strong>${escapeText(value)}</strong></div>`).join('')}</div>`
+    ].join('');
   }
 
   function drawEvidenceOverlay(svg, record) {
@@ -470,7 +544,11 @@
     status.textContent = record.assigned_hamming
       ? `${record.assigned_hamming} CELL${record.assigned_hamming === 1 ? '' : 'S'} FROM ASSIGNED GLYPH`
       : record.verification_status || 'MATCHES CORPUS TAG';
-    meta.append(source, reference, status);
+    const assessment = geometryAssessmentFor(record);
+    const geometry = document.createElement('span');
+    geometry.className = `evidence-card-assessment assessment-${geometryAssessmentKind(assessment)}`;
+    geometry.textContent = geometryAssessmentLabel(assessment);
+    meta.append(source, reference, status, geometry);
     button.append(createEvidenceImageStage(record), meta);
     button.addEventListener('click', () => openEvidence(record));
     return button;
@@ -507,6 +585,7 @@
     elements.evidenceDialogSourceCaption.textContent = Number.isFinite(confidence)
       ? `Observed-state QA overlay · orange: positive · pale dashed: negative · hatched: excluded carrier · detector separation score ${confidence.toFixed(4)} (not a probability) · ${registration}`
       : `Observed-state QA overlay · orange: positive · pale dashed: negative · hatched: excluded carrier · manual tag: no detector score · ${registration}`;
+    renderGeometryAssessment(record);
     setReportLink(elements.reportEvidence, 'frame-report.md', `[Frame] ${record.source_video} / frame ${record.frame}`, 'report: frame', frameIssueBody(record));
     drawGlyph(elements.evidenceDialogCanonical, glyph, { size: 440, carrier: true });
     const changed = record.difference_cells.length ? record.difference_cells.join(' ') : 'none';

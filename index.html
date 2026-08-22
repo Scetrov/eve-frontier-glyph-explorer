@@ -10,7 +10,7 @@
   <meta property="og:type" content="website">
   <meta property="og:image" content="assets/glyph-atlas.png">
   <title>Frontier Archive // Glyph Explorer</title>
-  <link rel="stylesheet" href="assets/styles.css?v=qa-overlay-v8">
+  <link rel="stylesheet" href="assets/styles.css?v=geometry-assessment-v1">
 </head>
 <body>
   <a class="skip-link" href="#atlas">Skip to glyph codex</a>
@@ -237,6 +237,7 @@
         <a href="data/official_artifacts.json" download>Download official artifact API snapshot</a>
         <a href="data/disputed_cell_audit.json" download>Download disputed-cell audit</a>
         <a href="data/manual_geometry_review.json" download>Download blind manual-detection backfill</a>
+        <a href="data/manual_hybrid_geometry_review.csv" download>Download read-only geometry assessment</a>
         <a href="cycles.html">View cycle date reference</a>
         <a href="data/cycles.json" download>Download cycle dates JSON</a>
         <a href="data/catalogue.json" download>Download full JSON</a>
@@ -265,6 +266,7 @@
         <figcaption>Canonical payload with excluded carrier cells shaded</figcaption>
       </figure>
     </div>
+    <section id="evidence-dialog-assessment" class="evidence-dialog-assessment" aria-live="polite"></section>
     <div id="evidence-dialog-meta" class="evidence-dialog-meta"></div>
   </dialog>
 
@@ -284,7 +286,8 @@
   <script src="data/evidence.js?v=qa-overlay-v8"></script>
   <script src="data/disputed_cell_audit.js"></script>
   <script src="data/official_artifacts.js"></script>
+  <script src="data/manual_hybrid_geometry_review.js?v=geometry-assessment-v1"></script>
   <script src="assets/release.js"></script>
-  <script src="assets/app.js?v=qa-overlay-v8"></script>
+  <script src="assets/app.js?v=geometry-assessment-v1"></script>
 </body>
 </html>
