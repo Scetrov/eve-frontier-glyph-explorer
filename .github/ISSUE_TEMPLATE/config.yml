@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Explorer and source notes
+    url: https://scetrov.github.io/eve-frontier-glyph-explorer/credits.html
+    about: Review the research scope, provenance, and licensing notes before reporting.
+  - name: Existing reports
+    url: https://github.com/Scetrov/eve-frontier-glyph-explorer/issues
+    about: Search existing reports before opening a new one.

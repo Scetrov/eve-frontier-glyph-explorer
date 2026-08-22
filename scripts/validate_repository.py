@@ -227,6 +227,12 @@ def main() -> int:
     for element_id in ("cell-heatmap", "cell-review", "cell-pattern-list", "cell-evidence-list"):
         if f'id="{element_id}"' not in index_text:
             fail(errors, f"index.html is missing Cell Activation element #{element_id}")
+    repository_url = "https://github.com/Scetrov/eve-frontier-glyph-explorer"
+    for element_id in ("report-glyph", "report-evidence", "report-cell"):
+        if f'id="{element_id}"' not in index_text:
+            fail(errors, f"index.html is missing issue-report link #{element_id}")
+    if repository_url not in index_text:
+        fail(errors, "Explorer does not link to its GitHub repository")
     credits_text = (ROOT / "credits.html").read_text(encoding="utf-8")
     if "https://fenris.com/products" not in index_text or "https://fenris.com/products" not in credits_text:
         fail(errors, "Fenris Creations puzzle credit is missing from the explorer or credits page")
@@ -234,9 +240,26 @@ def main() -> int:
         fail(errors, "Fenris Creations puzzle acknowledgement is incomplete")
 
     app_text = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
-    for behavior in ("selectCell", "renderCellReview", "createEvidenceCard"):
+    for behavior in ("selectCell", "renderCellReview", "createEvidenceCard", "issueUrl", "glyphIssueBody", "frameIssueBody", "cellIssueBody"):
         if behavior not in app_text:
             fail(errors, f"assets/app.js is missing Cell Activation behavior {behavior}")
+
+    template_dir = ROOT / ".github" / "ISSUE_TEMPLATE"
+    expected_templates = {
+        "glyph-report.md": "report: glyph",
+        "frame-report.md": "report: frame",
+        "cell-report.md": "report: cell",
+    }
+    for filename, label in expected_templates.items():
+        path = template_dir / filename
+        if not path.is_file():
+            fail(errors, f"Missing issue template: .github/ISSUE_TEMPLATE/{filename}")
+            continue
+        template_text = path.read_text(encoding="utf-8")
+        if not template_text.startswith("---\n") or label not in template_text:
+            fail(errors, f"Issue template {filename} is missing frontmatter or label {label!r}")
+    if not (template_dir / "config.yml").is_file():
+        fail(errors, "Missing issue-template configuration")
 
     style_text = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
     if 'font-family: "Disket Mono"' not in style_text:

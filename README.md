@@ -2,6 +2,8 @@
 
 An unofficial, static explorer for the 9×9 glyph sequences found in EVE Frontier Archive broadcasts.
 
+Source, release history, and issue reporting live at [Scetrov/eve-frontier-glyph-explorer](https://github.com/Scetrov/eve-frontier-glyph-explorer). The explorer supplies prefilled GitHub Issue links for selected glyphs, individual frame evidence, and reviewed cells; use them to preserve the exact context needed to reproduce a concern.
+
 ## Publish with GitHub Pages
 
 1. Create a new GitHub repository.

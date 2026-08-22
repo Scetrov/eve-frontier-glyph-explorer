@@ -29,6 +29,7 @@
       <a href="#sequences">02 Sequences</a>
       <a href="#analysis">03 Analysis</a>
       <a href="#method">04 Method</a>
+      <a href="https://github.com/Scetrov/eve-frontier-glyph-explorer" target="_blank" rel="noopener">Repository ↗</a>
     </nav>
     <p class="unofficial">Community research tool · Unofficial</p>
   </header>
@@ -123,6 +124,7 @@
           <div class="inspector-actions">
             <button id="copy-fingerprint" type="button" class="action-button">Copy 81-bit fingerprint</button>
             <a id="permalink" class="text-action" href="?glyph=40#atlas">Link to glyph</a>
+            <a id="report-glyph" class="report-link" href="https://github.com/Scetrov/eve-frontier-glyph-explorer/issues/new/choose" target="_blank" rel="noopener">Report glyph ↗</a>
           </div>
           <p id="copy-status" class="copy-status" aria-live="polite"></p>
         </aside>
@@ -190,7 +192,10 @@
               <p class="eyebrow">MANUAL REVIEW / SELECTED POSITION</p>
               <h3 id="cell-review-title">Cell —</h3>
             </div>
-            <span id="cell-review-summary" aria-live="polite">Select a cell above</span>
+            <div class="cell-review-actions">
+              <span id="cell-review-summary" aria-live="polite">Select a cell above</span>
+              <a id="report-cell" class="report-link" href="https://github.com/Scetrov/eve-frontier-glyph-explorer/issues/new/choose" target="_blank" rel="noopener">Report cell ↗</a>
+            </div>
           </div>
           <div class="cell-review-section">
             <div class="panel-subheading"><h4>Matching patterns</h4><span id="cell-pattern-count">0 glyphs</span></div>
@@ -238,7 +243,10 @@
   <dialog id="evidence-dialog" class="evidence-dialog" aria-labelledby="evidence-dialog-title">
     <div class="evidence-dialog-header">
       <div><p class="eyebrow">SOURCE FRAME / MATCH AUDIT</p><h2 id="evidence-dialog-title">Frame evidence</h2></div>
-      <button id="evidence-dialog-close" type="button" aria-label="Close frame evidence">Close ×</button>
+      <div class="evidence-dialog-actions">
+        <a id="report-evidence" class="report-link" href="https://github.com/Scetrov/eve-frontier-glyph-explorer/issues/new/choose" target="_blank" rel="noopener">Report frame ↗</a>
+        <button id="evidence-dialog-close" type="button" aria-label="Close frame evidence">Close ×</button>
+      </div>
     </div>
     <div class="evidence-dialog-grid">
       <figure>
@@ -256,7 +264,7 @@
   <footer>
     <span>FRONTIER ARCHIVE // GLYPH EXPLORER</span>
     <span id="build-stamp">Dataset build 2026-08-22</span>
-    <span><a href="credits.html">Credits &amp; sources</a> · <a href="#atlas">Return to index ↑</a></span>
+    <span><a href="https://github.com/Scetrov/eve-frontier-glyph-explorer" target="_blank" rel="noopener">Repository ↗</a> · <a href="credits.html">Credits &amp; sources</a> · <a href="#atlas">Return to index ↑</a></span>
   </footer>
 
   <script src="data/catalogue.js"></script>

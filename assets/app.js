@@ -8,6 +8,7 @@
   }
 
   const glyphs = data.glyphs;
+  const repositoryUrl = 'https://github.com/Scetrov/eve-frontier-glyph-explorer';
   const evidence = Array.isArray(window.GLYPH_EVIDENCE) ? window.GLYPH_EVIDENCE : [];
   const cellAudits = Array.isArray(window.GLYPH_CELL_AUDIT?.audits) ? window.GLYPH_CELL_AUDIT.audits : [];
   const evidenceByGlyph = new Map();
@@ -58,6 +59,7 @@
     copyFingerprint: document.getElementById('copy-fingerprint'),
     copyStatus: document.getElementById('copy-status'),
     permalink: document.getElementById('permalink'),
+    reportGlyph: document.getElementById('report-glyph'),
     compareLeft: document.getElementById('compare-left'),
     compareRight: document.getElementById('compare-right'),
     compareLeftCanvas: document.getElementById('compare-left-canvas'),
@@ -80,12 +82,14 @@
     cellEvidenceCount: document.getElementById('cell-evidence-count'),
     cellEvidenceList: document.getElementById('cell-evidence-list'),
     cellEvidenceMore: document.getElementById('cell-evidence-more'),
+    reportCell: document.getElementById('report-cell'),
     evidenceDialog: document.getElementById('evidence-dialog'),
     evidenceDialogClose: document.getElementById('evidence-dialog-close'),
     evidenceDialogImage: document.getElementById('evidence-dialog-image'),
     evidenceDialogCanonical: document.getElementById('evidence-dialog-canonical'),
     evidenceDialogTitle: document.getElementById('evidence-dialog-title'),
-    evidenceDialogMeta: document.getElementById('evidence-dialog-meta')
+    evidenceDialogMeta: document.getElementById('evidence-dialog-meta'),
+    reportEvidence: document.getElementById('report-evidence')
   };
 
   const state = {
@@ -100,6 +104,33 @@
   function initialGlyphId() {
     const requested = Number(new URLSearchParams(location.search).get('glyph'));
     return byId.has(requested) ? requested : 40;
+  }
+
+  function issueUrl(template, title, label, body) {
+    const params = new URLSearchParams({ template, title, labels: label, body });
+    return `${repositoryUrl}/issues/new?${params.toString()}`;
+  }
+
+  function explorerUrl(fragment) {
+    return `${location.origin}${location.pathname}${location.search}${fragment}`;
+  }
+
+  function setReportLink(element, template, title, label, body) {
+    if (!element) return;
+    element.href = issueUrl(template, title, label, body);
+  }
+
+  function glyphIssueBody(glyph) {
+    return `## What needs review?\n<!-- Describe the suspected pattern, assignment, or provenance issue. -->\n\n## Explorer context\n- Glyph: #${glyph.id}\n- Canonical fingerprint: \`${glyph.fingerprint}\`\n- Active cells: ${glyph.cells || 'none'}\n- Occurrences: ${glyph.occurrences}\n- Verification: ${glyph.verification_status}\n- Explorer URL: ${location.origin}${location.pathname}?glyph=${glyph.id}#atlas`;
+  }
+
+  function frameIssueBody(record) {
+    const changed = record.difference_cells.length ? record.difference_cells.join(' ') : 'none';
+    return `## What appears wrong?\n<!-- Describe the visual discrepancy. Please do not upload source media unless you have permission. -->\n\n## Frame context\n- Matched glyph: #${record.glyph_id}\n- Source video: ${record.source_video}\n- Recording: ${record.recording}\n- Decoded frame: ${record.frame}\n- Timestamp: ${Number(record.time_s).toFixed(4)} seconds\n- Glyph position: ${record.ordinal}\n- Assignment: ${record.assignment_basis}\n- Differing cells: ${changed}\n- Evidence image: ${new URL(record.image, location.href).href}`;
+  }
+
+  function cellIssueBody(row, column, matches, auditRows) {
+    return `## What needs review?\n<!-- Describe why this cell may be misclassified, active, or carrier-only. -->\n\n## Cell context\n- Grid coordinate: (${row},${column})\n- Active canonical glyphs: ${matches.length ? matches.map(glyph => `#${glyph.id}`).join(', ') : 'none'}\n- Audited corrections: ${auditRows.length ? auditRows.map(audit => `#${audit.glyph_id} (${audit.verdict})`).join(', ') : 'none'}\n- Explorer URL: ${explorerUrl('#analysis')}`;
   }
 
   function setupCanvas(canvas, logicalSize) {
@@ -296,6 +327,7 @@
     renderNearTwins(glyph);
     elements.permalink.href = `${location.pathname}?glyph=${glyph.id}#atlas`;
     elements.permalink.textContent = `Link to #${glyph.id}`;
+    setReportLink(elements.reportGlyph, 'glyph-report.md', `[Glyph] Review #${glyph.id}`, 'report: glyph', glyphIssueBody(glyph));
     state.compareLeftId = glyph.id;
     elements.compareLeft.value = String(glyph.id);
     updateComparison();
@@ -372,6 +404,7 @@
     elements.evidenceDialogTitle.textContent = `${record.source_video} / frame ${record.frame}`;
     elements.evidenceDialogImage.src = record.image;
     elements.evidenceDialogImage.alt = `Actual frame ${record.frame} from ${record.source_video}`;
+    setReportLink(elements.reportEvidence, 'frame-report.md', `[Frame] ${record.source_video} / frame ${record.frame}`, 'report: frame', frameIssueBody(record));
     drawGlyph(elements.evidenceDialogCanonical, glyph, { size: 440, carrier: true });
     const changed = record.difference_cells.length ? record.difference_cells.join(' ') : 'none';
     elements.evidenceDialogMeta.innerHTML = [
@@ -622,6 +655,7 @@
     elements.cellReviewSummary.textContent = `${matches.length} active pattern${matches.length === 1 ? '' : 's'} · ${records.length} occurrence frame${records.length === 1 ? '' : 's'} · ${auditSources.length} audit median${auditSources.length === 1 ? '' : 's'}`;
     elements.cellPatternCount.textContent = `${matches.length} active · ${auditRows.length} corrected`;
     elements.cellEvidenceCount.textContent = `${records.length} frames · ${auditSources.length} medians`;
+    setReportLink(elements.reportCell, 'cell-report.md', `[Cell] Review (${row},${column})`, 'report: cell', cellIssueBody(row, column, matches, auditRows));
 
     const patternFragment = document.createDocumentFragment();
     matches.forEach(glyph => {

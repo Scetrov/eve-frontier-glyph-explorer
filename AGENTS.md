@@ -57,6 +57,7 @@ The explorer is an unofficial research tool. Do not present a speculative decodi
 | `.agents/skills/` | Reusable skills.sh-compatible maintenance workflows | Each directory contains a valid `SKILL.md`. |
 | `.github/workflows/pages.yml` | GitHub Pages deployment | Deploys the repository root on pushes to `main`. |
 | `.github/dependabot.yml` | GitHub Actions updates | All version updates are grouped into one PR. |
+| `.github/ISSUE_TEMPLATE/` | Context-specific GitHub Issue templates | Keep glyph, frame, and cell reports distinct and their prefilled fields reproducible. |
 | `SOURCES.md`, `NOTICE.md`, `LICENSE` | Provenance and licensing | Keep source claims precise and current. |
 
 ## Runtime architecture
@@ -160,6 +161,7 @@ The validator checks structural invariants, not semantic correctness. A passing 
 - Preserve the core interface palette declared in `:root`: `--crude: #0b0b0b`, `--martian-red: #ff4700`, and `--neutral: #fafae5`. Derive secondary surfaces and states from those colours; do not reintroduce unrelated accent hues.
 - The interface typeface is Disket Mono by Rostype, designed by Mariano Diez with its Cyrillic set by Denis Ignatov. Keep `SOURCES.md`, `NOTICE.md`, and `credits.html` pointed at `https://rostype.com/disket/`.
 - Keep user-facing counts derived from data rather than hard-coded where practical.
+- Preserve the repository link and the glyph/frame/cell issue-report controls. Their GitHub URLs must prefill the exact relevant identifier and avoid asking contributors to upload unlicensed source media.
 - Preserve keyboard access, dialog close behavior, visible focus, alt text, responsive layouts, and reduced-motion expectations.
 - Load only the evidence for the selected glyph in the interface; do not eagerly render all 768 images.
 - Keep generated JSON readable and generated JavaScript compact.
