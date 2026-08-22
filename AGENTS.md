@@ -49,6 +49,7 @@ The explorer is an unofficial research tool. Do not present a speculative decodi
 | `data/official_artifacts.json`, `.js` | Supplied official artifact API snapshot and browser lookup index | Preserve returned URLs and `createdAt` verbatim; it is artifact-record time, not broadcast time. |
 | `data/disputed_cell_audit.json`, `.csv` | Reproducible multi-frame audit of carrier-edge cells | Records hashes, frames, registration, scores, thresholds, and verdicts. |
 | `data/manual_geometry_review.json`, `.csv` | Blind manual-frame lattice and payload-read backfill | Retains source hash, two fingerprints, Hamming distance, and fit metrics; review ledger only. |
+| `data/manual_hybrid_geometry_review.json`, `.csv`, `.js` | Recording-level learned/classical geometry-proposal backfill | Contains no glyph, fingerprint, or cell values. Every row is pending and overlays remain disabled until independent human review. |
 | `data/cycles.json`, `.js` | Reviewed Phase and Era/Cycle UTC timeline reference | JS wrapper must equal JSON exactly; Pre-era values are not availability windows, Era 5 onward is 24/7, and cycle short names must be unique. |
 | `evidence/<recording-slug>/` | 480×480 JPEG audit frames | Filename form is `gNNN_fNNNNNN.jpg`. Paths are unique per occurrence. |
 | `evidence/audits/` | Multi-frame median audit images | Derived review artifacts, not additional occurrence records. |
@@ -59,6 +60,7 @@ The explorer is an unofficial research tool. Do not present a speculative decodi
 | `pipeline/analyze_manual_geometry.py` | Blind grid-line and ring-state analysis for ArchiveInvest-tagged frames | Compares with the tag only after detection and never promotes an overlay automatically. |
 | `pipeline/vision_registration_spike.py` | Optional LoFTR reference-frame geometry experiment | Uses isolated dependencies and hash-verified weights; research output only, never automatic overlay promotion. |
 | `pipeline/hybrid_registration_spike.py` | Conservative learned/classical geometry-consensus experiment | Compares direct and temporal proposals with independent lattice and diamond support; manual target geometry is evaluation-only. |
+| `pipeline/backfill_hybrid_manual_geometry.py` | Review-only recording-level hybrid geometry ledger | Runs only from an integrity-verified exact source and a reviewed reference seed; recordings without a seed are explicitly queued, never guessed. |
 | `research/vision-registration-spike/` | Reproducible model feasibility record | Keeps exact frames, source hashes, manual geometry, metrics and false-lock counterexamples distinct from canonical evidence. |
 | `research/hybrid-registration-spike/` | Hybrid feasibility record and renders | Records proposal provenance, intermediate frames, conservative rejections and held-back evaluation separately from evidence. |
 | `pipeline/build_site.py` | Catalogue derivation, codex rendering, and occurrence evidence generation | Regenerates the full artifact contract together. |
@@ -172,6 +174,8 @@ Also perform task-specific checks:
 The validator checks structural invariants, not semantic correctness. A passing result does not replace visual review.
 
 Vision-spike results have the same limitation. LoFTR/homography inlier counts and reprojection error can remain convincing while target geometry is materially wrong, as E6C4-35 frame 340 demonstrates. Reference annotations can also be wrong by a whole pitch; the hybrid diamond check exposed and corrected that problem in frame 57. Require independent geometry, temporal checks and human review before promoting any proposed coordinates.
+
+The recording-level hybrid ledger is a follow-up queue, not a replacement for the blind v1 ledger or evidence data. It deliberately records every manual occurrence, including records that cannot be analysed because a reviewed source-frame reference is not yet available. Its `operational_consensus` field is a threshold decision rather than a probability or proof; a `true` result still has `review_status: pending` and `overlay_enabled: false`.
 
 ## Site editing conventions
 

@@ -148,6 +148,29 @@ Run the conservative hybrid follow-up with the same inputs:
 
 The hybrid compares direct registration with short-hop all-feature and carrier-only temporal chains, then requires independent lattice and—where visible—diamond support. Manual target corners are consulted only after the operational decision. The current eight-pair trial yields six review candidates, zero false-positive candidates, one conservative false rejection and one correct rejection. See [`research/hybrid-registration-spike/`](../research/hybrid-registration-spike/README.md).
 
+## Backfill review-only hybrid geometry proposals
+
+`backfill_hybrid_manual_geometry.py` applies the conservative hybrid approach at recording level. It reads only exact frame identity from `data/evidence.json`; it does not load canonical glyph IDs, corpus fingerprints, or cell states. It writes a separate `manual_hybrid_geometry_review` JSON/CSV/JS ledger containing every manual occurrence. A source with no reviewed reference seed is labelled `awaiting reviewed reference geometry`, rather than receiving an estimated grid.
+
+First verify all available raw media. The supplied dataset can span both the downloaded root and the ArchiveInvest video directory:
+
+```powershell
+python pipeline\inventory_sources.py --verify `
+  --downloaded-dir ..\.. `
+  --archive-video-dir ..\ArchiveInvest\Videos
+```
+
+Then run the isolated vision environment against the sources that have reviewed seeds in `vision_spike_config.json`:
+
+```powershell
+.\.vision-venv\Scripts\python.exe pipeline\backfill_hybrid_manual_geometry.py `
+  --archive-invest ..\ArchiveInvest `
+  --ffmpeg C:\Users\mcp\AppData\Local\Microsoft\WinGet\Links\ffmpeg.exe `
+  --checkpoint .\.pipeline-work\vision-spike\torch-cache\hub\checkpoints\loftr_outdoor.ckpt
+```
+
+Use one or more `--recording` arguments for a short, restartable review run. The output remains experimental even for a `consensus candidate`: it has `review_status: pending`, `overlay_enabled: false`, does not modify `data/evidence.json`, and must be inspected against the named source frame before any promotion. Add a new recording only by manually reviewing and recording its exact source-frame grid and carrier diamond reference in `vision_spike_config.json`; never seed it from a corpus tag or an evidence crop.
+
 ## Add a provisional capture: worked example
 
 Suppose `E6C7-AB.mov` has a visible glyph interval whose transitions begin at decoded frame 600 and end at 720, with a six-frame cadence. First establish the exact-file contract:

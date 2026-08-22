@@ -281,6 +281,47 @@ def main() -> int:
     if unknown_source_videos:
         fail(errors, f"Evidence filenames absent from source integrity manifest: {unknown_source_videos}")
 
+    hybrid_review_path = DATA / "manual_hybrid_geometry_review.json"
+    if hybrid_review_path.is_file():
+        hybrid_review = read_json(hybrid_review_path)
+        hybrid_rows = hybrid_review.get("records", [])
+        if hybrid_review.get("status") != "experimental-review-only-not-canonical":
+            fail(errors, "Hybrid manual geometry ledger must remain experimental and non-canonical")
+        if hybrid_review.get("method") != "review-only-hybrid-loftr-direct-temporal-lattice-diamond-v1":
+            fail(errors, "Hybrid manual geometry ledger has an unexpected method identity")
+        hybrid_keys = {
+            (row.get("recording"), row.get("ordinal"), row.get("frame"), row.get("source_video"))
+            for row in hybrid_rows
+        }
+        manual_keys = {
+            (row.get("recording"), row.get("ordinal"), row.get("frame"), row.get("source_video"))
+            for row in evidence if not row.get("provisional")
+        }
+        if hybrid_keys != manual_keys:
+            fail(errors, "Hybrid manual geometry ledger does not cover manual evidence exactly")
+        if len(hybrid_rows) != len(manual_keys):
+            fail(errors, "Hybrid manual geometry ledger has duplicate occurrence identities")
+        if read_js_payload(DATA / "manual_hybrid_geometry_review.js", "MANUAL_HYBRID_GEOMETRY_REVIEW") != hybrid_review:
+            fail(errors, "manual_hybrid_geometry_review.js payload differs from JSON")
+        if len(read_csv(DATA / "manual_hybrid_geometry_review.csv")) != len(hybrid_rows):
+            fail(errors, "manual_hybrid_geometry_review.csv row count differs from JSON")
+        prohibited = {"fingerprint", "glyph_id", "cell_values", "observed_fingerprint", "canonical_fingerprint"}
+        for row in hybrid_rows:
+            if row.get("review_status") != "pending" or row.get("overlay_enabled") is not False:
+                fail(errors, "Hybrid manual geometry candidates must remain pending with overlays disabled")
+            if not row.get("method") or hashes_by_filename.get(row.get("source_video")) != row.get("source_sha256"):
+                fail(errors, "Hybrid manual geometry row lacks a verified exact source identity")
+            if prohibited & set(row):
+                fail(errors, "Hybrid manual geometry ledger must not contain corpus or cell values")
+            has_reference = row.get("reference_frame") is not None
+            if not has_reference:
+                if row.get("operational_status") != "awaiting reviewed reference geometry" or row.get("proposed_grid_corners") is not None:
+                    fail(errors, "Unseeded hybrid geometry row must remain queued without a proposal")
+            elif row.get("operational_consensus"):
+                corners = row.get("proposed_grid_corners")
+                if not isinstance(corners, list) or len(corners) != 4 or any(not isinstance(point, list) or len(point) != 2 for point in corners):
+                    fail(errors, "Hybrid consensus candidate has invalid proposed grid corners")
+
     vision_config_path = ROOT / "pipeline" / "vision_spike_config.json"
     vision_results_path = ROOT / "research" / "vision-registration-spike" / "results.json"
     hybrid_results_path = ROOT / "research" / "hybrid-registration-spike" / "results.json"
@@ -450,7 +491,7 @@ def main() -> int:
         "pipeline/corpus.json", "pipeline/requirements.txt", "pipeline/requirements-vision-spike.txt", "pipeline/README.md",
         "pipeline/common.py", "pipeline/analyze_sources.py", "pipeline/build_site.py", "pipeline/run_pipeline.py",
         "pipeline/inventory_sources.py", "pipeline/audit_disputed_cells.py", "pipeline/vision_registration_spike.py",
-        "pipeline/hybrid_registration_spike.py",
+        "pipeline/hybrid_registration_spike.py", "pipeline/backfill_hybrid_manual_geometry.py",
     )
     for relative in pipeline_files:
         if not (ROOT / relative).is_file():

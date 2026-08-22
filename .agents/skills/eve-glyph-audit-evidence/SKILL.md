@@ -66,6 +66,8 @@ When classical lattice fitting cannot cover crop or zoom variation, use `pipelin
 
 Do not treat LoFTR match count, inlier ratio, or homography reprojection error as proof. E6C4-35 frame 340 retains a low match reprojection error despite materially incorrect corners. Also verify the reference annotation: the hybrid diamond check found that the first E6C4-35 frame 57 label was one pitch high. Keep model coordinates experimental until independent grid/diamond fit, adjacent-frame temporal agreement, and human review all support them. Never train or select registration from corpus fingerprints.
 
+For a recording-level audit, use `pipeline/backfill_hybrid_manual_geometry.py` only after the integrity check passes. It creates a separate pending geometry ledger for every manual occurrence, but only analyses recordings with an explicitly reviewed reference in `vision_spike_config.json`; every other row must remain `awaiting reviewed reference geometry`. A consensus candidate is still not an overlay: it must retain `review_status: pending` and `overlay_enabled: false` until an independent reviewer verifies the exact source frame.
+
 ## Validate the correction
 
 - View the disputed frame after regeneration.
