@@ -83,6 +83,10 @@ def main() -> int:
         fail(errors, "Each cycle interval requires Name, ShortName, StartDateTime, and EndDateTime strings")
     else:
         by_name = {row["Name"]: row for row in cycle_rows}
+        if by_name.get("Phase 1", {}).get("StartDateTime") != "2022-12-06T12:00:00+00:00":
+            fail(errors, "Cycle reference must identify the 6 December 2022 Phase 1 start")
+        if "not server-availability windows" not in cycles.get("source_note", ""):
+            fail(errors, "Cycle source note must distinguish timeline markers from uptime windows")
         if by_name.get("Era 6, Cycle 6", {}).get("ShortName") != "e6c6":
             fail(errors, "Cycle reference must identify Era 6 Cycle 6 as e6c6")
         short_names = [row["ShortName"] for row in cycle_rows]
