@@ -35,6 +35,8 @@ node --check data/catalogue.js
 node --check data/evidence.js
 ```
 
+For a data release, also run `pipeline/inventory_sources.py --verify` against the exact local directories used for the build. Do not publish a newly generated manifest if any input differs unexpectedly.
+
 For runtime changes, serve the repository rather than relying only on a direct file open:
 
 ```powershell
@@ -54,7 +56,8 @@ Push the reviewed commit to `main` only when authorized. The `Deploy static site
 Require the workflow to complete successfully. Then verify:
 
 - explorer root returns HTTP 200;
-- `data/catalogue.js`, `data/evidence.js`, and the evidence manifest return HTTP 200;
+- `data/catalogue.js`, `data/evidence.js`, the evidence manifest, and `data/source_integrity.json` return HTTP 200;
+- the live integrity manifest SHA-256 matches the committed manifest;
 - at least one changed evidence image returns HTTP 200;
 - changed live assets match the committed files when cache propagation matters.
 

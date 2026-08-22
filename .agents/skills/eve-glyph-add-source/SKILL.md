@@ -27,6 +27,17 @@ Before decoding frames, record in the private source ledger:
 - whether it is original, transcoded, cropped, close-up, zoomed, or otherwise derived;
 - license/rights note and whether redistribution is permitted.
 
+Then regenerate the committed integrity manifest before analysis. The manifest is the public identity contract for raw files even though the files themselves are not redistributed:
+
+```powershell
+python pipeline\inventory_sources.py --downloaded-dir <source-videos> `
+  --archive-video-dir <ArchiveInvest>\Videos
+python pipeline\inventory_sources.py --verify --downloaded-dir <source-videos> `
+  --archive-video-dir <ArchiveInvest>\Videos
+```
+
+Never replace a file in place while retaining its old manifest entry. A changed SHA-256 is a distinct source variant and requires provenance/frame-alignment review.
+
 Probe the exact file:
 
 ```powershell
@@ -105,6 +116,7 @@ Run:
 
 ```powershell
 python scripts/validate_repository.py
+python pipeline/inventory_sources.py --verify --downloaded-dir <source-videos> --archive-video-dir <ArchiveInvest>/Videos
 node --check data/catalogue.js
 node --check data/evidence.js
 ```

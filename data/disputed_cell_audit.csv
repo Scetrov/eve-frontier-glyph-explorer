@@ -1,0 +1,4 @@
+glyph_id,broadcast,cell,verdict,source_set,source_video,sha256,frames,median_contrast,median_image
+130,E6C4-17,"(2,6)",carrier / inactive,archiveinvest,E6C4-17.mp4,9e0ebfe7da54d1c29877fab85d4996c6501bada2c384b0bab20039059e91e26d,884 885 886 887 888 889 890,0.0422,evidence/audits/g130_archiveinvest_E6C4-17_f884-890_median.jpg
+130,E6C4-17,"(2,6)",carrier / inactive,downloaded,E6C4-17.webm,aad23c61f2504b9033f195a95b0c848a758c1eaf9e51e5c490f99eb246b53482,927 928 929 930 931 932 933,0.0649,evidence/audits/g130_downloaded_E6C4-17_f927-933_median.jpg
+140,E6C4-35,"(5,2)",carrier / inactive,archiveinvest,E6C4-35.mp4,1d94b5df7be3f4b04b91862b00f0ffd93d9860bdcc6c9c54435fa6544fa110b2,280 281 282 283 284 285 286,0.0467,evidence/audits/g140_archiveinvest_E6C4-35_f280-286_median.jpg

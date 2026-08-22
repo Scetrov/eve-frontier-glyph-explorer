@@ -15,10 +15,10 @@ from common import find_executable, load_config, read_csv, run, sample_frames
 DIAMOND = {
     (0, 4),
     (1, 3), (1, 4), (1, 5),
-    (2, 2), (2, 3), (2, 5),
+    (2, 2), (2, 3), (2, 5), (2, 6),
     (3, 1), (3, 2), (3, 6), (3, 7),
     (4, 0), (4, 1), (4, 7), (4, 8),
-    (5, 1), (5, 6), (5, 7),
+    (5, 1), (5, 2), (5, 6), (5, 7),
     (6, 2), (6, 3), (6, 5), (6, 6),
     (7, 3), (7, 4), (7, 5),
     (8, 4),
@@ -250,7 +250,7 @@ def analyze(config_path: Path, archive_invest: Path, video_dir: Path, analysis_d
         "method": {
             "sample": "configured settled frame from each hold",
             "signal": "fraction of ring samples below luminance 80; marked if greater than 50%",
-            "excluded_cells": "configured 26-cell carrier/diamond mask",
+            "excluded_cells": "symmetric 28-cell carrier mask; (2,6) and (5,2) independently audited",
         },
     }
     (analysis_dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")

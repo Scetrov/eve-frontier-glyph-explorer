@@ -44,7 +44,7 @@
         <article><span id="stat-glyphs">146</span><small>Canonical glyphs</small></article>
         <article><span id="stat-recordings">29</span><small>Video records</small></article>
         <article><span id="stat-occurrences">768</span><small>Occurrences</small></article>
-        <article><span id="stat-cells">55 / 81</span><small>Payload positions</small></article>
+        <article><span id="stat-cells">53 / 81</span><small>Payload positions</small></article>
       </div>
     </section>
 
@@ -84,7 +84,7 @@
         </label>
         <label class="switch-control">
           <input id="carrier-toggle" type="checkbox">
-          <span>Carrier overlay</span>
+          <span>Carrier-cell mask</span>
         </label>
       </div>
 
@@ -182,7 +182,7 @@
         <article class="analysis-panel">
           <div class="panel-heading"><h3>Cell activation</h3><span>Across 146 canonical glyphs</span></div>
           <div id="cell-heatmap" class="heatmap" role="grid" aria-label="Cell activation heatmap. Select a cell to review matching patterns and source frames."></div>
-          <p class="panel-note">Select any position to review every canonical pattern and source-frame occurrence that activates it. Dark positions have no canonical matches and likely belong to the carrier mask.</p>
+          <p class="panel-note">Select any position to review every canonical pattern and source-frame occurrence that activates it. Masked positions are shaded; `(2,6)` and `(5,2)` are highlighted as audited corrections.</p>
         </article>
         <article id="cell-review" class="analysis-panel cell-review-panel" hidden aria-labelledby="cell-review-title">
           <div class="panel-heading cell-review-heading">
@@ -227,6 +227,8 @@
         <a href="data/glyph_occurrences.csv" download>Download occurrences CSV</a>
         <a href="data/sequences.csv" download>Download sequences CSV</a>
         <a href="data/evidence_manifest.csv" download>Download frame-evidence manifest</a>
+        <a href="data/source_integrity.csv" download>Download source SHA-256 manifest</a>
+        <a href="data/disputed_cell_audit.json" download>Download disputed-cell audit</a>
         <a href="data/catalogue.json" download>Download full JSON</a>
       </div>
       <p class="source-note">Canonical glyph research and manual tagging were created by George Peralta / QZRChedders in the community <a href="https://github.com/QZRChedders/ArchiveInvest">ArchiveInvest repository</a>. Supporting universe-data research references <a href="https://github.com/Scetrov/evefrontier_datasets">Scetrov/evefrontier_datasets</a>. The Archive broadcasts appear to form a puzzle created by <a href="https://fenris.com/products">Fenris Creations</a>—thank you to the team for such a fun mystery to investigate. See the <a href="credits.html">full credits and sources</a>. EVE Frontier and associated marks belong to their respective owners.</p>
@@ -245,7 +247,7 @@
       </figure>
       <figure>
         <canvas id="evidence-dialog-canonical" width="480" height="480" aria-label="Canonical matched glyph"></canvas>
-        <figcaption>Canonical matched payload with carrier guide</figcaption>
+        <figcaption>Canonical payload with excluded carrier cells shaded</figcaption>
       </figure>
     </div>
     <div id="evidence-dialog-meta" class="evidence-dialog-meta"></div>
@@ -259,6 +261,7 @@
 
   <script src="data/catalogue.js"></script>
   <script src="data/evidence.js"></script>
+  <script src="data/disputed_cell_audit.js"></script>
   <script src="assets/app.js"></script>
 </body>
 </html>

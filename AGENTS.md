@@ -18,6 +18,8 @@ The explorer is an unofficial research tool. Do not present a speculative decodi
 6. **Do not renumber canonical glyph IDs casually.** IDs come from the ArchiveInvest dictionary and are stable external references. A new observed pattern is not automatically a new canonical glyph.
 7. **Do not commit raw source videos.** Commit derived 480×480 evidence crops and structured data only. Keep acquisition URLs, filenames, hashes, and attribution in the source record.
 8. **Preserve third-party attribution and licensing boundaries.** The MIT license covers original site code only. It does not relicense source videos, ArchiveInvest data, EVE Frontier material, or other datasets.
+9. **Verify source integrity before analysis or rebuild.** `data/source_integrity.json` is the public SHA-256 identity contract. Stop on a missing or mismatched input; never silently replace a file under an existing filename/hash record.
+10. **Treat corpus tags as claims, not proof.** Use “matches corpus tag” for equality with a stored fingerprint. Mark single-source dictionary entries unverified unless independent frame/source review supports them.
 
 ### Known exact-source override
 
@@ -40,12 +42,17 @@ The explorer is an unofficial research tool. Do not present a speculative decodi
 | `data/evidence.json` | Readable occurrence-to-frame evidence records | Must cover every occurrence exactly once. |
 | `data/evidence.js` | Compact browser wrapper for `evidence.json` | Must equal `window.GLYPH_EVIDENCE=<evidence JSON>;`. |
 | `data/evidence_manifest.csv` | Downloadable flat evidence manifest | Must describe the exact source filename and frame. |
+| `data/source_integrity.json`, `.csv` | Published source identity, SHA-256, and media metadata | Contains logical filenames, never private absolute paths. |
+| `data/disputed_cell_audit.json`, `.csv` | Reproducible multi-frame audit of carrier-edge cells | Records hashes, frames, registration, scores, thresholds, and verdicts. |
 | `evidence/<recording-slug>/` | 480×480 JPEG audit frames | Filename form is `gNNN_fNNNNNN.jpg`. Paths are unique per occurrence. |
+| `evidence/audits/` | Multi-frame median audit images | Derived review artifacts, not additional occurrence records. |
 | `scripts/validate_repository.py` | Dependency-free structural/data validator | Run before every commit that touches data, evidence, or skills. |
 | `pipeline/corpus.json` | Exact source registry, sampling intervals, overrides, and corrections | Treat filename/frame mappings as reviewed data. |
 | `pipeline/run_pipeline.py` | End-to-end input check, analysis, generation, and validation | This is the supported rebuild entry point. |
 | `pipeline/analyze_sources.py` | FFmpeg frame extraction and provisional 9×9 classification | Review contact sheets and high-distance reads. |
 | `pipeline/build_site.py` | Catalogue derivation, atlas rendering, and occurrence evidence generation | Regenerates the full artifact contract together. |
+| `pipeline/inventory_sources.py` | Generate/verify deterministic SHA-256 and FFprobe manifests | Run before any media analysis. |
+| `pipeline/audit_disputed_cells.py` | Registered seven-frame carrier-edge re-audit | Requires a verified integrity manifest. |
 | `pipeline/README.md` | Fresh-fork setup and worked source-addition examples | Keep commands executable when pipeline behavior changes. |
 | `.agents/skills/` | Reusable skills.sh-compatible maintenance workflows | Each directory contains a valid `SKILL.md`. |
 | `.github/workflows/pages.yml` | GitHub Pages deployment | Deploys the repository root on pushes to `main`. |
@@ -99,11 +106,12 @@ The generator code is committed under `pipeline/`; only raw media and transient 
 
 The supported pipeline stages are:
 
-1. `pipeline/run_pipeline.py` validates ArchiveInvest inputs and every exact source filename declared by `pipeline/corpus.json`.
-2. `pipeline/analyze_sources.py` extracts configured settled frames, fits the 9×9 grid, and retains provisional fingerprints, nearest IDs, distances, confidence, contact sheets, and geometry.
-3. `pipeline/build_site.py` combines manual and provisional rows and derives catalogue, sequence, transition, repeated-block, near-twin, symmetry, and corpus data.
-4. The same builder creates the glyph atlas and one unmasked evidence crop per occurrence from its exact source file.
-5. JSON, JavaScript, and CSV outputs are written from the same in-memory records, then `scripts/validate_repository.py` verifies their joins and filesystem coverage.
+1. `pipeline/inventory_sources.py --verify` proves the local raw inputs match the committed SHA-256 manifest.
+2. `pipeline/run_pipeline.py` validates ArchiveInvest inputs and every exact source filename declared by `pipeline/corpus.json`.
+3. `pipeline/analyze_sources.py` extracts configured settled frames, fits the 9×9 grid, and retains provisional fingerprints, nearest IDs, distances, confidence, contact sheets, and geometry.
+4. `pipeline/build_site.py` combines manual and provisional rows and derives catalogue, sequence, transition, repeated-block, near-twin, symmetry, and corpus data.
+5. The same builder creates the glyph atlas and one unmasked evidence crop per occurrence from its exact source file.
+6. JSON, JavaScript, and CSV outputs are written from the same in-memory records, then `scripts/validate_repository.py` verifies their joins and filesystem coverage.
 
 Fresh-fork setup, exact commands, expected current counts, and worked source additions are in `pipeline/README.md`. The standard invocation is:
 
@@ -129,6 +137,7 @@ Use the focused skill matching the request:
 For every data or evidence change, run:
 
 ```powershell
+python pipeline\inventory_sources.py --verify --downloaded-dir <source-videos> --archive-video-dir <ArchiveInvest>\Videos
 python scripts/validate_repository.py
 node --check assets/app.js
 node --check data/catalogue.js
@@ -158,12 +167,12 @@ The validator checks structural invariants, not semantic correctness. A passing 
 
 ## Provenance and source additions
 
-Every new source must record, at minimum:
+Every new source must have a committed entry in `data/source_integrity.json` and record, at minimum:
 
 - logical broadcast label;
 - exact source filename and extension;
 - original URL or provider and acquisition date when available;
-- SHA-256 of the raw file in the private source ledger;
+- SHA-256 of the raw file in both the published manifest and private source ledger;
 - codec, frame rate, dimensions, duration, and decoded frame count;
 - whether the file is original, transcoded, cropped, zoomed, or otherwise derived;
 - which exact file the frame indices were generated against;

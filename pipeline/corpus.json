@@ -14,6 +14,20 @@
   "context_corrections": {
     "E6C5-13:3": 44
   },
+  "canonical_cell_corrections": {
+    "130": {
+      "remove": ["(2,6)"],
+      "reason": "Seven-frame medians from E6C4-17.mp4 and the independent E6C4-17.webm source show a filled carrier cell."
+    },
+    "140": {
+      "remove": ["(5,2)"],
+      "reason": "Seven settled frames from E6C4-35.mp4 show a filled carrier cell."
+    }
+  },
+  "manual_observation_corrections": {
+    "E6C4-17:7": {"remove": ["(2,6)"]},
+    "E6C4-35:38": {"remove": ["(5,2)"]}
+  },
   "automatic_sources": [
     {
       "broadcast": "E6C4-2T",

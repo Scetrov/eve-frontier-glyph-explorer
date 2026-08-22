@@ -24,10 +24,11 @@ Confirm these external inputs are available before rebuilding:
 Run the non-mutating audit first:
 
 ```powershell
+python pipeline\inventory_sources.py --verify --downloaded-dir <source-videos> --archive-video-dir <ArchiveInvest>\Videos
 python pipeline\run_pipeline.py --archive-invest <ArchiveInvest> --video-dir <source-videos> --check-inputs
 ```
 
-If a required raw input is unavailable, stop rather than reconstructing generated rows by hand.
+If a required raw input is unavailable or fails SHA-256 verification, stop rather than reconstructing generated rows by hand. Regenerate the manifest only after confirming that a file change is intentional and recording its provenance.
 
 ## Build order
 
@@ -66,6 +67,8 @@ Regenerate together:
 - `data/evidence.js`
 - `data/evidence_manifest.csv`
 - all affected `evidence/**/*.jpg`
+- `data/source_integrity.json` and `.csv` whenever locally available source media changes
+- `data/disputed_cell_audit.json` and `.csv` plus `evidence/audits/*.jpg` whenever a disputed-cell audit changes
 
 `catalogue.js` must contain the exact JSON object from `catalogue.json`, assigned to `window.GLYPH_DATA`. `evidence.js` follows the same rule with `window.GLYPH_EVIDENCE`.
 

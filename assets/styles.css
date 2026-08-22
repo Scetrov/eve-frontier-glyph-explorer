@@ -351,6 +351,8 @@ main { position: relative; z-index: 1; }
 .heatmap-cell strong { font-size: clamp(9px, 1.2vw, 13px); line-height: 1; }
 .heatmap-cell span { color: currentColor; font-size: clamp(5px, .7vw, 7px); line-height: 1; opacity: .72; }
 .heatmap-cell-empty { background: var(--line); border-color: var(--line-bright); color: var(--muted); }
+.heatmap-cell-carrier { background: repeating-linear-gradient(135deg, var(--line) 0 4px, var(--crude) 4px 8px); color: var(--muted); }
+.heatmap-cell-audited { border-color: var(--martian-red); box-shadow: inset 0 0 0 1px var(--martian-red); }
 .heatmap-cell:hover, .heatmap-cell:focus-visible { border-color: var(--signal-bright); outline: 1px solid var(--signal-bright); outline-offset: 2px; }
 .heatmap-cell[aria-selected="true"] { border-color: var(--signal-bright); outline: 2px solid var(--signal-bright); outline-offset: 2px; color: var(--crude); background: var(--signal-bright); }
 .cell-review-panel { grid-column: 1 / -1; }

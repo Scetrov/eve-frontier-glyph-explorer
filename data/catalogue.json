@@ -8,19 +8,19 @@
     "provisional_occurrences": 181,
     "observed_glyphs": 146,
     "singleton_glyphs": 35,
-    "used_grid_cells": 55,
-    "unused_grid_cells": 26,
-    "active_cells_mean": 9.151,
+    "used_grid_cells": 53,
+    "unused_grid_cells": 28,
+    "active_cells_mean": 9.137,
     "active_cells_min": 2,
     "active_cells_max": 17,
     "token_entropy_bits": 6.5835,
     "max_entropy_bits": 7.1898,
     "normalised_entropy": 0.9157,
     "index_of_coincidence": 0.012658,
-    "distance_one_pairs": 5,
-    "distance_two_pairs": 5,
-    "all_pair_mean_hamming": 15.111,
-    "adjacent_mean_hamming": 14.888,
+    "distance_one_pairs": 7,
+    "distance_two_pairs": 3,
+    "all_pair_mean_hamming": 15.084,
+    "adjacent_mean_hamming": 14.882,
     "adjacent_median_hamming": 15,
     "near_twin_families": 10,
     "largest_near_twin_family": 2,
@@ -107,6 +107,7 @@
         "rotate180": 20,
         "transpose": 20
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1N",
@@ -230,6 +231,7 @@
         "rotate180": 12,
         "transpose": 8
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -360,6 +362,7 @@
         "rotate180": 18,
         "transpose": 14
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1N",
@@ -485,6 +488,7 @@
         "rotate180": 14,
         "transpose": 18
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -610,6 +614,7 @@
         "rotate180": 6,
         "transpose": 4
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -736,6 +741,7 @@
         "rotate180": 16,
         "transpose": 12
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -854,6 +860,7 @@
         "rotate180": 18,
         "transpose": 8
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -973,6 +980,7 @@
         "rotate180": 20,
         "transpose": 18
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -1087,6 +1095,7 @@
         "rotate180": 10,
         "transpose": 10
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -1204,6 +1213,7 @@
         "rotate180": 16,
         "transpose": 16
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -1323,6 +1333,7 @@
         "rotate180": 16,
         "transpose": 8
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -1458,6 +1469,7 @@
         "rotate180": 12,
         "transpose": 12
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -1600,6 +1612,7 @@
         "rotate180": 22,
         "transpose": 22
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -1719,6 +1732,7 @@
         "rotate180": 14,
         "transpose": 10
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -1844,6 +1858,7 @@
         "rotate180": 14,
         "transpose": 10
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -1970,6 +1985,7 @@
         "rotate180": 20,
         "transpose": 18
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -2094,6 +2110,7 @@
         "rotate180": 8,
         "transpose": 8
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -2224,6 +2241,7 @@
         "rotate180": 16,
         "transpose": 16
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -2353,6 +2371,7 @@
         "rotate180": 14,
         "transpose": 10
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -2479,6 +2498,7 @@
         "rotate180": 12,
         "transpose": 10
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -2609,6 +2629,7 @@
         "rotate180": 12,
         "transpose": 12
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -2737,6 +2758,7 @@
         "rotate180": 16,
         "transpose": 16
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -2866,6 +2888,7 @@
         "rotate180": 18,
         "transpose": 12
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -2990,6 +3013,7 @@
         "rotate180": 8,
         "transpose": 2
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -3122,6 +3146,7 @@
         "rotate180": 14,
         "transpose": 10
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -3250,6 +3275,7 @@
         "rotate180": 16,
         "transpose": 12
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -3378,6 +3404,7 @@
         "rotate180": 20,
         "transpose": 18
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -3505,6 +3532,7 @@
         "rotate180": 10,
         "transpose": 12
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -3627,6 +3655,7 @@
         "rotate180": 12,
         "transpose": 8
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -3754,6 +3783,7 @@
         "rotate180": 14,
         "transpose": 16
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -3867,6 +3897,7 @@
         "rotate180": 12,
         "transpose": 12
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -3977,6 +4008,7 @@
         "rotate180": 12,
         "transpose": 12
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -4084,6 +4116,7 @@
         "rotate180": 22,
         "transpose": 14
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -4189,6 +4222,7 @@
         "rotate180": 22,
         "transpose": 8
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-N",
@@ -4282,6 +4316,7 @@
         "rotate180": 16,
         "transpose": 18
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-N",
@@ -4369,6 +4404,7 @@
         "rotate180": 18,
         "transpose": 4
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-N",
@@ -4465,6 +4501,7 @@
         "rotate180": 14,
         "transpose": 12
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C2-11",
@@ -4578,6 +4615,7 @@
         "rotate180": 6,
         "transpose": 6
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1K",
@@ -4816,10 +4854,10 @@
       "near_twins": [
         {
           "id": 130,
-          "distance": 2
+          "distance": 1
         }
       ],
-      "nearest_neighbour_distance": 2,
+      "nearest_neighbour_distance": 1,
       "family_id": 38,
       "family_size": 2,
       "successors": [
@@ -4844,6 +4882,7 @@
         "rotate180": 18,
         "transpose": 4
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1K",
@@ -5076,6 +5115,7 @@
         "rotate180": 12,
         "transpose": 12
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1K",
@@ -5292,6 +5332,7 @@
         "rotate180": 14,
         "transpose": 12
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1K",
@@ -5550,6 +5591,7 @@
         "rotate180": 14,
         "transpose": 18
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1K",
@@ -5820,6 +5862,7 @@
         "rotate180": 24,
         "transpose": 24
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1K",
@@ -6082,6 +6125,7 @@
         "rotate180": 12,
         "transpose": 8
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1K",
@@ -6350,6 +6394,7 @@
         "rotate180": 20,
         "transpose": 22
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1K",
@@ -6615,6 +6660,7 @@
         "rotate180": 22,
         "transpose": 22
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1K",
@@ -6880,6 +6926,7 @@
         "rotate180": 22,
         "transpose": 18
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1K",
@@ -7143,6 +7190,7 @@
         "rotate180": 16,
         "transpose": 10
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1K",
@@ -7408,6 +7456,7 @@
         "rotate180": 18,
         "transpose": 16
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1K",
@@ -7667,6 +7716,7 @@
         "rotate180": 10,
         "transpose": 10
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1K",
@@ -7926,6 +7976,7 @@
         "rotate180": 10,
         "transpose": 6
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1K",
@@ -8173,6 +8224,7 @@
         "rotate180": 16,
         "transpose": 14
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1K",
@@ -8335,6 +8387,7 @@
         "rotate180": 14,
         "transpose": 6
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1K",
@@ -8455,6 +8508,7 @@
         "rotate180": 16,
         "transpose": 16
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1K",
@@ -8558,6 +8612,7 @@
         "rotate180": 12,
         "transpose": 8
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1K",
@@ -8654,6 +8709,7 @@
         "rotate180": 8,
         "transpose": 8
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1K",
@@ -8747,6 +8803,7 @@
         "rotate180": 14,
         "transpose": 8
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1K",
@@ -8839,6 +8896,7 @@
         "rotate180": 14,
         "transpose": 10
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1K",
@@ -8932,6 +8990,7 @@
         "rotate180": 10,
         "transpose": 10
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1K",
@@ -9029,6 +9088,7 @@
         "rotate180": 14,
         "transpose": 16
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1K",
@@ -9126,6 +9186,7 @@
         "rotate180": 12,
         "transpose": 14
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1K",
@@ -9230,6 +9291,7 @@
         "rotate180": 12,
         "transpose": 16
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1K",
@@ -9341,6 +9403,7 @@
         "rotate180": 18,
         "transpose": 14
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1K",
@@ -9451,6 +9514,7 @@
         "rotate180": 20,
         "transpose": 10
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1K",
@@ -9560,6 +9624,7 @@
         "rotate180": 14,
         "transpose": 8
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1K",
@@ -9671,6 +9736,7 @@
         "rotate180": 18,
         "transpose": 16
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1K",
@@ -9787,6 +9853,7 @@
         "rotate180": 4,
         "transpose": 4
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C2-1K",
@@ -9906,6 +9973,7 @@
         "rotate180": 22,
         "transpose": 20
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -9974,6 +10042,7 @@
         "rotate180": 16,
         "transpose": 14
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -10041,6 +10110,7 @@
         "rotate180": 10,
         "transpose": 14
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -10112,6 +10182,7 @@
         "rotate180": 18,
         "transpose": 12
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -10183,6 +10254,7 @@
         "rotate180": 20,
         "transpose": 20
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -10251,6 +10323,7 @@
         "rotate180": 8,
         "transpose": 12
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -10322,6 +10395,7 @@
         "rotate180": 18,
         "transpose": 8
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -10395,6 +10469,7 @@
         "rotate180": 22,
         "transpose": 18
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -10462,6 +10537,7 @@
         "rotate180": 14,
         "transpose": 12
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -10535,6 +10611,7 @@
         "rotate180": 24,
         "transpose": 24
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -10605,6 +10682,7 @@
         "rotate180": 16,
         "transpose": 16
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -10672,6 +10750,7 @@
         "rotate180": 10,
         "transpose": 10
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -10747,6 +10826,7 @@
         "rotate180": 22,
         "transpose": 18
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -10818,6 +10898,7 @@
         "rotate180": 14,
         "transpose": 14
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -10911,6 +10992,7 @@
         "rotate180": 22,
         "transpose": 20
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -10997,6 +11079,7 @@
         "rotate180": 12,
         "transpose": 12
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -11070,6 +11153,7 @@
         "rotate180": 16,
         "transpose": 10
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -11148,6 +11232,7 @@
         "rotate180": 22,
         "transpose": 14
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -11232,6 +11317,7 @@
         "rotate180": 16,
         "transpose": 12
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -11318,6 +11404,7 @@
         "rotate180": 16,
         "transpose": 8
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -11399,6 +11486,7 @@
         "rotate180": 10,
         "transpose": 10
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -11483,6 +11571,7 @@
         "rotate180": 14,
         "transpose": 12
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -11563,6 +11652,7 @@
         "rotate180": 8,
         "transpose": 6
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -11645,6 +11735,7 @@
         "rotate180": 8,
         "transpose": 10
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -11736,6 +11827,7 @@
         "rotate180": 22,
         "transpose": 24
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -11819,6 +11911,7 @@
         "rotate180": 14,
         "transpose": 14
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -11909,6 +12002,7 @@
         "rotate180": 24,
         "transpose": 20
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -11992,6 +12086,7 @@
         "rotate180": 10,
         "transpose": 4
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -12080,6 +12175,7 @@
         "rotate180": 18,
         "transpose": 14
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -12165,6 +12261,7 @@
         "rotate180": 10,
         "transpose": 16
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -12255,6 +12352,7 @@
         "rotate180": 18,
         "transpose": 12
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -12339,6 +12437,7 @@
         "rotate180": 12,
         "transpose": 10
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -12426,6 +12525,7 @@
         "rotate180": 18,
         "transpose": 18
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -12512,6 +12612,7 @@
         "rotate180": 12,
         "transpose": 14
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -12598,6 +12699,7 @@
         "rotate180": 16,
         "transpose": 10
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C3-18",
@@ -12673,6 +12775,7 @@
         "rotate180": 6,
         "transpose": 14
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C3-1L",
@@ -12739,6 +12842,7 @@
         "rotate180": 12,
         "transpose": 10
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C3-1L",
@@ -12803,6 +12907,7 @@
         "rotate180": 8,
         "transpose": 6
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C3-1L",
@@ -12868,6 +12973,7 @@
         "rotate180": 10,
         "transpose": 10
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C3-1L",
@@ -12933,6 +13039,7 @@
         "rotate180": 10,
         "transpose": 4
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C3-1L",
@@ -13004,6 +13111,7 @@
         "rotate180": 18,
         "transpose": 18
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C3-1L",
@@ -13070,6 +13178,7 @@
         "rotate180": 10,
         "transpose": 8
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C3-1L",
@@ -13144,6 +13253,7 @@
         "rotate180": 14,
         "transpose": 10
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C3-1L",
@@ -13220,6 +13330,7 @@
         "rotate180": 18,
         "transpose": 20
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C3-1L",
@@ -13317,6 +13428,7 @@
         "rotate180": 10,
         "transpose": 6
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C4-13",
@@ -13533,6 +13645,7 @@
         "rotate180": 10,
         "transpose": 10
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C4-V",
@@ -13605,6 +13718,7 @@
         "rotate180": 14,
         "transpose": 8
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C4-V",
@@ -13674,6 +13788,7 @@
         "rotate180": 14,
         "transpose": 16
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C4-V",
@@ -13743,6 +13858,7 @@
         "rotate180": 20,
         "transpose": 18
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C4-V",
@@ -13827,6 +13943,7 @@
         "rotate180": 14,
         "transpose": 20
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C4-13",
@@ -13976,6 +14093,7 @@
         "rotate180": 14,
         "transpose": 10
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C4-13",
@@ -14140,6 +14258,7 @@
         "rotate180": 20,
         "transpose": 16
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C4-13",
@@ -14327,6 +14446,7 @@
         "rotate180": 12,
         "transpose": 14
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C4-13",
@@ -14533,6 +14653,7 @@
         "rotate180": 16,
         "transpose": 12
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C4-13",
@@ -14744,6 +14865,7 @@
         "rotate180": 10,
         "transpose": 12
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C4-13",
@@ -14954,6 +15076,7 @@
         "rotate180": 6,
         "transpose": 6
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C4-13",
@@ -15179,6 +15302,7 @@
         "rotate180": 14,
         "transpose": 12
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C4-13",
@@ -15419,6 +15543,7 @@
         "rotate180": 12,
         "transpose": 12
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C4-13",
@@ -15645,6 +15770,7 @@
         "rotate180": 12,
         "transpose": 10
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C4-13",
@@ -15847,6 +15973,7 @@
         "rotate180": 4,
         "transpose": 8
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C4-16",
@@ -15923,6 +16050,7 @@
         "rotate180": 16,
         "transpose": 6
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C4-16",
@@ -16018,6 +16146,7 @@
         "rotate180": 22,
         "transpose": 22
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C4-16",
@@ -16032,20 +16161,19 @@
     },
     {
       "id": 130,
-      "fingerprint": "000001000001000000010000100100000000000000100100000000000000000000000001000000001",
+      "fingerprint": "000001000001000000010000000100000000000000100100000000000000000000000001000000001",
       "cell_indices": [
         5,
         11,
         19,
-        24,
         27,
         42,
         45,
         71,
         80
       ],
-      "cells": "(0,5) (1,2) (2,1) (2,6) (3,0) (4,6) (5,0) (7,8) (8,8)",
-      "n_cells": 9,
+      "cells": "(0,5) (1,2) (2,1) (3,0) (4,6) (5,0) (7,8) (8,8)",
+      "n_cells": 8,
       "first_video": "E6C4-17",
       "first_frame": 887,
       "first_time_s": 29.581,
@@ -16068,10 +16196,10 @@
       "near_twins": [
         {
           "id": 39,
-          "distance": 2
+          "distance": 1
         }
       ],
-      "nearest_neighbour_distance": 2,
+      "nearest_neighbour_distance": 1,
       "family_id": 38,
       "family_size": 2,
       "successors": [
@@ -16087,11 +16215,12 @@
         }
       ],
       "symmetry": {
-        "horizontal": 18,
-        "vertical": 12,
-        "rotate180": 18,
-        "transpose": 8
+        "horizontal": 16,
+        "vertical": 10,
+        "rotate180": 16,
+        "transpose": 6
       },
+      "verification_status": "multi-source, multi-frame audited",
       "occurrence_samples": [
         {
           "recording": "E6C4-17",
@@ -16182,6 +16311,7 @@
         "rotate180": 10,
         "transpose": 10
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C4-17",
@@ -16287,6 +16417,7 @@
         "rotate180": 8,
         "transpose": 6
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C4-17",
@@ -16369,6 +16500,7 @@
         "rotate180": 18,
         "transpose": 14
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C4-1G",
@@ -16467,6 +16599,7 @@
         "rotate180": 8,
         "transpose": 10
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C4-2T",
@@ -16549,6 +16682,7 @@
         "rotate180": 14,
         "transpose": 14
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C4-35",
@@ -16644,6 +16778,7 @@
         "rotate180": 14,
         "transpose": 22
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C4-35",
@@ -16740,6 +16875,7 @@
         "rotate180": 14,
         "transpose": 14
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C4-35",
@@ -16829,6 +16965,7 @@
         "rotate180": 8,
         "transpose": 6
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C4-35",
@@ -16925,6 +17062,7 @@
         "rotate180": 14,
         "transpose": 6
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C4-35",
@@ -16957,7 +17095,7 @@
     },
     {
       "id": 140,
-      "fingerprint": "010000001000000000010010000000001000000010000001001000100000010001000000000000000",
+      "fingerprint": "010000001000000000010010000000001000000010000000001000100000010001000000000000000",
       "cell_indices": [
         1,
         8,
@@ -16965,14 +17103,13 @@
         22,
         32,
         40,
-        47,
         50,
         54,
         61,
         65
       ],
-      "cells": "(0,1) (0,8) (2,1) (2,4) (3,5) (4,4) (5,2) (5,5) (6,0) (6,7) (7,2)",
-      "n_cells": 11,
+      "cells": "(0,1) (0,8) (2,1) (2,4) (3,5) (4,4) (5,5) (6,0) (6,7) (7,2)",
+      "n_cells": 10,
       "first_video": "E6C4-35",
       "first_frame": 280,
       "first_time_s": 9.337,
@@ -16995,10 +17132,10 @@
       "near_twins": [
         {
           "id": 146,
-          "distance": 2
+          "distance": 1
         }
       ],
-      "nearest_neighbour_distance": 2,
+      "nearest_neighbour_distance": 1,
       "family_id": 131,
       "family_size": 2,
       "successors": [
@@ -17014,11 +17151,12 @@
         }
       ],
       "symmetry": {
-        "horizontal": 18,
-        "vertical": 16,
-        "rotate180": 16,
-        "transpose": 18
+        "horizontal": 16,
+        "vertical": 14,
+        "rotate180": 14,
+        "transpose": 16
       },
+      "verification_status": "multi-frame audited",
       "occurrence_samples": [
         {
           "recording": "E6C4-35",
@@ -17096,6 +17234,7 @@
         "rotate180": 12,
         "transpose": 12
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C4-35",
@@ -17190,6 +17329,7 @@
         "rotate180": 20,
         "transpose": 18
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C4-35",
@@ -17288,6 +17428,7 @@
         "rotate180": 20,
         "transpose": 20
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C4-35",
@@ -17379,6 +17520,7 @@
         "rotate180": 16,
         "transpose": 16
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C4-35",
@@ -17457,6 +17599,7 @@
         "rotate180": 14,
         "transpose": 12
       },
+      "verification_status": "single-source corpus entry; unverified",
       "occurrence_samples": [
         {
           "recording": "E6C4-35",
@@ -17512,10 +17655,10 @@
       "near_twins": [
         {
           "id": 140,
-          "distance": 2
+          "distance": 1
         }
       ],
-      "nearest_neighbour_distance": 2,
+      "nearest_neighbour_distance": 1,
       "family_id": 131,
       "family_size": 2,
       "successors": [
@@ -17536,6 +17679,7 @@
         "rotate180": 12,
         "transpose": 14
       },
+      "verification_status": "supported by repeated corpus occurrences",
       "occurrence_samples": [
         {
           "recording": "E6C6-D",
@@ -18309,7 +18453,7 @@
     0,
     31,
     0,
-    1,
+    0,
     27,
     26,
     28,
@@ -18332,7 +18476,7 @@
     0,
     29,
     0,
-    1,
+    0,
     23,
     21,
     22,
@@ -18369,6 +18513,6 @@
   ],
   "notes": {
     "provisional": "Configured local captures were classified automatically; contextual corrections are declared in pipeline/corpus.json. Duplicate logical broadcasts remain separate recordings.",
-    "carrier": "The atlas shows payload cells only. The large diamond and black centre holes are carrier/registration graphics."
+    "carrier": "The atlas shows payload cells only. A symmetric 28-cell mask is supported after multi-frame review corrected two singleton carrier-edge marks."
   }
 }

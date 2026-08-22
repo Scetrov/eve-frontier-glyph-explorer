@@ -28,8 +28,19 @@ from common import (
 
 OCCURRENCE_FIELDS = [
     "glyph_id", "recording", "broadcast", "cycle", "track", "ordinal", "frame", "time_s",
-    "source", "provisional", "hamming_distance", "confidence", "assignment_basis", "observed_fingerprint",
+    "source", "provisional", "hamming_distance", "confidence", "assignment_basis", "verification_status", "observed_fingerprint",
 ]
+
+
+def corrected_cells(cells: list[int], correction: dict | None) -> list[int]:
+    result = set(cells)
+    for value in (correction or {}).get("remove", []):
+        row, column = (int(part) for part in value.strip("()").split(","))
+        result.discard(row * 9 + column)
+    for value in (correction or {}).get("add", []):
+        row, column = (int(part) for part in value.strip("()").split(","))
+        result.add(row * 9 + column)
+    return sorted(result)
 
 
 def transform_distance(fingerprint: str, operation: str) -> int:
@@ -97,6 +108,8 @@ def load_inputs(config: dict, archive: Path, automatic_csv: Path) -> tuple[dict[
     for row in read_csv(archive / "PatternCSVs" / "glyph_dictionary.csv"):
         glyph_id, fingerprint = int(row["glyph_id"]), row["fingerprint"]
         cells = [index for index, bit in enumerate(fingerprint) if bit == "1"]
+        cells = corrected_cells(cells, config.get("canonical_cell_corrections", {}).get(str(glyph_id)))
+        fingerprint = fingerprint_from_cells(cells)
         dictionary[glyph_id] = {
             "id": glyph_id, "fingerprint": fingerprint, "cell_indices": cells,
             "cells": " ".join(f"({index // 9},{index % 9})" for index in cells), "n_cells": len(cells),
@@ -118,21 +131,24 @@ def load_inputs(config: dict, archive: Path, automatic_csv: Path) -> tuple[dict[
         broadcast = path.stem.removesuffix("_patterns")
         manual_broadcasts.add(broadcast)
         for ordinal, row in enumerate(read_csv(path), 1):
-            fingerprint = fingerprint_from_cells(parse_cells(row.get("cells", "")))
+            observation_key = f"{broadcast}:{ordinal}"
+            cells = corrected_cells(parse_cells(row.get("cells", "")), config.get("manual_observation_corrections", {}).get(observation_key))
+            fingerprint = fingerprint_from_cells(cells)
             glyph_id = by_fingerprint.get(fingerprint)
-            distance, basis = 0, "exact manual tag"
+            distance, basis = 0, "matches corpus tag"
             if glyph_id is None:
                 glyph_id, distance = min(
                     ((candidate, hamming(fingerprint, glyph["fingerprint"])) for candidate, glyph in dictionary.items()),
                     key=lambda item: item[1],
                 )
-                basis = "nearest manual tag"
+                basis = "nearest corpus tag"
+            verification = "multi-source audited" if observation_key == "E6C4-17:7" else "multi-frame audited" if observation_key == "E6C4-35:38" else "corpus tag; not independently verified"
             occurrences.append({
                 "glyph_id": glyph_id, "recording": broadcast, "broadcast": broadcast,
                 "cycle": cycle_label(broadcast), "track": tracks.get(broadcast, "Unknown"), "ordinal": ordinal,
                 "frame": int(float(row.get("frame") or 0)), "time_s": round(float(row.get("time_s") or 0), 4),
                 "source": "ArchiveInvest manual", "provisional": False, "hamming_distance": distance,
-                "confidence": "", "assignment_basis": basis, "observed_fingerprint": fingerprint,
+                "confidence": "", "assignment_basis": basis, "verification_status": verification, "observed_fingerprint": fingerprint,
             })
 
     corrections = config.get("context_corrections", {})
@@ -149,8 +165,18 @@ def load_inputs(config: dict, archive: Path, automatic_csv: Path) -> tuple[dict[
             "hamming_distance": int(row["hamming_distance"]),
             "confidence": round(float(row["classification_confidence"]), 4),
             "assignment_basis": "sequence consensus" if glyph_id != nearest else "automatic nearest glyph",
+            "verification_status": "provisional automatic read",
             "observed_fingerprint": row["fingerprint"],
         })
+    occurrence_counts = Counter(row["glyph_id"] for row in occurrences)
+    for row in occurrences:
+        if row["provisional"] or row["glyph_id"] in (130, 140):
+            continue
+        row["verification_status"] = (
+            "single-source corpus entry; unverified"
+            if occurrence_counts[row["glyph_id"]] == 1
+            else "matches repeated corpus observations"
+        )
     occurrences.sort(key=lambda item: (item["recording"], item["ordinal"]))
     return dictionary, occurrences, phrases, tracks
 
@@ -196,6 +222,14 @@ def derive_catalogue(dictionary: dict[int, dict], occurrences: list[dict], phras
         phrase_rows = phrases.get(glyph_id, [])
         all_distances = [hamming(base["fingerprint"], dictionary[other]["fingerprint"]) for other in glyph_ids if other != glyph_id]
         family_id, family_size = families[glyph_id]
+        if glyph_id == 130:
+            verification_status = "multi-source, multi-frame audited"
+        elif glyph_id == 140:
+            verification_status = "multi-frame audited"
+        elif len(rows) == 1:
+            verification_status = "single-source corpus entry; unverified"
+        else:
+            verification_status = "supported by repeated corpus occurrences"
         catalogue.append({
             **base, "occurrences": len(rows), "manual_occurrences": sum(not row["provisional"] for row in rows),
             "provisional_occurrences": sum(row["provisional"] for row in rows), "broadcast_count": len(broadcasts),
@@ -207,6 +241,7 @@ def derive_catalogue(dictionary: dict[int, dict], occurrences: list[dict], phras
             "successors": [{"id": item, "count": count} for item, count in successors[glyph_id].most_common(6)],
             "predecessors": [{"id": item, "count": count} for item, count in predecessors[glyph_id].most_common(6)],
             "symmetry": {operation: transform_distance(base["fingerprint"], operation) for operation in ("horizontal", "vertical", "rotate180", "transpose")},
+            "verification_status": verification_status,
             "occurrence_samples": [{key: row[key] for key in ("recording", "broadcast", "ordinal", "time_s", "source", "provisional", "hamming_distance")} for row in rows[:18]],
         })
 
@@ -232,7 +267,7 @@ def derive_catalogue(dictionary: dict[int, dict], occurrences: list[dict], phras
         "adjacent_median_hamming": sorted(adjacent)[len(adjacent) // 2],
         "near_twin_families": len({family for family, size in families.values() if size > 1}),
         "largest_near_twin_family": max(size for _, size in families.values()),
-        "unmatched_manual_rows": sum(row["assignment_basis"] == "nearest manual tag" for row in occurrences),
+        "unmatched_manual_rows": sum(row["assignment_basis"] == "nearest corpus tag" for row in occurrences),
     }
     sequence_rows = []
     for recording in sorted(sequences):
@@ -252,7 +287,7 @@ def derive_catalogue(dictionary: dict[int, dict], occurrences: list[dict], phras
         "repeated_blocks": repeated_blocks(sequences), "cell_usage": cell_usage,
         "notes": {
             "provisional": "Configured local captures were classified automatically; contextual corrections are declared in pipeline/corpus.json. Duplicate logical broadcasts remain separate recordings.",
-            "carrier": "The atlas shows payload cells only. The large diamond and black centre holes are carrier/registration graphics.",
+            "carrier": "The atlas shows payload cells only. A symmetric 28-cell mask is supported after multi-frame review corrected two singleton carrier-edge marks.",
         },
     }
 
@@ -322,7 +357,7 @@ def evidence_record(row: dict, video: Path, destination: Path, site: Path, dicti
         "source_video": video.name, "ordinal": row["ordinal"], "frame": row["frame"], "time_s": row["time_s"],
         "source": row["source"], "provisional": row["provisional"], "reported_hamming": row["hamming_distance"],
         "assigned_hamming": len(differences), "confidence": row["confidence"] if row["confidence"] != "" else None,
-        "assignment_basis": row["assignment_basis"], "difference_cells": [f"({index // 9},{index % 9})" for index in differences],
+        "assignment_basis": row["assignment_basis"], "verification_status": row["verification_status"], "difference_cells": [f"({index // 9},{index % 9})" for index in differences],
         "image": destination.relative_to(site).as_posix(), "observed_fingerprint": observed, "canonical_fingerprint": canonical,
     }
 
@@ -394,6 +429,9 @@ def build_evidence(site: Path, archive: Path, video_dir: Path, analysis: Path, c
         shutil.rmtree(backup)
     if current.exists():
         current.replace(backup)
+    preserved_audits = backup / "audits"
+    if preserved_audits.is_dir():
+        shutil.copytree(preserved_audits, staging / "audits")
     staging.replace(current)
     shutil.rmtree(backup, ignore_errors=True)
     for record in records:
@@ -401,7 +439,7 @@ def build_evidence(site: Path, archive: Path, video_dir: Path, analysis: Path, c
     data_dir = site / "data"
     (data_dir / "evidence.json").write_text(json.dumps(records, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     (data_dir / "evidence.js").write_text(f"window.GLYPH_EVIDENCE={json.dumps(records, separators=(',', ':'), ensure_ascii=False)};\n", encoding="utf-8")
-    fields = ["evidence_id", "glyph_id", "recording", "broadcast", "source_video", "ordinal", "frame", "time_s", "source", "provisional", "reported_hamming", "assigned_hamming", "confidence", "assignment_basis", "difference_cells", "image", "observed_fingerprint", "canonical_fingerprint"]
+    fields = ["evidence_id", "glyph_id", "recording", "broadcast", "source_video", "ordinal", "frame", "time_s", "source", "provisional", "reported_hamming", "assigned_hamming", "confidence", "assignment_basis", "verification_status", "difference_cells", "image", "observed_fingerprint", "canonical_fingerprint"]
     csv_rows = [{**record, "difference_cells": " ".join(record["difference_cells"])} for record in records]
     write_csv(data_dir / "evidence_manifest.csv", csv_rows, fields)
 

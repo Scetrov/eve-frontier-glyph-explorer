@@ -9,6 +9,7 @@
 
   const glyphs = data.glyphs;
   const evidence = Array.isArray(window.GLYPH_EVIDENCE) ? window.GLYPH_EVIDENCE : [];
+  const cellAudits = Array.isArray(window.GLYPH_CELL_AUDIT?.audits) ? window.GLYPH_CELL_AUDIT.audits : [];
   const evidenceByGlyph = new Map();
   evidence.forEach(item => {
     const glyphId = Number(item.glyph_id);
@@ -21,6 +22,11 @@
     ids: String(row.glyph_ids).trim().split(/\s+/).filter(Boolean).map(Number)
   }));
   const sequenceByRecording = new Map(sequences.map(row => [row.recording, row]));
+  const carrierCells = new Set([
+    4, 12, 13, 14, 20, 21, 23, 24, 28, 29, 33, 34, 36, 37,
+    43, 44, 46, 47, 51, 52, 56, 57, 59, 60, 66, 67, 68, 76
+  ]);
+  const auditedCarrierCells = new Set([24, 47]);
 
   const rootStyle = getComputedStyle(document.documentElement);
   const palette = {
@@ -131,26 +137,25 @@
       context.fillRect(Math.round(x), Math.round(y), Math.max(1, Math.round(square)), Math.max(1, Math.round(square)));
     }
 
-    if (options.carrier) drawCarrier(context, size, margin, usable);
+    if (options.carrier) drawCarrierMask(context, size, margin, usable);
   }
 
-  function drawCarrier(context, size, margin, usable) {
+  function drawCarrierMask(context, size, margin, usable) {
     context.save();
-    context.strokeStyle = palette.frame;
-    context.lineWidth = Math.max(1, size / 180);
-    context.globalAlpha = 0.65;
-    const centre = size / 2;
-    const edge = margin + usable * 0.035;
-    context.beginPath();
-    context.moveTo(centre, edge);
-    context.lineTo(size - edge, centre);
-    context.lineTo(centre, size - edge);
-    context.lineTo(edge, centre);
-    context.closePath();
-    context.stroke();
-    context.beginPath();
-    context.arc(centre, centre, usable * 0.085, 0, Math.PI * 2);
-    context.stroke();
+    const pitch = usable / 9;
+    carrierCells.forEach(index => {
+      const row = Math.floor(index / 9);
+      const column = index % 9;
+      const x = margin + column * pitch;
+      const y = margin + row * pitch;
+      context.fillStyle = palette.cold;
+      context.globalAlpha = auditedCarrierCells.has(index) ? 0.22 : 0.12;
+      context.fillRect(x, y, pitch, pitch);
+      context.strokeStyle = auditedCarrierCells.has(index) ? palette.active : palette.frame;
+      context.globalAlpha = auditedCarrierCells.has(index) ? 0.8 : 0.35;
+      context.lineWidth = Math.max(1, size / 240);
+      context.strokeRect(x + 0.5, y + 0.5, pitch - 1, pitch - 1);
+    });
     context.restore();
   }
 
@@ -181,7 +186,7 @@
       else context.fillStyle = palette.inactive;
       context.fillRect(Math.round(x), Math.round(y), Math.max(1, Math.round(square)), Math.max(1, Math.round(square)));
     }
-    if (options.carrier) drawCarrier(context, size, margin, usable);
+    if (options.carrier) drawCarrierMask(context, size, margin, usable);
   }
 
   function renderStats() {
@@ -263,7 +268,9 @@
     if (!glyph) return;
     state.selectedId = glyph.id;
     elements.title.textContent = `Glyph #${glyph.id}`;
-    elements.quality.textContent = glyph.provisional_occurrences ? 'CANONICAL + NEW READS' : 'CANONICAL';
+    elements.quality.textContent = glyph.verification_status.includes('unverified')
+      ? 'CORPUS TAG / UNVERIFIED'
+      : glyph.provisional_occurrences ? 'CANONICAL + NEW READS' : 'CANONICAL';
     drawGlyph(elements.selectedCanvas, glyph, { size: 330, carrier: state.carrier });
     elements.selectedCanvas.setAttribute('aria-label', `Glyph ${glyph.id}, ${glyph.n_cells} active cells`);
 
@@ -335,11 +342,29 @@
     status.className = 'evidence-card-status';
     status.textContent = record.assigned_hamming
       ? `${record.assigned_hamming} CELL${record.assigned_hamming === 1 ? '' : 'S'} FROM ASSIGNED GLYPH`
-      : 'EXACT ASSIGNED PATTERN';
+      : record.verification_status || 'MATCHES CORPUS TAG';
     meta.append(source, reference, status);
     button.append(image, meta);
     button.addEventListener('click', () => openEvidence(record));
     return button;
+  }
+
+  function createAuditEvidenceCard(audit, source) {
+    const link = document.createElement('a');
+    link.className = 'evidence-card';
+    link.href = source.median_image;
+    link.target = '_blank';
+    link.rel = 'noopener';
+    link.setAttribute('aria-label', `${audit.cell} audit median from ${source.source_video}`);
+    const image = document.createElement('img');
+    image.src = source.median_image;
+    image.loading = 'lazy';
+    image.alt = `Seven-frame median for ${audit.cell} from ${source.source_video}`;
+    const meta = document.createElement('span');
+    meta.className = 'evidence-card-meta';
+    meta.innerHTML = `<strong>#${audit.glyph_id} · ${escapeText(source.source_video)}</strong><span>FRAMES ${source.frames[0]}–${source.frames.at(-1)} · SHA256 ${source.sha256.slice(0, 12)}…</span><span class="evidence-card-status">${escapeText(audit.verdict)} · SCORE ${Number(source.median_contrast).toFixed(4)}</span>`;
+    link.append(image, meta);
+    return link;
   }
 
   function openEvidence(record) {
@@ -356,9 +381,10 @@
       ['Frame reference', `frame ${record.frame} · glyph position ${record.ordinal}`],
       ['Timestamp', `${Number(record.time_s).toFixed(4)} seconds`],
       ['Assignment', record.assignment_basis],
+      ['Verification', record.verification_status || 'not independently verified'],
       ['Assigned Hamming', `${record.assigned_hamming} changed cells`],
       ['Differing cells', changed],
-      ['Evidence class', record.provisional ? 'provisional automatic read' : 'manual exact tag']
+      ['Evidence class', record.provisional ? 'provisional automatic read' : 'corpus manual tag']
     ].map(([label, value]) => `<div><span>${escapeText(label)}</span><strong>${escapeText(value)}</strong></div>`).join('');
     if (typeof elements.evidenceDialog.showModal === 'function') elements.evidenceDialog.showModal();
     else window.open(record.image, '_blank', 'noopener');
@@ -554,6 +580,8 @@
       button.title = `(${row},${column}) · ${value} canonical glyph${value === 1 ? '' : 's'}`;
       button.style.setProperty('--cell-strength', value ? String(0.13 + strength * 0.87) : '0');
       button.classList.toggle('heatmap-cell-empty', value === 0);
+      button.classList.toggle('heatmap-cell-carrier', carrierCells.has(index));
+      button.classList.toggle('heatmap-cell-audited', auditedCarrierCells.has(index));
       const count = document.createElement('strong');
       count.textContent = value;
       const coordinate = document.createElement('span');
@@ -580,6 +608,8 @@
     const row = Math.floor(index / 9);
     const column = index % 9;
     const matches = glyphs.filter(glyph => glyph.cell_indices.includes(index));
+    const auditRows = cellAudits.filter(audit => audit.cell === `(${row},${column})`);
+    const auditSources = auditRows.flatMap(audit => audit.sources.map(source => ({ audit, source })));
     const matchIds = new Set(matches.map(glyph => glyph.id));
     const records = evidence
       .filter(record => matchIds.has(Number(record.glyph_id)))
@@ -589,9 +619,9 @@
 
     elements.cellReview.hidden = false;
     elements.cellReviewTitle.textContent = `Cell (${row},${column})`;
-    elements.cellReviewSummary.textContent = `${matches.length} pattern${matches.length === 1 ? '' : 's'} · ${records.length} source frame${records.length === 1 ? '' : 's'}`;
-    elements.cellPatternCount.textContent = `${matches.length} glyph${matches.length === 1 ? '' : 's'}`;
-    elements.cellEvidenceCount.textContent = `${records.length} frame${records.length === 1 ? '' : 's'}`;
+    elements.cellReviewSummary.textContent = `${matches.length} active pattern${matches.length === 1 ? '' : 's'} · ${records.length} occurrence frame${records.length === 1 ? '' : 's'} · ${auditSources.length} audit median${auditSources.length === 1 ? '' : 's'}`;
+    elements.cellPatternCount.textContent = `${matches.length} active · ${auditRows.length} corrected`;
+    elements.cellEvidenceCount.textContent = `${records.length} frames · ${auditSources.length} medians`;
 
     const patternFragment = document.createDocumentFragment();
     matches.forEach(glyph => {
@@ -611,8 +641,23 @@
       drawGlyph(canvas, glyph, { size: 90, carrier: state.carrier });
       patternFragment.appendChild(button);
     });
+    auditRows.forEach(audit => {
+      const glyph = byId.get(Number(audit.glyph_id));
+      if (!glyph) return;
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'cell-pattern';
+      const canvas = document.createElement('canvas');
+      canvas.setAttribute('aria-hidden', 'true');
+      const label = document.createElement('span');
+      label.innerHTML = `<strong>#${glyph.id}</strong><small>${escapeText(audit.verdict)} · corrected tag</small>`;
+      button.append(canvas, label);
+      button.addEventListener('click', () => selectGlyph(glyph.id, true));
+      drawGlyph(canvas, glyph, { size: 90, carrier: true });
+      patternFragment.appendChild(button);
+    });
     elements.cellPatternList.replaceChildren(patternFragment);
-    if (!matches.length) {
+    if (!matches.length && !auditRows.length) {
       const empty = document.createElement('p');
       empty.className = 'cell-review-empty';
       empty.textContent = 'No canonical glyph activates this position. Review the carrier-mask hypothesis against source imagery before assigning payload meaning.';
@@ -623,8 +668,9 @@
     records.slice(0, state.cellEvidenceLimit).forEach(record => {
       evidenceFragment.appendChild(createEvidenceCard(record, byId.get(Number(record.glyph_id))));
     });
+    auditSources.forEach(({ audit, source }) => evidenceFragment.appendChild(createAuditEvidenceCard(audit, source)));
     elements.cellEvidenceList.replaceChildren(evidenceFragment);
-    if (!records.length) {
+    if (!records.length && !auditSources.length) {
       const empty = document.createElement('p');
       empty.className = 'cell-review-empty';
       empty.textContent = 'No frame evidence is associated with canonical patterns at this position.';

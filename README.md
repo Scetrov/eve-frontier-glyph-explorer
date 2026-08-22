@@ -17,10 +17,14 @@ No build step, package manager, server, API key, or database is required. The si
 - `data/catalogue.js` powers the explorer without a network request.
 - `data/catalogue.json` is the full machine-readable dataset.
 - `data/evidence.js` and `data/evidence_manifest.csv` map every matched occurrence to its actual source frame.
+- `data/source_integrity.json` publishes SHA-256 and FFprobe metadata for every available raw source without redistributing the media.
+- `data/disputed_cell_audit.json` records the registered multi-frame review of glyphs #130 and #140.
 - `evidence/` contains one 480×480 audit image for each of the 768 occurrence records.
 - The CSV files are downloadable from the Method section.
 
 Every evidence record names its source video, exact source-frame number, timestamp, matching basis, and canonical/observed Hamming distance. The 181 automatically extracted local-video occurrences are marked provisional. Canonical dictionary patterns and manual tags are derived from [QZRChedders/ArchiveInvest](https://github.com/QZRChedders/ArchiveInvest).
+
+Two singleton carrier-edge marks were corrected after seven-frame median review: `(2,6)` in glyph #130 was checked in two independently hashed E6C4-17 variants, and `(5,2)` in glyph #140 was checked in E6C4-35. The explorer retains stable glyph IDs and publishes the audit inputs/results.
 
 Frame numbers are relative to the exact filename in each evidence record. In particular, the `E6C2-1K` pattern CSV was tagged against `E6C2-1K zoomed.mp4`, not the longer plain `E6C2-1K.mp4` source.
 

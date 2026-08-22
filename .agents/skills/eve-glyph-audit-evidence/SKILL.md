@@ -22,10 +22,11 @@ Record the matched glyph ID, recording, broadcast, ordinal, frame, timestamp, so
 
 ## Verify the source file
 
-1. Resolve the exact manifest filename. Do not select a file by broadcast-prefix glob if multiple variants exist.
-2. Probe frame rate, duration, dimensions, and decoded frame count with FFprobe.
-3. Compare the metadata with the file used to create the pattern CSV or provisional row.
-4. List alternate files such as original, close-up, zoomed, crop, transcode, MOV, MP4, and WebM variants.
+1. Run `pipeline/inventory_sources.py --verify` against `data/source_integrity.json`. Stop the audit on any missing, size-mismatched, or SHA-256-mismatched input.
+2. Resolve the exact manifest filename and record its SHA-256 in the audit result. Do not select a file by broadcast-prefix glob if multiple variants exist.
+3. Probe frame rate, duration, dimensions, and decoded frame count with FFprobe.
+4. Compare the metadata with the file used to create the pattern CSV or provisional row.
+5. List alternate files such as original, close-up, zoomed, crop, transcode, MOV, MP4, and WebM variants. Hash every variant; matching names or visual similarity do not establish identity.
 
 Frame indices are zero-based FFmpeg decoded-frame indices. Extract the disputed frame without timestamp seeking:
 
@@ -57,13 +58,15 @@ Fix the earliest authoritative layer:
 
 Do not patch only the JPEG or only the manifest. Regenerate every occurrence for the affected recording when the source file changes. This prevents a mixture of timelines within one sequence.
 
+For a disputed cell, independently register the 9×9 lattice for each source variant and use multiple settled frames. Publish the sampled frame numbers, per-source SHA-256, registration geometry, a median image, quantitative score, threshold, and verdict. Keep stable glyph IDs when correcting a false cell unless an upstream ID migration is explicitly coordinated.
+
 ## Validate the correction
 
 - View the disputed frame after regeneration.
 - View the first, middle, and last frame of the affected recording.
 - Confirm all of that recording's manifest rows name one intended exact source, unless a documented per-occurrence exception is genuinely required.
 - Confirm all other recordings' evidence files are unchanged.
-- Run `python scripts/validate_repository.py` and JavaScript syntax checks.
+- Re-run the source integrity verifier, `python scripts/validate_repository.py`, and JavaScript syntax checks.
 - After deployment, download the live image with a cache-busting query and compare its SHA-256 with the committed file.
 
 Report the root cause, old and corrected source filenames, number of affected occurrences, frame-index convention, validation result, and any cells still requiring human judgement.

@@ -165,9 +165,50 @@ def main() -> int:
         if not image.is_file():
             fail(errors, f"Missing evidence image: {row['image']}")
 
-    committed_images = sorted((ROOT / "evidence").rglob("*.jpg"))
+    committed_images = sorted(path for path in (ROOT / "evidence").rglob("*.jpg") if "audits" not in path.parts)
     if len(committed_images) != len(evidence):
         fail(errors, "Committed evidence-image count differs from evidence records")
+
+    integrity = read_json(DATA / "source_integrity.json")
+    integrity_rows = integrity.get("entries", [])
+    if integrity.get("hash_algorithm") != "SHA-256" or not integrity_rows:
+        fail(errors, "Source integrity manifest is empty or does not declare SHA-256")
+    identities = [(row.get("source_set"), row.get("filename")) for row in integrity_rows]
+    if len(identities) != len(set(identities)):
+        fail(errors, "Source integrity identities are not unique")
+    sha_pattern = re.compile(r"^[0-9a-f]{64}$")
+    for row in integrity_rows:
+        if not sha_pattern.fullmatch(str(row.get("sha256", ""))):
+            fail(errors, f"Invalid source SHA-256: {row.get('source_set')}/{row.get('filename')}")
+        if not isinstance(row.get("bytes"), int) or row["bytes"] <= 0:
+            fail(errors, f"Invalid source byte count: {row.get('source_set')}/{row.get('filename')}")
+    integrity_csv = read_csv(DATA / "source_integrity.csv")
+    if len(integrity_csv) != len(integrity_rows):
+        fail(errors, "Source integrity JSON/CSV counts differ")
+    available_names = {row.get("filename") for row in integrity_rows}
+    unknown_source_videos = sorted({row["source_video"] for row in evidence} - available_names)
+    if unknown_source_videos:
+        fail(errors, f"Evidence filenames absent from source integrity manifest: {unknown_source_videos}")
+
+    audit = read_json(DATA / "disputed_cell_audit.json")
+    audit_js = read_js_payload(DATA / "disputed_cell_audit.js", "GLYPH_CELL_AUDIT")
+    if audit_js != audit:
+        fail(errors, "disputed_cell_audit.js payload differs from disputed_cell_audit.json")
+    if {row.get("cell") for row in audit.get("audits", [])} != {"(2,6)", "(5,2)"}:
+        fail(errors, "Disputed-cell audit must cover (2,6) and (5,2)")
+    audit_csv = read_csv(DATA / "disputed_cell_audit.csv")
+    audit_source_count = sum(len(row.get("sources", [])) for row in audit.get("audits", []))
+    if len(audit_csv) != audit_source_count:
+        fail(errors, "Disputed-cell audit JSON/CSV source counts differ")
+    integrity_hashes = {(row["source_set"], row["filename"]): row["sha256"] for row in integrity_rows}
+    for row in audit.get("audits", []):
+        for source in row.get("sources", []):
+            key = (source.get("source_set"), source.get("source_video"))
+            if integrity_hashes.get(key) != source.get("sha256"):
+                fail(errors, f"Audit source hash differs from integrity manifest: {key}")
+            image = ROOT / source.get("median_image", "")
+            if not image.is_file():
+                fail(errors, f"Missing disputed-cell median image: {source.get('median_image')}")
 
     e6c2_1k_sources = {
         row["source_video"] for row in evidence if row["recording"] == "E6C2-1K"
@@ -180,7 +221,7 @@ def main() -> int:
         fail(errors, "Evidence manifest order/IDs differ from evidence.json")
 
     index_text = (ROOT / "index.html").read_text(encoding="utf-8")
-    for reference in ("data/catalogue.js", "data/evidence.js", "assets/app.js"):
+    for reference in ("data/catalogue.js", "data/evidence.js", "data/disputed_cell_audit.js", "assets/app.js"):
         if reference not in index_text:
             fail(errors, f"index.html does not reference {reference}")
     for element_id in ("cell-heatmap", "cell-review", "cell-pattern-list", "cell-evidence-list"):
@@ -216,6 +257,7 @@ def main() -> int:
     pipeline_files = (
         "pipeline/corpus.json", "pipeline/requirements.txt", "pipeline/README.md",
         "pipeline/common.py", "pipeline/analyze_sources.py", "pipeline/build_site.py", "pipeline/run_pipeline.py",
+        "pipeline/inventory_sources.py", "pipeline/audit_disputed_cells.py",
     )
     for relative in pipeline_files:
         if not (ROOT / relative).is_file():

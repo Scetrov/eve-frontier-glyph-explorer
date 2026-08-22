@@ -3,7 +3,8 @@
 ## Canonical glyph research
 
 - **George Peralta / QZRChedders** — creator and maintainer of [QZRChedders/ArchiveInvest](https://github.com/QZRChedders/ArchiveInvest), including the collected source videos, manual 9×9 pattern tags, canonical glyph dictionary, transcripts, cluster analysis, and grid-tagging interface. The repository history available during this build lists `QZRChedders <george.ej.peralta@gmail.com>` as its author.
-- **Locally supplied Cycle 4–6 recordings** — eight additional captures sampled with FFmpeg. Their 181 classifications are explicitly marked provisional in the explorer.
+- **Locally supplied recordings** — the eight configured Cycle 4–6 captures contribute 181 provisional classifications. Additional locally available variants and earlier-cycle files are identity-recorded in the published SHA-256 manifest but do not silently enter the catalogue.
+- **E6C4-17 source comparison** — the ArchiveInvest MP4 and independently supplied WebM were both used for the registered seven-frame audit of glyph #130. Their exact hashes and media metadata are published in `data/source_integrity.json`.
 
 ## Supporting datasets
 

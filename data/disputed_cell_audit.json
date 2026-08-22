@@ -1,0 +1,132 @@
+{
+  "audit_version": 1,
+  "method": "Independent per-video 9\u00d79 lattice registration; seven settled frames; pixelwise median; central-aperture contrast against each cell's bright reference.",
+  "active_contrast_threshold": 0.35,
+  "conclusion": "Both disputed cells are carrier positions. Removing the two singleton marks makes the empirical 26-cell mask converge with the symmetric 28-cell mask.",
+  "audits": [
+    {
+      "glyph_id": 130,
+      "broadcast": "E6C4-17",
+      "cell": "(2,6)",
+      "verdict": "carrier / inactive",
+      "basis": "All registered seven-frame medians show no central dark payload aperture; contrast stays below the 0.35 active threshold.",
+      "sources": [
+        {
+          "source_set": "archiveinvest",
+          "source_video": "E6C4-17.mp4",
+          "sha256": "9e0ebfe7da54d1c29877fab85d4996c6501bada2c384b0bab20039059e91e26d",
+          "frames": [
+            884,
+            885,
+            886,
+            887,
+            888,
+            889,
+            890
+          ],
+          "registration": {
+            "center_x": 242.0,
+            "center_y": 289.0,
+            "pitch": 32.0
+          },
+          "per_frame_contrast": [
+            0.0372,
+            0.0372,
+            0.0429,
+            0.0423,
+            0.0476,
+            0.0476,
+            0.0476
+          ],
+          "median_contrast": 0.0422,
+          "median_image": "evidence/audits/g130_archiveinvest_E6C4-17_f884-890_median.jpg"
+        },
+        {
+          "source_set": "downloaded",
+          "source_video": "E6C4-17.webm",
+          "sha256": "aad23c61f2504b9033f195a95b0c848a758c1eaf9e51e5c490f99eb246b53482",
+          "frames": [
+            927,
+            928,
+            929,
+            930,
+            931,
+            932,
+            933
+          ],
+          "registration": {
+            "center_x": 241.0,
+            "center_y": 236.0,
+            "pitch": 41.0
+          },
+          "per_frame_contrast": [
+            0.0648,
+            0.0649,
+            0.0649,
+            0.0657,
+            0.0703,
+            0.0703,
+            0.0703
+          ],
+          "median_contrast": 0.0649,
+          "median_image": "evidence/audits/g130_downloaded_E6C4-17_f927-933_median.jpg"
+        }
+      ]
+    },
+    {
+      "glyph_id": 140,
+      "broadcast": "E6C4-35",
+      "cell": "(5,2)",
+      "verdict": "carrier / inactive",
+      "basis": "All registered seven-frame medians show no central dark payload aperture; contrast stays below the 0.35 active threshold.",
+      "sources": [
+        {
+          "source_set": "archiveinvest",
+          "source_video": "E6C4-35.mp4",
+          "sha256": "1d94b5df7be3f4b04b91862b00f0ffd93d9860bdcc6c9c54435fa6544fa110b2",
+          "frames": [
+            280,
+            281,
+            282,
+            283,
+            284,
+            285,
+            286
+          ],
+          "registration": {
+            "center_x": 236.0,
+            "center_y": 241.0,
+            "pitch": 43.0
+          },
+          "per_frame_contrast": [
+            0.0467,
+            0.0467,
+            0.0467,
+            0.0467,
+            0.0467,
+            0.0467,
+            0.0467
+          ],
+          "median_contrast": 0.0467,
+          "median_image": "evidence/audits/g140_archiveinvest_E6C4-35_f280-286_median.jpg"
+        }
+      ]
+    }
+  ],
+  "mask_hypotheses": [
+    {
+      "name": "legacy empirical 26-cell",
+      "excluded_cells": 26,
+      "payload_positions": 55,
+      "active_disputed_cells_after_audit": 0,
+      "catalogue_glyphs": 146
+    },
+    {
+      "name": "symmetric 28-cell",
+      "excluded_cells": 28,
+      "payload_positions": 53,
+      "active_disputed_cells_after_audit": 0,
+      "catalogue_glyphs": 146
+    }
+  ]
+}
