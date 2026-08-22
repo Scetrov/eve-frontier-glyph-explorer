@@ -14,7 +14,7 @@
 - [EVE Frontier official site](https://evefrontier.com/)
 - [EVE Frontier official media archive](https://evefrontier.com/en/media)
 - [EVE Frontier official FAQ](https://evefrontier.com/en/faq)
-- EVE Frontier, its universe, broadcasts, names, artwork, and associated marks belong to their respective owners, including CCP Games / Fenris Creations. This is an unofficial community research tool.
+- EVE Frontier, its universe, broadcasts, names, artwork, and associated marks belong to their respective owners, including Fenris Creations. The Archive broadcasts appear to form an intentional puzzle; this project thanks the Fenris Creations team for creating such a fun mystery to investigate. This remains an unofficial community interpretation and research tool.
 
 ## Tools and decoding references
 

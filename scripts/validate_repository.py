@@ -186,6 +186,11 @@ def main() -> int:
     for element_id in ("cell-heatmap", "cell-review", "cell-pattern-list", "cell-evidence-list"):
         if f'id="{element_id}"' not in index_text:
             fail(errors, f"index.html is missing Cell Activation element #{element_id}")
+    credits_text = (ROOT / "credits.html").read_text(encoding="utf-8")
+    if "https://fenris.com/products" not in index_text or "https://fenris.com/products" not in credits_text:
+        fail(errors, "Fenris Creations puzzle credit is missing from the explorer or credits page")
+    if "fun mystery to investigate" not in index_text or "fun mystery to investigate" not in credits_text:
+        fail(errors, "Fenris Creations puzzle acknowledgement is incomplete")
 
     app_text = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
     for behavior in ("selectCell", "renderCellReview", "createEvidenceCard"):
