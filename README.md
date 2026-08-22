@@ -4,7 +4,7 @@ An unofficial, static explorer for the 9×9 glyph sequences found in EVE Frontie
 
 Source, release history, and issue reporting live at [Scetrov/eve-frontier-glyph-explorer](https://github.com/Scetrov/eve-frontier-glyph-explorer). The explorer supplies prefilled GitHub Issue links for selected glyphs, individual frame evidence, and reviewed cells; use them to preserve the exact context needed to reproduce a concern.
 
-The published [Cycle reference](cycles.html) records supplied UTC start/end dates for Phases 1–5 and Era 5–6 cycles. Its `data/cycles.json` source intentionally preserves the supplied E6C2/E6C3 overlap and duplicated E6C6 short name rather than normalising them.
+The published [Cycle reference](cycles.html) records UTC start/end dates for Phases 1–5 and Era 5–6 cycles. Its `data/cycles.json` source corrects E6C3 and E6C6 to confirmed noon UTC cutovers while retaining the supplied duplicate E6C6 short name for review.
 
 ## Publish with GitHub Pages
 
@@ -23,7 +23,7 @@ No build step, package manager, server, API key, or database is required. The si
 - `data/evidence.js` and `data/evidence_manifest.csv` map every matched occurrence to its actual source frame.
 - `data/source_integrity.json` publishes SHA-256 and FFprobe metadata for every available raw source without redistributing the media.
 - `data/disputed_cell_audit.json` records the registered multi-frame review of glyphs #130 and #140.
-- `data/cycles.json` is the supplied, verbatim UTC reference for phases and cycles; `data/cycles.js` lets the standalone reference page work without fetch.
+- `data/cycles.json` is the reviewed UTC reference for phases and cycles; `data/cycles.js` lets the standalone reference page work without fetch.
 - `evidence/` contains one 480×480 audit image for each of the 768 occurrence records.
 - The CSV files are downloadable from the Method section.
 
@@ -39,7 +39,7 @@ EVE Frontier and associated marks belong to their respective owners. This commun
 
 Start with [AGENTS.md](AGENTS.md) for the repository architecture, data contracts, build order, validation gates, provenance rules, and release process. Reusable agent workflows live in [`.agents/skills/`](.agents/skills/) and follow the [Agent Skills](https://agentskills.io/) format used by [skills.sh](https://skills.sh/).
 
-The complete raw-video-to-site workflow is included under [`pipeline/`](pipeline/README.md). A fork can supply the uncommitted source videos, check exact input resolution, and rebuild all catalogue, atlas, occurrence, and frame-evidence artifacts with one command:
+The complete raw-video-to-site workflow is included under [`pipeline/`](pipeline/README.md). A fork can supply the uncommitted source videos, check exact input resolution, and rebuild all catalogue, codex, occurrence, and frame-evidence artifacts with one command:
 
 ```powershell
 python -m pip install -r pipeline\requirements.txt

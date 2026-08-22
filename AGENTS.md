@@ -31,12 +31,12 @@ The explorer is an unofficial research tool. Do not present a speculative decodi
 | --- | --- | --- |
 | `index.html` | Main explorer shell and accessible dialog markup | Keep it static and usable under a GitHub project-pages subpath. |
 | `credits.html` | Human-readable credits and source context | Update whenever a new contributor, dataset, or material source is added. |
-| `cycles.html` | Human-readable Phase and Era/Cycle UTC reference | Preserve supplied timestamps and anomalies verbatim; never silently normalise boundaries or short codes. |
+| `cycles.html` | Human-readable Phase and Era/Cycle UTC reference | Preserve reviewed timestamps; record the evidence for any corrections and never silently alter short codes. |
 | `assets/app.js` | Filtering, rendering, glyph canvases, evidence gallery, modal behavior | Uses globals from generated `data/*.js`; no bundler is involved. |
 | `assets/cycles.js` | Renders the standalone cycle-date reference table | Uses `window.CYCLE_DATA`; show supplied anomalies as review notes. |
 | `assets/release.js` | Stamps the deployed commit into shared footers | Fetches release metadata only when a `#release-commit` element exists. |
 | `assets/styles.css` | EVE Frontier-inspired visual system and responsive layout | Preserve focus states, readable contrast, and mobile evidence layouts. |
-| `assets/glyph-atlas.png` | Generated overview of canonical glyphs | Regenerate after canonical catalogue changes. |
+| `assets/glyph-atlas.png` | Generated overview image for the glyph codex | Keep the established filename for compatibility; regenerate after canonical catalogue changes. |
 | `data/catalogue.json` | Readable canonical catalogue, statistics, sequences, and analysis | Authoritative site data representation. |
 | `data/catalogue.js` | Compact browser wrapper for `catalogue.json` | Must equal `window.GLYPH_DATA=<catalogue JSON>;`. |
 | `data/glyph_catalogue.csv` | Flat canonical-glyph export | Generated from the same catalogue build. |
@@ -47,14 +47,14 @@ The explorer is an unofficial research tool. Do not present a speculative decodi
 | `data/evidence_manifest.csv` | Downloadable flat evidence manifest | Must describe the exact source filename and frame. |
 | `data/source_integrity.json`, `.csv` | Published source identity, SHA-256, and media metadata | Contains logical filenames, never private absolute paths. |
 | `data/disputed_cell_audit.json`, `.csv` | Reproducible multi-frame audit of carrier-edge cells | Records hashes, frames, registration, scores, thresholds, and verdicts. |
-| `data/cycles.json`, `.js` | Supplied Phase and Era/Cycle UTC date reference | JS wrapper must equal JSON exactly; duplicate supplied short names are valid data. |
+| `data/cycles.json`, `.js` | Reviewed Phase and Era/Cycle UTC date reference | JS wrapper must equal JSON exactly; duplicate supplied short names are valid data. |
 | `evidence/<recording-slug>/` | 480×480 JPEG audit frames | Filename form is `gNNN_fNNNNNN.jpg`. Paths are unique per occurrence. |
 | `evidence/audits/` | Multi-frame median audit images | Derived review artifacts, not additional occurrence records. |
 | `scripts/validate_repository.py` | Dependency-free structural/data validator | Run before every commit that touches data, evidence, or skills. |
 | `pipeline/corpus.json` | Exact source registry, sampling intervals, overrides, and corrections | Treat filename/frame mappings as reviewed data. |
 | `pipeline/run_pipeline.py` | End-to-end input check, analysis, generation, and validation | This is the supported rebuild entry point. |
 | `pipeline/analyze_sources.py` | FFmpeg frame extraction and provisional 9×9 classification | Review contact sheets and high-distance reads. |
-| `pipeline/build_site.py` | Catalogue derivation, atlas rendering, and occurrence evidence generation | Regenerates the full artifact contract together. |
+| `pipeline/build_site.py` | Catalogue derivation, codex rendering, and occurrence evidence generation | Regenerates the full artifact contract together. |
 | `pipeline/inventory_sources.py` | Generate/verify deterministic SHA-256 and FFprobe manifests | Run before any media analysis. |
 | `pipeline/audit_disputed_cells.py` | Registered seven-frame carrier-edge re-audit | Requires a verified integrity manifest. |
 | `pipeline/README.md` | Fresh-fork setup and worked source-addition examples | Keep commands executable when pipeline behavior changes. |
@@ -115,7 +115,7 @@ The supported pipeline stages are:
 2. `pipeline/run_pipeline.py` validates ArchiveInvest inputs and every exact source filename declared by `pipeline/corpus.json`.
 3. `pipeline/analyze_sources.py` extracts configured settled frames, fits the 9×9 grid, and retains provisional fingerprints, nearest IDs, distances, confidence, contact sheets, and geometry.
 4. `pipeline/build_site.py` combines manual and provisional rows and derives catalogue, sequence, transition, repeated-block, near-twin, symmetry, and corpus data.
-5. The same builder creates the glyph atlas and one unmasked evidence crop per occurrence from its exact source file.
+5. The same builder creates the glyph codex overview and one unmasked evidence crop per occurrence from its exact source file.
 6. JSON, JavaScript, and CSV outputs are written from the same in-memory records, then `scripts/validate_repository.py` verifies their joins and filesystem coverage.
 
 Fresh-fork setup, exact commands, expected current counts, and worked source additions are in `pipeline/README.md`. The standard invocation is:
@@ -173,7 +173,7 @@ The validator checks structural invariants, not semantic correctness. A passing 
 - Load only the evidence for the selected glyph in the interface; do not eagerly render all 768 images.
 - Keep generated JSON readable and generated JavaScript compact.
 - Do not hand-edit `catalogue.js`, `evidence.js`, or `cycles.js` independently of their JSON counterparts.
-- Treat `data/cycles.json` as a supplied temporal reference, not a derived timeline. Preserve timestamp precision, offsets, overlapping boundaries, and duplicate codes; surface irregularities in the page notes and validator rather than correcting them.
+- Treat `data/cycles.json` as a reviewed temporal reference, not a derived timeline. Preserve timestamp precision, offsets, and duplicate codes. Correct a boundary only when supported by operational evidence, document the basis in the source note/page, and enforce the result in the validator.
 
 ## Provenance and source additions
 

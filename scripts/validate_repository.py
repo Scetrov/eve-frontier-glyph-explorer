@@ -87,8 +87,12 @@ def main() -> int:
             fail(errors, "Cycle reference must preserve the supplied duplicated E6C6 short name")
         if by_name.get("Era 6, Cycle 2", {}).get("EndDateTime") != "2025-10-15T11:59:59+00:00":
             fail(errors, "Cycle reference must preserve the supplied E6C2 end timestamp")
-        if by_name.get("Era 6, Cycle 3", {}).get("StartDateTime") != "2025-10-15T11:00:00+00:00":
-            fail(errors, "Cycle reference must preserve the supplied E6C3 start timestamp")
+        if by_name.get("Era 6, Cycle 3", {}).get("StartDateTime") != "2025-10-15T12:00:00+00:00":
+            fail(errors, "Cycle reference must preserve the reviewed noon UTC E6C3 start timestamp")
+        if by_name.get("Era 6, Cycle 6", {}).get("StartDateTime") != "2026-06-24T12:00:00+00:00":
+            fail(errors, "Cycle reference must preserve the reviewed noon UTC E6C6 start timestamp")
+        if by_name.get("Era 6, Cycle 5", {}).get("EndDateTime") != "2026-06-24T11:59:59+00:00":
+            fail(errors, "Cycle reference must preserve the reviewed E6C5 pre-cutover end timestamp")
 
     glyphs = catalogue.get("glyphs", [])
     glyph_ids = [int(glyph["id"]) for glyph in glyphs]
