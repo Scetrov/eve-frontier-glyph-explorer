@@ -220,6 +220,12 @@
       const classes = ['evidence-overlay-cell'];
       if (candidate) {
         classes.push('evidence-overlay-candidate');
+        if (!excluded && positive) {
+          classes.push('evidence-overlay-manual-positive');
+          positiveCount += 1;
+        } else if (!excluded) {
+          negativeCount += 1;
+        }
       } else if (excluded) classes.push('evidence-overlay-excluded');
       else if (positive) {
         classes.push('evidence-overlay-positive');
@@ -238,7 +244,7 @@
       }));
     }
     svg.replaceChildren(fragment);
-    svg.setAttribute('aria-label', candidate ? `Pending independent grid-line candidate; ${registration}.` : `${positiveCount} observed positive payload cells, ${negativeCount} observed negative payload cells, ${differenceCount} differing payload cells; ${registration}.`);
+    svg.setAttribute('aria-label', candidate ? `Pending independent grid-line candidate with ${positiveCount} manual-tag positive cells; ${registration}.` : `${positiveCount} observed positive payload cells, ${negativeCount} observed negative payload cells, ${differenceCount} differing payload cells; ${registration}.`);
   }
 
   function createEvidenceImageStage(record) {
@@ -518,7 +524,7 @@
     const registration = overlayGeometry(record)?.registration === 'detector-ring-fit'
       ? 'detector-ring registration'
       : overlayGeometry(record)?.registration === 'independent-grid-line-candidate-v1'
-        ? 'pending independent grid-line candidate; lattice only, not an approved payload overlay'
+        ? 'pending independent grid-line candidate: pale dashes are geometry; bright orange marks are manual corpus-tag values, not detector reads'
         : 'no valid image registration';
     elements.evidenceDialogSourceCaption.textContent = Number.isFinite(confidence)
       ? `Observed-state QA overlay · orange: positive · pale dashed: negative · hatched: excluded carrier · detector separation score ${confidence.toFixed(4)} (not a probability) · ${registration}`
