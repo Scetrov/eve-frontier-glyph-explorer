@@ -9,7 +9,6 @@ from collections import Counter, defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
-import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
 from common import (
@@ -150,7 +149,7 @@ def load_inputs(config: dict, archive: Path, automatic_csv: Path) -> tuple[dict[
                 "frame": int(float(row.get("frame") or 0)), "time_s": round(float(row.get("time_s") or 0), 4),
                 "source": "ArchiveInvest manual", "provisional": False, "hamming_distance": distance,
                 "confidence": "", "assignment_basis": basis, "verification_status": verification, "observed_fingerprint": fingerprint,
-                "overlay_center_x": None, "overlay_center_y": None, "overlay_pitch": None, "overlay_registration": None,
+                "overlay_center_x": None, "overlay_center_y": None, "overlay_pitch": None, "overlay_registration": "unavailable",
             })
 
     corrections = config.get("context_corrections", {})
@@ -354,55 +353,7 @@ def write_catalogue(site: Path, data: dict, occurrences: list[dict]) -> None:
     render_atlas(data["glyphs"], site / "assets" / "glyph-atlas.png")
 
 
-def image_overlay_geometry(image_path: Path) -> dict[str, float | str]:
-    """Fit the 9x9 cell lattice to a final evidence crop without consulting its tag.
-
-    Each cell retains a visible horizontal and vertical border even when its central
-    aperture changes. Maximising edge energy at those predicted borders therefore
-    gives a reproducible visual registration, including for manual corpus tags that
-    have no detector geometry in their source CSV.
-    """
-    with Image.open(image_path) as image:
-        gray = np.asarray(image.convert("L"), dtype=np.float32)
-    if gray.shape != (480, 480):
-        raise ValueError(f"Expected a 480x480 evidence crop, got {gray.shape} at {image_path}")
-
-    # The source crops use a common, near-centred carrier treatment. Constraining
-    # the fit to the observed 28–34 px payload-cell band prevents a large diamond
-    # edge or UI texture from being mistaken for a cell border in sparse frames.
-    edge_x = np.abs(np.diff(gray, axis=1))
-    edge_y = np.abs(np.diff(gray, axis=0))
-    projection_x = edge_x[105:375].mean(axis=0)
-    projection_y = edge_y[:, 105:375].mean(axis=1)
-    offsets = np.array([value for cell in range(9) for value in (cell - 4.40, cell - 3.60)], dtype=np.float32)
-    pitches = np.arange(28.0, 34.01, 0.25)
-    centres = np.arange(215.0, 265.01, 0.5)
-
-    def fit_axis(projection: np.ndarray, allowed_pitches: np.ndarray) -> tuple[float, float]:
-        candidates: list[tuple[float, float, float]] = []
-        for pitch in allowed_pitches:
-            positions = centres[:, None] + offsets[None, :] * pitch
-            indices = np.clip(np.rint(positions).astype(np.int32), 0, len(projection) - 1)
-            scores = projection[indices].mean(axis=1)
-            best = int(np.argmax(scores))
-            candidates.append((float(scores[best]), float(pitch), float(centres[best])))
-        _, pitch, centre = max(candidates)
-        return pitch, centre
-
-    pitch_x, _ = fit_axis(projection_x, pitches)
-    pitch_y, _ = fit_axis(projection_y, pitches)
-    pitch = round((pitch_x + pitch_y) / 2, 4)
-    _, center_x = fit_axis(projection_x, np.array([pitch]))
-    _, center_y = fit_axis(projection_y, np.array([pitch]))
-    return {
-        "overlay_center_x": round(center_x, 4),
-        "overlay_center_y": round(center_y, 4),
-        "overlay_pitch": pitch,
-        "overlay_registration": "image-edge-fit",
-    }
-
-
-def evidence_record(row: dict, video: Path, destination: Path, site: Path, dictionary: dict[int, dict], overlay: dict | None = None) -> dict:
+def evidence_record(row: dict, video: Path, destination: Path, site: Path, dictionary: dict[int, dict]) -> dict:
     canonical, observed = dictionary[row["glyph_id"]]["fingerprint"], row["observed_fingerprint"]
     differences = [index for index, (left, right) in enumerate(zip(canonical, observed)) if left != right]
     return {
@@ -411,8 +362,8 @@ def evidence_record(row: dict, video: Path, destination: Path, site: Path, dicti
         "source_video": video.name, "ordinal": row["ordinal"], "frame": row["frame"], "time_s": row["time_s"],
         "source": row["source"], "provisional": row["provisional"], "reported_hamming": row["hamming_distance"],
         "assigned_hamming": len(differences), "confidence": row["confidence"] if row["confidence"] != "" else None,
-        "overlay_center_x": (overlay or row).get("overlay_center_x"), "overlay_center_y": (overlay or row).get("overlay_center_y"), "overlay_pitch": (overlay or row).get("overlay_pitch"),
-        "overlay_registration": (overlay or row).get("overlay_registration"),
+        "overlay_center_x": row.get("overlay_center_x"), "overlay_center_y": row.get("overlay_center_y"), "overlay_pitch": row.get("overlay_pitch"),
+        "overlay_registration": row.get("overlay_registration"),
         "assignment_basis": row["assignment_basis"], "verification_status": row["verification_status"], "difference_cells": [f"({index // 9},{index % 9})" for index in differences],
         "image": destination.relative_to(site).as_posix(), "observed_fingerprint": observed, "canonical_fingerprint": canonical,
     }
@@ -435,7 +386,7 @@ def extract_manual(recording: str, rows: list[dict], archive: Path, config: dict
         for row in rows:
             destination = output / f"g{row['ordinal']:03d}_f{row['frame']:06d}.jpg"
             shutil.copy2(source_by_frame[row["frame"]], destination)
-            records.append(evidence_record(row, video, destination, site, dictionary, image_overlay_geometry(destination)))
+            records.append(evidence_record(row, video, destination, site, dictionary))
         return records
 
 

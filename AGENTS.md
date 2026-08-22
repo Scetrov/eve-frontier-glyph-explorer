@@ -104,7 +104,7 @@ Every occurrence has exactly one evidence record. It repeats the occurrence iden
 - a unique relative `image` path;
 - canonical and observed fingerprints.
 
-Every evidence record retains `overlay_center_x`, `overlay_center_y`, and `overlay_pitch` in the 480×480 crop coordinate space, plus `overlay_registration`. Provisional frames retain the detector's `detector-ring-fit` geometry. Manual corpus frames use a reproducible `image-edge-fit` on their final evidence crop; it must be labelled as image registration, never detector output or a probability. Do not substitute a nominal centred grid when geometry is absent. `confidence` is a detector separation score, not a calibrated probability, and must be labelled accordingly.
+Every evidence record retains `overlay_center_x`, `overlay_center_y`, and `overlay_pitch` in the 480×480 crop coordinate space, plus `overlay_registration`. Provisional frames retain the detector's `detector-ring-fit` geometry. Manual corpus tags currently have `overlay_registration: unavailable`: their source CSVs do not record detector positions. Do not reconstruct manual geometry from a derived crop or substitute a nominal centred grid. Add a manual overlay only after a source-frame analysis emits reviewable coordinates, a fit metric, and its source identity. `confidence` is a detector separation score, not a calibrated probability, and must be labelled accordingly.
 
 The image is an audit artifact, not the source of truth for the structured fingerprint. If the image and tag disagree, flag the record for review; do not edit the image to resemble the tag.
 

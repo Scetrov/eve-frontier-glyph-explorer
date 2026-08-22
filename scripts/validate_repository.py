@@ -217,15 +217,16 @@ def main() -> int:
         if not row.get("source_video"):
             fail(errors, f"{row['evidence_id']} has no exact source filename")
         geometry = [row.get("overlay_center_x"), row.get("overlay_center_y"), row.get("overlay_pitch")]
-        if not all(isinstance(value, (int, float)) and value > 0 for value in geometry):
-            fail(errors, f"{row['evidence_id']} has no QA-overlay geometry")
         registration = row.get("overlay_registration")
-        if registration not in {"detector-ring-fit", "image-edge-fit"}:
+        if registration not in {"detector-ring-fit", "unavailable"}:
             fail(errors, f"{row['evidence_id']} has an invalid QA-overlay registration method")
-        if row.get("provisional") and registration != "detector-ring-fit":
-            fail(errors, f"{row['evidence_id']} provisional evidence must retain detector-ring registration")
-        if not row.get("provisional") and registration != "image-edge-fit":
-            fail(errors, f"{row['evidence_id']} manual evidence must use image-edge registration")
+        if row.get("provisional"):
+            if not all(isinstance(value, (int, float)) and value > 0 for value in geometry):
+                fail(errors, f"{row['evidence_id']} has no detector QA-overlay geometry")
+            if registration != "detector-ring-fit":
+                fail(errors, f"{row['evidence_id']} provisional evidence must retain detector-ring registration")
+        elif any(value is not None for value in geometry) or registration != "unavailable":
+            fail(errors, f"{row['evidence_id']} manual evidence must not claim unrecorded QA-overlay geometry")
         image = ROOT / row["image"]
         if not image.is_file():
             fail(errors, f"Missing evidence image: {row['image']}")

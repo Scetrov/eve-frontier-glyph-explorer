@@ -9,9 +9,9 @@ This directory contains the complete path from raw, locally held source videos t
 1. validates every manual and provisional input and resolves each frame index to one exact filename;
 2. uses FFmpeg to extract configured settled frames and classify their 9×9 payloads;
 3. merges ArchiveInvest manual tags with provisional reads, derives statistics/sequences, and renders the atlas;
-4. extracts one 480×480 evidence image per occurrence, fits its QA-overlay registration, and runs the repository validator.
+4. extracts one 480×480 evidence image per occurrence and runs the repository validator.
 
-Manual ArchiveInvest tags remain canonical corpus evidence. Automatically read captures remain explicitly provisional. Contextual corrections and exact-file overrides are visible in [`corpus.json`](corpus.json). Automatic evidence retains detector-ring geometry; manual evidence derives its overlay from the visible cell edges in the final crop, so it is an auditable registration aid rather than a detector reading.
+Manual ArchiveInvest tags remain canonical corpus evidence. Automatically read captures remain explicitly provisional. Contextual corrections and exact-file overrides are visible in [`corpus.json`](corpus.json). Automatic evidence retains detector-ring geometry. Manual tags have no published detector coordinates, so their QA overlays remain unavailable until a source-frame analysis records independently reviewable geometry; never infer it from the final JPEG.
 
 `data/source_integrity.json` publishes the SHA-256 and media identity of every locally available source without exposing local paths or redistributing raw media. Analysis must start with integrity verification.
 
