@@ -17744,7 +17744,7 @@
       "source": "provisional FFmpeg read",
       "mean_hamming": 1.038,
       "uncertain_gt2": 1,
-      "glyph_ids": "134 128 117 118 119 120 121 122 122 123 124 126 112 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52"
+      "glyph_ids": "117 118 119 120 121 122 123 124 125 126 112 38 39 131 41 42 43 44 45 46 47 48 49 50 51 52"
     },
     {
       "recording": "E6C4-30",
@@ -17766,7 +17766,7 @@
       "source": "provisional FFmpeg read",
       "mean_hamming": 1.6,
       "uncertain_gt2": 5,
-      "glyph_ids": "134 128 117 118 118 119 120 121 122 123 124 125 126 112 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52"
+      "glyph_ids": "67 67 120 121 122 123 124 125 126 112 38 39 40 41 42 43 44 45 46 47 48 49 50 51 133"
     },
     {
       "recording": "E6C4-35",
@@ -18368,7 +18368,7 @@
     35
   ],
   "notes": {
-    "provisional": "Eight local captures were classified automatically; E6C5-13 glyph 3 was corrected to #44 from repeated-sequence context. Two local captures duplicate logical broadcast labels already in ArchiveInvest and remain separate records.",
+    "provisional": "Configured local captures were classified automatically; contextual corrections are declared in pipeline/corpus.json. Duplicate logical broadcasts remain separate recordings.",
     "carrier": "The atlas shows payload cells only. The large diamond and black centre holes are carrier/registration graphics."
   }
 }

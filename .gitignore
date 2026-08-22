@@ -1,0 +1,5 @@
+.pipeline-work/
+.venv/
+source-videos/
+__pycache__/
+*.py[cod]

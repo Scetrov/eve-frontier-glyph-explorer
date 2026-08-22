@@ -1,0 +1,26 @@
+name: Validate repository
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: python scripts/validate_repository.py
+      - run: node --check assets/app.js
+      - run: node --check data/catalogue.js
+      - run: node --check data/evidence.js
+      - run: python -m py_compile pipeline/common.py pipeline/analyze_sources.py pipeline/build_site.py pipeline/run_pipeline.py

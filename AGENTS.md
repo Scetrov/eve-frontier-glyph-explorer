@@ -42,6 +42,11 @@ The explorer is an unofficial research tool. Do not present a speculative decodi
 | `data/evidence_manifest.csv` | Downloadable flat evidence manifest | Must describe the exact source filename and frame. |
 | `evidence/<recording-slug>/` | 480×480 JPEG audit frames | Filename form is `gNNN_fNNNNNN.jpg`. Paths are unique per occurrence. |
 | `scripts/validate_repository.py` | Dependency-free structural/data validator | Run before every commit that touches data, evidence, or skills. |
+| `pipeline/corpus.json` | Exact source registry, sampling intervals, overrides, and corrections | Treat filename/frame mappings as reviewed data. |
+| `pipeline/run_pipeline.py` | End-to-end input check, analysis, generation, and validation | This is the supported rebuild entry point. |
+| `pipeline/analyze_sources.py` | FFmpeg frame extraction and provisional 9×9 classification | Review contact sheets and high-distance reads. |
+| `pipeline/build_site.py` | Catalogue derivation, atlas rendering, and occurrence evidence generation | Regenerates the full artifact contract together. |
+| `pipeline/README.md` | Fresh-fork setup and worked source-addition examples | Keep commands executable when pipeline behavior changes. |
 | `.agents/skills/` | Reusable skills.sh-compatible maintenance workflows | Each directory contains a valid `SKILL.md`. |
 | `.github/workflows/pages.yml` | GitHub Pages deployment | Deploys the repository root on pushes to `main`. |
 | `.github/dependabot.yml` | GitHub Actions updates | All version updates are grouped into one PR. |
@@ -88,29 +93,27 @@ Every occurrence has exactly one evidence record. It repeats the occurrence iden
 
 The image is an audit artifact, not the source of truth for the structured fingerprint. If the image and tag disagree, flag the record for review; do not edit the image to resemble the tag.
 
-## How the current corpus was built
+## End-to-end corpus build
 
-The committed repository is the deployable derivative dataset. Raw media and the analysis workspace are intentionally external because of size and third-party rights.
+The generator code is committed under `pipeline/`; only raw media and transient analysis outputs remain external because of size and third-party rights. A fresh fork can reproduce all derivative site artifacts after supplying those inputs.
 
-The original offline pipeline used these stages:
+The supported pipeline stages are:
 
-1. Clone `QZRChedders/ArchiveInvest` and use `PatternCSVs/glyph_dictionary.csv`, per-broadcast `*_patterns.csv`, `broadcasts.csv`, and `phrases.csv` as manual inputs.
-2. Place additional local video captures in a private analysis workspace. Probe each exact file with FFprobe and retain its original filename.
-3. Decode square centre crops with FFmpeg, inspect frame-difference cadence, choose settled glyph frames, fit the 9×9 grid, classify the non-carrier cells against the dictionary, and retain these results as provisional.
-4. Combine manual and provisional occurrence rows. Compute frequencies, repeated blocks, near-twin families, transitions, symmetry distances, and corpus statistics from the combined sequence set.
-5. Generate the catalogue JSON/CSV, occurrences CSV, sequences CSV, and glyph atlas.
-6. Generate one evidence crop per occurrence from the exact indexed source file. Calculate assigned Hamming distance again while writing the evidence manifest.
-7. Produce the compact JavaScript wrappers from the final JSON files.
-8. Validate the complete static repository and deploy it through GitHub Pages.
+1. `pipeline/run_pipeline.py` validates ArchiveInvest inputs and every exact source filename declared by `pipeline/corpus.json`.
+2. `pipeline/analyze_sources.py` extracts configured settled frames, fits the 9×9 grid, and retains provisional fingerprints, nearest IDs, distances, confidence, contact sheets, and geometry.
+3. `pipeline/build_site.py` combines manual and provisional rows and derives catalogue, sequence, transition, repeated-block, near-twin, symmetry, and corpus data.
+4. The same builder creates the glyph atlas and one unmasked evidence crop per occurrence from its exact source file.
+5. JSON, JavaScript, and CSV outputs are written from the same in-memory records, then `scripts/validate_repository.py` verifies their joins and filesystem coverage.
 
-Historical analysis-script roles in the original workspace were:
+Fresh-fork setup, exact commands, expected current counts, and worked source additions are in `pipeline/README.md`. The standard invocation is:
 
-- `analyze_glyphs.py`: calibrate local video grids and create provisional `glyph_sequences.csv` plus sampled frame images;
-- `build_glyph_catalogue.py`: merge ArchiveInvest tags and provisional rows, then derive the catalogue, sequences, report, and atlas;
-- `build_explorer_assets.py`: copy generated outputs into `data/` and create `catalogue.js`;
-- `build_frame_evidence.py`: resolve exact source videos, extract/copy occurrence frames, and write the evidence outputs.
+```powershell
+python pipeline\run_pipeline.py `
+  --archive-invest ..\ArchiveInvest `
+  --video-dir ..\source-videos
+```
 
-These raw-media generators are not shipped in this repository. If they are unavailable, do not fabricate a rebuild by manually editing several generated files. Limit work to static presentation changes, or obtain the analysis workspace and inputs from a maintainer.
+Use `--check-inputs` before a first rebuild and `--skip-analysis` only when `.pipeline-work/analysis/` already contains a reviewed detector run. Do not fabricate a rebuild by hand-editing generated files.
 
 ## Common workflows
 

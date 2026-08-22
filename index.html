@@ -181,8 +181,26 @@
         </article>
         <article class="analysis-panel">
           <div class="panel-heading"><h3>Cell activation</h3><span>Across 146 canonical glyphs</span></div>
-          <canvas id="cell-heatmap" class="heatmap" width="450" height="450" aria-label="Cell activation heatmap"></canvas>
-          <p class="panel-note">The dictionary uses 55 of 81 locations. Dark positions never activate and likely belong to the carrier mask.</p>
+          <div id="cell-heatmap" class="heatmap" role="grid" aria-label="Cell activation heatmap. Select a cell to review matching patterns and source frames."></div>
+          <p class="panel-note">Select any position to review every canonical pattern and source-frame occurrence that activates it. Dark positions have no canonical matches and likely belong to the carrier mask.</p>
+        </article>
+        <article id="cell-review" class="analysis-panel cell-review-panel" hidden aria-labelledby="cell-review-title">
+          <div class="panel-heading cell-review-heading">
+            <div>
+              <p class="eyebrow">MANUAL REVIEW / SELECTED POSITION</p>
+              <h3 id="cell-review-title">Cell —</h3>
+            </div>
+            <span id="cell-review-summary" aria-live="polite">Select a cell above</span>
+          </div>
+          <div class="cell-review-section">
+            <div class="panel-subheading"><h4>Matching patterns</h4><span id="cell-pattern-count">0 glyphs</span></div>
+            <div id="cell-pattern-list" class="cell-pattern-list"></div>
+          </div>
+          <div class="cell-review-section">
+            <div class="panel-subheading"><h4>Frame evidence</h4><span id="cell-evidence-count">0 frames</span></div>
+            <div id="cell-evidence-list" class="evidence-list cell-evidence-list"></div>
+            <button id="cell-evidence-more" class="action-button cell-evidence-more" type="button" hidden>Load more evidence</button>
+          </div>
         </article>
       </div>
       <div class="interpretation">

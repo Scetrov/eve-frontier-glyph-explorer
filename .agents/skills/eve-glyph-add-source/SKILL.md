@@ -8,7 +8,7 @@ license: MIT
 
 When working in the Glyph Explorer repository, read the root `AGENTS.md` before changing data. Treat acquisition, analysis, and publication as distinct stages. Raw media normally remains outside the Git repository.
 
-Video ingestion requires FFmpeg/FFprobe. The historical automatic-analysis pipeline also requires Python, Pillow, and NumPy.
+Video ingestion requires FFmpeg/FFprobe. The committed automatic-analysis pipeline also requires Python, Pillow, and NumPy. Read `pipeline/README.md` for complete commands and worked configuration examples.
 
 ## Choose the ingestion path
 
@@ -79,7 +79,14 @@ An unmatched manual fingerprint may be assigned to the nearest canonical glyph o
 
 ## Integrate and generate evidence
 
-Run the catalogue rebuild before evidence generation. Every occurrence must then receive:
+Register provisional captures in `pipeline/corpus.json` with either cadence fields or explicit `sample_frames`. Register non-default manual variants in `manual_source_overrides`. Then run:
+
+```powershell
+python pipeline\run_pipeline.py --archive-invest <ArchiveInvest> --video-dir <source-videos> --check-inputs
+python pipeline\run_pipeline.py --archive-invest <ArchiveInvest> --video-dir <source-videos>
+```
+
+The full run builds the catalogue before evidence generation. Every occurrence must receive:
 
 - one evidence record;
 - one unique 480×480 JPEG path;

@@ -8,7 +8,7 @@ license: MIT
 
 When working in the Glyph Explorer repository, read the root `AGENTS.md`. Generated artifacts form one release unit; do not update only the file that is convenient.
 
-The historical offline pipeline requires Python, Pillow, NumPy, FFmpeg, the ArchiveInvest corpus, and the private source-video workspace.
+The committed pipeline requires Python, Pillow, NumPy, FFmpeg, the ArchiveInvest corpus, and the private source-video directory. Read `pipeline/README.md` for the complete fresh-fork example.
 
 ## Required inputs
 
@@ -17,21 +17,27 @@ Confirm these external inputs are available before rebuilding:
 - ArchiveInvest `PatternCSVs/glyph_dictionary.csv`;
 - all included `PatternCSVs/*_patterns.csv` files;
 - ArchiveInvest `broadcasts.csv` and `phrases.csv`;
-- provisional `glyph_analysis_complete/glyph_sequences.csv` and its sampled frame images;
+- the exact provisional capture files declared in `pipeline/corpus.json`;
 - every exact source video named by evidence records;
 - explicit source-file overrides, including `E6C2-1K -> E6C2-1K zoomed.mp4`.
 
-If any required raw input or generator is unavailable, stop rather than reconstructing generated rows by hand.
+Run the non-mutating audit first:
+
+```powershell
+python pipeline\run_pipeline.py --archive-invest <ArchiveInvest> --video-dir <source-videos> --check-inputs
+```
+
+If a required raw input is unavailable, stop rather than reconstructing generated rows by hand.
 
 ## Build order
 
-The historical analysis workspace uses these scripts in this order:
+Use the supported entry point; it performs the stages in the required order:
 
-1. `analyze_glyphs.py` — only when local captures or detector settings changed.
-2. `build_glyph_catalogue.py` — merge manual and provisional inputs and derive statistics.
-3. `build_explorer_assets.py` — install catalogue JSON/CSV/atlas outputs into the static site and create `catalogue.js`.
-4. `build_frame_evidence.py` — resolve exact source files, generate all evidence images, and create evidence JSON/JS/CSV.
-5. `scripts/validate_repository.py` in this repository.
+```powershell
+python pipeline\run_pipeline.py --archive-invest <ArchiveInvest> --video-dir <source-videos>
+```
+
+It calls `analyze_sources.py`, `build_site.py`, and `scripts/validate_repository.py`. Use `--skip-analysis` only to reuse an existing reviewed `.pipeline-work/analysis/glyph_sequences.csv` plus its sampled frame images.
 
 Use the Python interpreter that has Pillow and NumPy. Use the same FFmpeg major/version for a release when practical so regenerated JPEGs do not create unrelated binary diffs.
 

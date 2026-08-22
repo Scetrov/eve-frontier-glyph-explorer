@@ -21,6 +21,10 @@
 - [FFmpeg](https://ffmpeg.org/) — video decoding and frame extraction.
 - [CyberChef](https://gchq.github.io/CyberChef/) by GCHQ — inspiration for standard binary and transform-oriented decoding tests. CyberChef code is not bundled here.
 
+## Interface typography
+
+- **Diskette Mono** — the bundled regular and bold WOFF2 files were sourced from [`Scetrov/void-eid/src/frontend/public/fonts`](https://github.com/Scetrov/void-eid/tree/main/src/frontend/public/fonts). That repository declares the font family as `Diskette Mono` and is distributed under the [MIT License](https://github.com/Scetrov/void-eid/blob/main/LICENSE).
+
 ## Licensing note
 
-The MIT licence in this repository covers only the original site code. It does not relicense EVE Frontier intellectual property, third-party repositories, source videos, or datasets.
+The MIT licence in this repository covers only the original site code. Bundled third-party font files retain their source licensing. The site licence does not relicense EVE Frontier intellectual property, third-party repositories, source videos, or datasets.

@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "manual_source_overrides": {
+    "E6C2-1K": "E6C2-1K zoomed.mp4"
+  },
+  "track_overrides": {
+    "E6C5-13": "Side",
+    "E6C5-2J": "Side",
+    "E6C6-11": "Side",
+    "E6C6-1R": "Side",
+    "E6C6-21": "Side",
+    "E6C6-D": "Alternate / bridge"
+  },
+  "context_corrections": {
+    "E6C5-13:3": 44
+  },
+  "automatic_sources": [
+    {
+      "broadcast": "E6C4-2T",
+      "file": "E6C4-2T.webm",
+      "first_change": 879,
+      "last_change": 1029,
+      "last_safe": 1031,
+      "cadence": 6,
+      "sample_offset": 5,
+      "archive_offset": 12
+    },
+    {
+      "broadcast": "E6C4-30",
+      "file": "E6C4-30.webm",
+      "first_change": 751,
+      "last_change": 895,
+      "last_safe": 897,
+      "cadence": 6,
+      "sample_offset": 5,
+      "archive_offset": 0
+    },
+    {
+      "broadcast": "E6C5-13",
+      "file": "E6C5-13.mp4",
+      "first_change": 1049,
+      "last_change": 1121,
+      "last_safe": 1126,
+      "cadence": 6,
+      "sample_offset": 5
+    },
+    {
+      "broadcast": "E6C5-2J",
+      "file": "E6C5-2J.webm",
+      "first_change": 1427,
+      "last_change": 1559,
+      "last_safe": 1564,
+      "cadence": 6,
+      "sample_offset": 5
+    },
+    {
+      "broadcast": "E6C6-11",
+      "file": "E6C6-11.webm",
+      "first_change": 413,
+      "last_change": 563,
+      "last_safe": 565,
+      "cadence": 6,
+      "sample_offset": 5
+    },
+    {
+      "broadcast": "E6C6-1R",
+      "file": "E6C6-1R.mov",
+      "first_change": 479,
+      "last_change": 611,
+      "last_safe": 615,
+      "cadence": 6,
+      "sample_offset": 5
+    },
+    {
+      "broadcast": "E6C6-21",
+      "file": "E6C6-21.mov",
+      "first_change": 494,
+      "last_change": 626,
+      "last_safe": 631,
+      "cadence": 6,
+      "sample_offset": 5
+    },
+    {
+      "broadcast": "E6C6-D",
+      "file": "E6C6-D.mov",
+      "sample_frames": [822, 828, 834, 840, 846, 852, 858, 864, 869, 876, 882, 888, 894, 900, 906, 912, 917, 924, 930, 936, 941, 945]
+    }
+  ]
+}

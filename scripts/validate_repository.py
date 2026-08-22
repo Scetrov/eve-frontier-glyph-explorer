@@ -117,6 +117,16 @@ def main() -> int:
     for row in sequences:
         if int(row["n_glyphs"]) != occurrence_counts[row["recording"]]:
             fail(errors, f"Sequence count differs for {row['recording']}")
+        sequence_ids = [int(value) for value in row["glyph_ids"].split()]
+        expected_ids = [
+            int(item["glyph_id"])
+            for item in sorted(
+                (item for item in occurrences if item["recording"] == row["recording"]),
+                key=lambda item: int(item["ordinal"]),
+            )
+        ]
+        if sequence_ids != expected_ids:
+            fail(errors, f"Sequence glyph IDs differ from occurrences for {row['recording']}")
 
     evidence = read_json(DATA / "evidence.json")
     evidence_js = read_js_payload(DATA / "evidence.js", "GLYPH_EVIDENCE")
@@ -173,6 +183,40 @@ def main() -> int:
     for reference in ("data/catalogue.js", "data/evidence.js", "assets/app.js"):
         if reference not in index_text:
             fail(errors, f"index.html does not reference {reference}")
+    for element_id in ("cell-heatmap", "cell-review", "cell-pattern-list", "cell-evidence-list"):
+        if f'id="{element_id}"' not in index_text:
+            fail(errors, f"index.html is missing Cell Activation element #{element_id}")
+
+    app_text = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
+    for behavior in ("selectCell", "renderCellReview", "createEvidenceCard"):
+        if behavior not in app_text:
+            fail(errors, f"assets/app.js is missing Cell Activation behavior {behavior}")
+
+    style_text = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
+    if 'font-family: "Diskette Mono"' not in style_text:
+        fail(errors, "Diskette Mono @font-face declarations are missing")
+    for font_file in ("disket-mono-regular.woff2", "disket-mono-bold.woff2"):
+        if not (ROOT / "assets" / "fonts" / font_file).is_file():
+            fail(errors, f"Missing bundled font: assets/fonts/{font_file}")
+
+    pipeline_files = (
+        "pipeline/corpus.json", "pipeline/requirements.txt", "pipeline/README.md",
+        "pipeline/common.py", "pipeline/analyze_sources.py", "pipeline/build_site.py", "pipeline/run_pipeline.py",
+    )
+    for relative in pipeline_files:
+        if not (ROOT / relative).is_file():
+            fail(errors, f"Missing end-to-end pipeline file: {relative}")
+    try:
+        config = read_json(ROOT / "pipeline" / "corpus.json")
+        if config.get("manual_source_overrides", {}).get("E6C2-1K") != "E6C2-1K zoomed.mp4":
+            fail(errors, "pipeline/corpus.json does not enforce the E6C2-1K source override")
+        automatic = config.get("automatic_sources", [])
+        labels = [item.get("broadcast") for item in automatic]
+        filenames = [item.get("file") for item in automatic]
+        if len(labels) != len(set(labels)) or not all(labels) or not all(filenames):
+            fail(errors, "pipeline/corpus.json has invalid automatic source identities")
+    except (OSError, ValueError, json.JSONDecodeError) as error:
+        fail(errors, f"Invalid pipeline/corpus.json: {error}")
 
     dependabot = (ROOT / ".github" / "dependabot.yml").read_text(encoding="utf-8")
     if "all-github-actions:" not in dependabot or not re.search(r"patterns:\s*\n\s*-\s*[\"']?\*[\"']?", dependabot):

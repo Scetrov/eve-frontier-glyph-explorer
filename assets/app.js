@@ -65,20 +65,30 @@
     sequenceStrip: document.getElementById('sequence-strip'),
     analysisMetrics: document.getElementById('analysis-metrics'),
     repeatedBlocks: document.getElementById('repeated-blocks'),
-    heatmap: document.getElementById('cell-heatmap')
-    ,evidenceDialog: document.getElementById('evidence-dialog')
-    ,evidenceDialogClose: document.getElementById('evidence-dialog-close')
-    ,evidenceDialogImage: document.getElementById('evidence-dialog-image')
-    ,evidenceDialogCanonical: document.getElementById('evidence-dialog-canonical')
-    ,evidenceDialogTitle: document.getElementById('evidence-dialog-title')
-    ,evidenceDialogMeta: document.getElementById('evidence-dialog-meta')
+    heatmap: document.getElementById('cell-heatmap'),
+    cellReview: document.getElementById('cell-review'),
+    cellReviewTitle: document.getElementById('cell-review-title'),
+    cellReviewSummary: document.getElementById('cell-review-summary'),
+    cellPatternCount: document.getElementById('cell-pattern-count'),
+    cellPatternList: document.getElementById('cell-pattern-list'),
+    cellEvidenceCount: document.getElementById('cell-evidence-count'),
+    cellEvidenceList: document.getElementById('cell-evidence-list'),
+    cellEvidenceMore: document.getElementById('cell-evidence-more'),
+    evidenceDialog: document.getElementById('evidence-dialog'),
+    evidenceDialogClose: document.getElementById('evidence-dialog-close'),
+    evidenceDialogImage: document.getElementById('evidence-dialog-image'),
+    evidenceDialogCanonical: document.getElementById('evidence-dialog-canonical'),
+    evidenceDialogTitle: document.getElementById('evidence-dialog-title'),
+    evidenceDialogMeta: document.getElementById('evidence-dialog-meta')
   };
 
   const state = {
     selectedId: initialGlyphId(),
     compareLeftId: 40,
     compareRightId: 131,
-    carrier: false
+    carrier: false,
+    selectedCell: null,
+    cellEvidenceLimit: 48
   };
 
   function initialGlyphId() {
@@ -302,32 +312,34 @@
       return;
     }
     const fragment = document.createDocumentFragment();
-    records.forEach(record => {
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.className = `evidence-card${record.assigned_hamming ? ' evidence-card-difference' : ''}`;
-      button.setAttribute('aria-label', `${record.source_video}, frame ${record.frame}, matched to glyph ${glyph.id}`);
-      const image = document.createElement('img');
-      image.src = record.image;
-      image.loading = 'lazy';
-      image.alt = `Actual frame ${record.frame} from ${record.source_video}`;
-      const meta = document.createElement('span');
-      meta.className = 'evidence-card-meta';
-      const source = document.createElement('strong');
-      source.textContent = record.source_video;
-      const reference = document.createElement('span');
-      reference.textContent = `FRAME ${String(record.frame).padStart(6, '0')} · T+${Number(record.time_s).toFixed(4)}S`;
-      const status = document.createElement('span');
-      status.className = 'evidence-card-status';
-      status.textContent = record.assigned_hamming
-        ? `${record.assigned_hamming} CELL${record.assigned_hamming === 1 ? '' : 'S'} FROM ASSIGNED GLYPH`
-        : 'EXACT ASSIGNED PATTERN';
-      meta.append(source, reference, status);
-      button.append(image, meta);
-      button.addEventListener('click', () => openEvidence(record));
-      fragment.appendChild(button);
-    });
+    records.forEach(record => fragment.appendChild(createEvidenceCard(record, glyph)));
     elements.evidenceList.appendChild(fragment);
+  }
+
+  function createEvidenceCard(record, glyph) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = `evidence-card${record.assigned_hamming ? ' evidence-card-difference' : ''}`;
+    button.setAttribute('aria-label', `${record.source_video}, frame ${record.frame}, matched to glyph ${glyph.id}`);
+    const image = document.createElement('img');
+    image.src = record.image;
+    image.loading = 'lazy';
+    image.alt = `Actual frame ${record.frame} from ${record.source_video}`;
+    const meta = document.createElement('span');
+    meta.className = 'evidence-card-meta';
+    const source = document.createElement('strong');
+    source.textContent = `#${glyph.id} · ${record.source_video}`;
+    const reference = document.createElement('span');
+    reference.textContent = `FRAME ${String(record.frame).padStart(6, '0')} · T+${Number(record.time_s).toFixed(4)}S`;
+    const status = document.createElement('span');
+    status.className = 'evidence-card-status';
+    status.textContent = record.assigned_hamming
+      ? `${record.assigned_hamming} CELL${record.assigned_hamming === 1 ? '' : 'S'} FROM ASSIGNED GLYPH`
+      : 'EXACT ASSIGNED PATTERN';
+    meta.append(source, reference, status);
+    button.append(image, meta);
+    button.addEventListener('click', () => openEvidence(record));
+    return button;
   }
 
   function openEvidence(record) {
@@ -519,35 +531,108 @@
       fragment.appendChild(row);
     });
     elements.repeatedBlocks.replaceChildren(fragment);
-    drawHeatmap();
+    renderCellHeatmap();
   }
 
-  function drawHeatmap() {
-    const canvas = elements.heatmap;
-    const size = 420;
-    const context = setupCanvas(canvas, size);
+  function renderCellHeatmap() {
     const usage = data.cell_usage;
     const maximum = Math.max(...usage);
-    const margin = 22;
-    const pitch = (size - margin * 2) / 9;
-    context.fillStyle = palette.background;
-    context.fillRect(0, 0, size, size);
-    context.font = '10px "Cascadia Mono", monospace';
-    context.textAlign = 'center';
-    context.textBaseline = 'middle';
+    const fragment = document.createDocumentFragment();
+    elements.heatmap.replaceChildren();
     for (let index = 0; index < 81; index += 1) {
       const row = Math.floor(index / 9);
       const column = index % 9;
       const value = usage[index];
       const strength = maximum ? value / maximum : 0;
-      const x = margin + column * pitch + 3;
-      const y = margin + row * pitch + 3;
-      const square = pitch - 6;
-      context.fillStyle = value ? `rgba(232,132,62,${0.13 + strength * 0.87})` : palette.inactive;
-      context.fillRect(x, y, square, square);
-      context.fillStyle = strength > 0.58 ? '#090b0c' : palette.text;
-      context.fillText(String(value), x + square / 2, y + square / 2);
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'heatmap-cell';
+      button.dataset.cellIndex = index;
+      button.setAttribute('role', 'gridcell');
+      button.setAttribute('aria-label', `Cell row ${row}, column ${column}: active in ${value} canonical glyph${value === 1 ? '' : 's'}`);
+      button.setAttribute('aria-selected', String(index === state.selectedCell));
+      button.title = `(${row},${column}) · ${value} canonical glyph${value === 1 ? '' : 's'}`;
+      button.style.setProperty('--cell-strength', value ? String(0.13 + strength * 0.87) : '0');
+      button.classList.toggle('heatmap-cell-empty', value === 0);
+      const count = document.createElement('strong');
+      count.textContent = value;
+      const coordinate = document.createElement('span');
+      coordinate.textContent = `${row},${column}`;
+      button.append(count, coordinate);
+      button.addEventListener('click', () => selectCell(index));
+      fragment.appendChild(button);
     }
+    elements.heatmap.appendChild(fragment);
+  }
+
+  function selectCell(index, resetLimit = true) {
+    state.selectedCell = index;
+    if (resetLimit) state.cellEvidenceLimit = 48;
+    elements.heatmap.querySelectorAll('.heatmap-cell').forEach(button => {
+      button.setAttribute('aria-selected', String(Number(button.dataset.cellIndex) === index));
+    });
+    renderCellReview();
+  }
+
+  function renderCellReview() {
+    const index = state.selectedCell;
+    if (!Number.isInteger(index)) return;
+    const row = Math.floor(index / 9);
+    const column = index % 9;
+    const matches = glyphs.filter(glyph => glyph.cell_indices.includes(index));
+    const matchIds = new Set(matches.map(glyph => glyph.id));
+    const records = evidence
+      .filter(record => matchIds.has(Number(record.glyph_id)))
+      .sort((left, right) => Number(left.glyph_id) - Number(right.glyph_id)
+        || left.recording.localeCompare(right.recording, undefined, { numeric: true })
+        || Number(left.ordinal) - Number(right.ordinal));
+
+    elements.cellReview.hidden = false;
+    elements.cellReviewTitle.textContent = `Cell (${row},${column})`;
+    elements.cellReviewSummary.textContent = `${matches.length} pattern${matches.length === 1 ? '' : 's'} · ${records.length} source frame${records.length === 1 ? '' : 's'}`;
+    elements.cellPatternCount.textContent = `${matches.length} glyph${matches.length === 1 ? '' : 's'}`;
+    elements.cellEvidenceCount.textContent = `${records.length} frame${records.length === 1 ? '' : 's'}`;
+
+    const patternFragment = document.createDocumentFragment();
+    matches.forEach(glyph => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'cell-pattern';
+      button.setAttribute('aria-label', `Inspect glyph ${glyph.id}, active at cell ${row}, ${column}`);
+      const canvas = document.createElement('canvas');
+      canvas.setAttribute('aria-hidden', 'true');
+      const label = document.createElement('span');
+      label.innerHTML = `<strong>#${glyph.id}</strong><small>${glyph.occurrences} occurrence${glyph.occurrences === 1 ? '' : 's'}</small>`;
+      button.append(canvas, label);
+      button.addEventListener('click', () => {
+        selectGlyph(glyph.id, true);
+        document.getElementById('inspector').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      drawGlyph(canvas, glyph, { size: 90, carrier: state.carrier });
+      patternFragment.appendChild(button);
+    });
+    elements.cellPatternList.replaceChildren(patternFragment);
+    if (!matches.length) {
+      const empty = document.createElement('p');
+      empty.className = 'cell-review-empty';
+      empty.textContent = 'No canonical glyph activates this position. Review the carrier-mask hypothesis against source imagery before assigning payload meaning.';
+      elements.cellPatternList.appendChild(empty);
+    }
+
+    const evidenceFragment = document.createDocumentFragment();
+    records.slice(0, state.cellEvidenceLimit).forEach(record => {
+      evidenceFragment.appendChild(createEvidenceCard(record, byId.get(Number(record.glyph_id))));
+    });
+    elements.cellEvidenceList.replaceChildren(evidenceFragment);
+    if (!records.length) {
+      const empty = document.createElement('p');
+      empty.className = 'cell-review-empty';
+      empty.textContent = 'No frame evidence is associated with canonical patterns at this position.';
+      elements.cellEvidenceList.appendChild(empty);
+    }
+    const remaining = records.length - state.cellEvidenceLimit;
+    elements.cellEvidenceMore.hidden = remaining <= 0;
+    elements.cellEvidenceMore.textContent = remaining > 0 ? `Load ${Math.min(48, remaining)} more of ${remaining}` : 'All evidence loaded';
   }
 
   function escapeText(value) {
@@ -568,7 +653,8 @@
     selectGlyph(state.selectedId, false);
     updateComparison();
     renderSequence(elements.recordingSelect.value);
-    drawHeatmap();
+    renderCellHeatmap();
+    if (Number.isInteger(state.selectedCell)) renderCellReview();
   }
 
   elements.search.addEventListener('input', renderGrid);
@@ -582,6 +668,10 @@
   elements.compareLeft.addEventListener('change', updateComparison);
   elements.compareRight.addEventListener('change', updateComparison);
   elements.recordingSelect.addEventListener('change', event => renderSequence(event.target.value));
+  elements.cellEvidenceMore.addEventListener('click', () => {
+    state.cellEvidenceLimit += 48;
+    renderCellReview();
+  });
   elements.evidenceDialogClose.addEventListener('click', () => elements.evidenceDialog.close());
   elements.evidenceDialog.addEventListener('click', event => {
     if (event.target === elements.evidenceDialog) elements.evidenceDialog.close();

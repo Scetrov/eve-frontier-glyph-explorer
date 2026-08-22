@@ -30,6 +30,17 @@ EVE Frontier and associated marks belong to their respective owners. This commun
 
 Start with [AGENTS.md](AGENTS.md) for the repository architecture, data contracts, build order, validation gates, provenance rules, and release process. Reusable agent workflows live in [`.agents/skills/`](.agents/skills/) and follow the [Agent Skills](https://agentskills.io/) format used by [skills.sh](https://skills.sh/).
 
+The complete raw-video-to-site workflow is included under [`pipeline/`](pipeline/README.md). A fork can supply the uncommitted source videos, check exact input resolution, and rebuild all catalogue, atlas, occurrence, and frame-evidence artifacts with one command:
+
+```powershell
+python -m pip install -r pipeline\requirements.txt
+python pipeline\run_pipeline.py `
+  --archive-invest ..\ArchiveInvest `
+  --video-dir ..\source-videos
+```
+
+Use `--check-inputs` first to validate the source layout without modifying generated files. The [pipeline guide](pipeline/README.md) includes exact filenames, a fresh-fork setup, FFmpeg examples, and worked manual/provisional source additions.
+
 Run the repository validator before every data or evidence release:
 
 ```powershell
