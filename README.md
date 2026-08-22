@@ -22,4 +22,6 @@ No build step, package manager, server, API key, or database is required. The si
 
 Every evidence record names its source video, exact source-frame number, timestamp, matching basis, and canonical/observed Hamming distance. The 181 automatically extracted local-video occurrences are marked provisional. Canonical dictionary patterns and manual tags are derived from [QZRChedders/ArchiveInvest](https://github.com/QZRChedders/ArchiveInvest).
 
+Frame numbers are relative to the exact filename in each evidence record. In particular, the `E6C2-1K` pattern CSV was tagged against `E6C2-1K zoomed.mp4`, not the longer plain `E6C2-1K.mp4` source.
+
 EVE Frontier and associated marks belong to their respective owners. This community research tool is not affiliated with or endorsed by the game's creators.
