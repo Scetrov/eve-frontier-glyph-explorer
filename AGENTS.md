@@ -46,6 +46,7 @@ The explorer is an unofficial research tool. Do not present a speculative decodi
 | `data/evidence.js` | Compact browser wrapper for `evidence.json` | Must equal `window.GLYPH_EVIDENCE=<evidence JSON>;`. |
 | `data/evidence_manifest.csv` | Downloadable flat evidence manifest | Must describe the exact source filename and frame. |
 | `data/source_integrity.json`, `.csv` | Published source identity, SHA-256, and media metadata | Contains logical filenames, never private absolute paths. |
+| `data/official_artifacts.json`, `.js` | Supplied official artifact API snapshot and browser lookup index | Preserve returned URLs and `createdAt` verbatim; it is artifact-record time, not broadcast time. |
 | `data/disputed_cell_audit.json`, `.csv` | Reproducible multi-frame audit of carrier-edge cells | Records hashes, frames, registration, scores, thresholds, and verdicts. |
 | `data/cycles.json`, `.js` | Reviewed Phase and Era/Cycle UTC timeline reference | JS wrapper must equal JSON exactly; Pre-era values are not availability windows, Era 5 onward is 24/7, and cycle short names must be unique. |
 | `evidence/<recording-slug>/` | 480×480 JPEG audit frames | Filename form is `gNNN_fNNNNNN.jpg`. Paths are unique per occurrence. |
@@ -68,7 +69,7 @@ The explorer is an unofficial research tool. Do not present a speculative decodi
 
 There is no production build step, package manager, API, server, database, analytics service, or secret. GitHub Pages serves the repository as static files.
 
-`index.html` loads `data/catalogue.js`, then `data/evidence.js`, then `assets/release.js` and `assets/app.js`. The generated JavaScript files assign JSON objects to `window.GLYPH_DATA` and `window.GLYPH_EVIDENCE`. `cycles.html` likewise loads `data/cycles.js` into `window.CYCLE_DATA`. These wrappers avoid a data fetch dependency when pages are opened locally while retaining JSON and CSV downloads for researchers. `assets/release.js` makes one optional fetch for deployment metadata so every shared footer can link to the actual published commit.
+`index.html` loads `data/catalogue.js`, `data/evidence.js`, `data/disputed_cell_audit.js`, and the reviewed `data/official_artifacts.js` lookup before `assets/release.js` and `assets/app.js`. The generated JavaScript files assign JSON objects to `window.GLYPH_DATA` and `window.GLYPH_EVIDENCE`; the official lookup is a compact index of the complete, downloadable API snapshot. `cycles.html` likewise loads `data/cycles.js` into `window.CYCLE_DATA`. These wrappers avoid a data fetch dependency when pages are opened locally while retaining JSON and CSV downloads for researchers. `assets/release.js` makes one optional fetch for deployment metadata so every shared footer can link to the actual published commit.
 
 All URLs in HTML, CSS, and JavaScript must remain relative so the explorer works at `/eve-frontier-glyph-explorer/` rather than only at a domain root.
 
@@ -188,6 +189,8 @@ Every new source must have a committed entry in `data/source_integrity.json` and
 - which exact file the frame indices were generated against;
 - contributor and tagging/classification method;
 - license or rights note sufficient to explain why raw media is or is not committed.
+
+When an official artifact API record is available, preserve its exact ID, URL, type, published state, and `createdAt` in `data/official_artifacts.json`; expose the matching logical broadcast in the browser lookup and evidence dialog. Never convert `createdAt` into a claimed original broadcast date, and never treat a same-label local capture as byte-identical unless the SHA-256 manifest proves it.
 
 Update `SOURCES.md`, `credits.html`, and `NOTICE.md` when the new source changes their claims. Do not cite a repository merely because it informed a hypothesis; state how it was actually used.
 

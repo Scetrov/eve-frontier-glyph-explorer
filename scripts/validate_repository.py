@@ -99,6 +99,31 @@ def main() -> int:
         if any(not cycle or not cycle["EndDateTime"].endswith("T12:00:00+00:00") for cycle in era6_cycles[:5]):
             fail(errors, "Every completed Era 6 cycle must end at the reviewed noon UTC boundary")
 
+    official_artifacts = read_json(DATA / "official_artifacts.json")
+    artifact_rows = official_artifacts.get("artifacts", [])
+    artifact_source = official_artifacts.get("source", {})
+    if official_artifacts.get("schema_version") != 1 or not isinstance(artifact_rows, list) or len(artifact_rows) != 31:
+        fail(errors, "Official artifact snapshot must preserve 31 supplied records")
+    else:
+        artifact_ids = [row.get("id") for row in artifact_rows]
+        if len(artifact_ids) != len(set(artifact_ids)):
+            fail(errors, "Official artifact IDs are not unique")
+        for row in artifact_rows:
+            if not all(isinstance(row.get(field), str) and row[field] for field in ("id", "title", "url", "type", "createdAt")):
+                fail(errors, f"Official artifact record is incomplete: {row.get('id')}")
+            if row.get("type") != "transmission" or row.get("published") is not True:
+                fail(errors, f"Official artifact is not a published transmission: {row.get('id')}")
+        if "not asserted to be the original broadcast publication time" not in artifact_source.get("created_at_note", ""):
+            fail(errors, "Official artifact createdAt caveat is missing")
+        official_index = read_js_payload(DATA / "official_artifacts.js", "OFFICIAL_ARTIFACT_INDEX")
+        if set(official_index) != set(artifact_ids):
+            fail(errors, "Official artifact browser index IDs differ from snapshot")
+        else:
+            for row in artifact_rows:
+                indexed = official_index.get(row["id"], {})
+                if indexed.get("url") != row["url"] or indexed.get("createdAt") != row["createdAt"]:
+                    fail(errors, f"Official artifact browser index differs for {row['id']}")
+
     glyphs = catalogue.get("glyphs", [])
     glyph_ids = [int(glyph["id"]) for glyph in glyphs]
     if len(glyph_ids) != len(set(glyph_ids)):
@@ -251,6 +276,8 @@ def main() -> int:
     for reference in ("data/catalogue.js", "data/evidence.js", "data/disputed_cell_audit.js", "assets/release.js", "assets/app.js"):
         if reference not in index_text:
             fail(errors, f"index.html does not reference {reference}")
+    if "data/official_artifacts.js" not in index_text or "data/official_artifacts.json" not in index_text:
+        fail(errors, "Explorer does not expose official artifact provenance")
     for element_id in ("cell-heatmap", "cell-review", "cell-pattern-list", "cell-evidence-list"):
         if f'id="{element_id}"' not in index_text:
             fail(errors, f"index.html is missing Cell Activation element #{element_id}")
@@ -269,9 +296,11 @@ def main() -> int:
         fail(errors, "Fenris Creations puzzle credit is missing from the explorer or credits page")
     if "fun mystery to investigate" not in index_text or "fun mystery to investigate" not in credits_text:
         fail(errors, "Fenris Creations puzzle acknowledgement is incomplete")
+    if "Official artifact records" not in credits_text or "record creation time" not in credits_text:
+        fail(errors, "Credits page does not explain official artifact provenance")
 
     app_text = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
-    for behavior in ("selectCell", "renderCellReview", "createEvidenceCard", "issueUrl", "glyphIssueBody", "frameIssueBody", "cellIssueBody"):
+    for behavior in ("selectCell", "renderCellReview", "createEvidenceCard", "officialArtifactFor", "officialArtifactMeta", "issueUrl", "glyphIssueBody", "frameIssueBody", "cellIssueBody"):
         if behavior not in app_text:
             fail(errors, f"assets/app.js is missing Cell Activation behavior {behavior}")
 

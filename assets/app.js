@@ -10,6 +10,9 @@
   const glyphs = data.glyphs;
   const repositoryUrl = 'https://github.com/Scetrov/eve-frontier-glyph-explorer';
   const evidence = Array.isArray(window.GLYPH_EVIDENCE) ? window.GLYPH_EVIDENCE : [];
+  const officialArtifactIndex = window.OFFICIAL_ARTIFACT_INDEX && typeof window.OFFICIAL_ARTIFACT_INDEX === 'object'
+    ? window.OFFICIAL_ARTIFACT_INDEX
+    : {};
   const cellAudits = Array.isArray(window.GLYPH_CELL_AUDIT?.audits) ? window.GLYPH_CELL_AUDIT.audits : [];
   const evidenceByGlyph = new Map();
   evidence.forEach(item => {
@@ -118,6 +121,21 @@
   function setReportLink(element, template, title, label, body) {
     if (!element) return;
     element.href = issueUrl(template, title, label, body);
+  }
+
+  function officialArtifactFor(record) {
+    return officialArtifactIndex[record.broadcast] || null;
+  }
+
+  function officialArtifactMeta(record) {
+    const artifact = officialArtifactFor(record);
+    if (!artifact) return [];
+    const id = escapeText(record.broadcast);
+    const url = escapeAttribute(artifact.url);
+    return [
+      ['Official artifact', `<a href="${url}" target="_blank" rel="noopener">${id} ↗</a>`],
+      ['Artifact API record', `${escapeText(artifact.createdAt)} · record time, not broadcast time`]
+    ];
   }
 
   function glyphIssueBody(glyph) {
@@ -407,7 +425,7 @@
     setReportLink(elements.reportEvidence, 'frame-report.md', `[Frame] ${record.source_video} / frame ${record.frame}`, 'report: frame', frameIssueBody(record));
     drawGlyph(elements.evidenceDialogCanonical, glyph, { size: 440, carrier: true });
     const changed = record.difference_cells.length ? record.difference_cells.join(' ') : 'none';
-    elements.evidenceDialogMeta.innerHTML = [
+    const details = [
       ['Matched glyph', `#${record.glyph_id}`],
       ['Source recording', record.recording],
       ['Source file', record.source_video],
@@ -418,7 +436,12 @@
       ['Assigned Hamming', `${record.assigned_hamming} changed cells`],
       ['Differing cells', changed],
       ['Evidence class', record.provisional ? 'provisional automatic read' : 'corpus manual tag']
-    ].map(([label, value]) => `<div><span>${escapeText(label)}</span><strong>${escapeText(value)}</strong></div>`).join('');
+    ];
+    const artifactDetails = officialArtifactMeta(record);
+    elements.evidenceDialogMeta.innerHTML = [
+      ...details.map(([label, value]) => `<div><span>${escapeText(label)}</span><strong>${escapeText(value)}</strong></div>`),
+      ...artifactDetails.map(([label, value]) => `<div><span>${escapeText(label)}</span><strong>${value}</strong></div>`)
+    ].join('');
     if (typeof elements.evidenceDialog.showModal === 'function') elements.evidenceDialog.showModal();
     else window.open(record.image, '_blank', 'noopener');
   }
@@ -529,11 +552,13 @@
   function renderSequence(recording) {
     const sequence = sequenceByRecording.get(recording);
     if (!sequence) return;
+    const artifact = officialArtifactFor(sequence);
     elements.sequenceMeta.innerHTML = [
       `<span><strong>${sequence.n_glyphs}</strong> glyphs</span>`,
       `<span><strong>${escapeText(sequence.cycle)}</strong> cycle</span>`,
       `<span><strong>${escapeText(sequence.track)}</strong> track</span>`,
       `<span><strong>${escapeText(sequence.source)}</strong></span>`,
+      artifact ? `<span><a href="${escapeAttribute(artifact.url)}" target="_blank" rel="noopener">Official artifact ${escapeText(sequence.broadcast)} ↗</a></span>` : '',
       sequence.uncertain_gt2 ? `<span><strong>${sequence.uncertain_gt2}</strong> reads &gt;2 cells away</span>` : ''
     ].join('');
     const fragment = document.createDocumentFragment();

@@ -291,6 +291,32 @@
     },
     {
       "source_set": "downloaded",
+      "filename": "E6C5-3L.webm",
+      "media_type": "video",
+      "bytes": 185326386,
+      "sha256": "a43982e2787e70d869d6efc163a6a0143bef25412288fbe2731a031602e4326a",
+      "codec": "vp9",
+      "width": 1920,
+      "height": 1080,
+      "duration_s": 37.833,
+      "avg_frame_rate": "30/1",
+      "nb_frames": ""
+    },
+    {
+      "source_set": "downloaded",
+      "filename": "E6C6-1.webm",
+      "media_type": "video",
+      "bytes": 230992646,
+      "sha256": "35f948bca53afd312c2e768a1900bbaa0e2378c4ee3a401c27e9448099a467e5",
+      "codec": "vp9",
+      "width": 1920,
+      "height": 1080,
+      "duration_s": 47.8,
+      "avg_frame_rate": "30/1",
+      "nb_frames": ""
+    },
+    {
+      "source_set": "downloaded",
       "filename": "E6C6-11.webm",
       "media_type": "video",
       "bytes": 25957769,
@@ -343,6 +369,19 @@
     },
     {
       "source_set": "downloaded",
+      "filename": "E6C6-N.webm",
+      "media_type": "video",
+      "bytes": 36390919,
+      "sha256": "90509570ff3f09fb7dc60838d4352d285730e50046bbee0b7ad4aa158c86be96",
+      "codec": "vp9",
+      "width": 1920,
+      "height": 1080,
+      "duration_s": 15.8,
+      "avg_frame_rate": "30/1",
+      "nb_frames": ""
+    },
+    {
+      "source_set": "downloaded",
       "filename": "Era6Cycle2-6.webm",
       "media_type": "video",
       "bytes": 13825347,
@@ -352,6 +391,32 @@
       "height": 720,
       "duration_s": 35.12,
       "avg_frame_rate": "25/1",
+      "nb_frames": ""
+    },
+    {
+      "source_set": "downloaded",
+      "filename": "SEEKER_ENTRY_01.webm",
+      "media_type": "video",
+      "bytes": 23025516,
+      "sha256": "8c1abb22c67c59456dd030d94cf4a2e8c876035c24e3bf944d0d8d8318c6999e",
+      "codec": "vp9",
+      "width": 1920,
+      "height": 1080,
+      "duration_s": 85.033,
+      "avg_frame_rate": "30/1",
+      "nb_frames": ""
+    },
+    {
+      "source_set": "downloaded",
+      "filename": "SEEKER_ENTRY_02.webm",
+      "media_type": "video",
+      "bytes": 45770427,
+      "sha256": "9b28ff9f8e375ffa3060ca4ccde8afc08ed72d5fa5c26839de60dcedb51c4f13",
+      "codec": "vp9",
+      "width": 1920,
+      "height": 1080,
+      "duration_s": 105.933,
+      "avg_frame_rate": "30/1",
       "nb_frames": ""
     },
     {

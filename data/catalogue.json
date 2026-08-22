@@ -1,11 +1,11 @@
 {
   "stats": {
     "canonical_glyphs": 146,
-    "recordings": 29,
-    "broadcasts": 27,
-    "occurrences": 768,
+    "recordings": 32,
+    "broadcasts": 30,
+    "occurrences": 835,
     "manual_occurrences": 587,
-    "provisional_occurrences": 181,
+    "provisional_occurrences": 248,
     "observed_glyphs": 146,
     "singleton_glyphs": 35,
     "used_grid_cells": 53,
@@ -13,14 +13,14 @@
     "active_cells_mean": 9.137,
     "active_cells_min": 2,
     "active_cells_max": 17,
-    "token_entropy_bits": 6.5835,
+    "token_entropy_bits": 6.5089,
     "max_entropy_bits": 7.1898,
-    "normalised_entropy": 0.9157,
-    "index_of_coincidence": 0.012658,
+    "normalised_entropy": 0.9053,
+    "index_of_coincidence": 0.01388,
     "distance_one_pairs": 7,
     "distance_two_pairs": 3,
     "all_pair_mean_hamming": 15.084,
-    "adjacent_mean_hamming": 14.882,
+    "adjacent_mean_hamming": 14.775,
     "adjacent_median_hamming": 15,
     "near_twin_families": 10,
     "largest_near_twin_family": 2,
@@ -2960,18 +2960,19 @@
       "first_video": "E6C2-N",
       "first_frame": 1013,
       "first_time_s": 33.7551,
-      "occurrences": 6,
+      "occurrences": 7,
       "manual_occurrences": 6,
-      "provisional_occurrences": 0,
-      "broadcast_count": 6,
-      "recording_count": 6,
+      "provisional_occurrences": 1,
+      "broadcast_count": 7,
+      "recording_count": 7,
       "recordings": [
         "E6C2-11",
         "E6C2-1N",
         "E6C2-N",
         "E6C3-1L",
         "E6C3-2",
-        "E6C3-9"
+        "E6C3-9",
+        "E6C6-1"
       ],
       "broadcasts": [
         "E6C2-11",
@@ -2979,11 +2980,13 @@
         "E6C2-N",
         "E6C3-1L",
         "E6C3-2",
-        "E6C3-9"
+        "E6C3-9",
+        "E6C6-1"
       ],
       "cycles": [
         "E6C2",
-        "E6C3"
+        "E6C3",
+        "E6C6"
       ],
       "phrases": [
         "B"
@@ -2999,12 +3002,20 @@
         {
           "id": 25,
           "count": 6
+        },
+        {
+          "id": 123,
+          "count": 1
         }
       ],
       "predecessors": [
         {
           "id": 23,
           "count": 6
+        },
+        {
+          "id": 67,
+          "count": 1
         }
       ],
       "symmetry": {
@@ -3068,6 +3079,15 @@
           "source": "ArchiveInvest manual",
           "provisional": false,
           "hamming_distance": 0
+        },
+        {
+          "recording": "E6C6-1",
+          "broadcast": "E6C6-1",
+          "ordinal": 4,
+          "time_s": 43.7667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 4
         }
       ]
     },
@@ -4530,11 +4550,11 @@
       "first_video": "E6C2-1K",
       "first_frame": 226,
       "first_time_s": 7.5364,
-      "occurrences": 18,
+      "occurrences": 21,
       "manual_occurrences": 12,
-      "provisional_occurrences": 6,
-      "broadcast_count": 16,
-      "recording_count": 18,
+      "provisional_occurrences": 9,
+      "broadcast_count": 19,
+      "recording_count": 21,
       "recordings": [
         "E6C2-1K",
         "E6C4-13",
@@ -4550,10 +4570,13 @@
         "E6C4-30 [local capture]",
         "E6C4-35",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C5-N",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "broadcasts": [
         "E6C2-1K",
@@ -4568,10 +4591,13 @@
         "E6C4-30",
         "E6C4-35",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C5-N",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "cycles": [
         "E6C2",
@@ -4592,7 +4618,7 @@
       "successors": [
         {
           "id": 39,
-          "count": 16
+          "count": 19
         },
         {
           "id": 41,
@@ -4606,7 +4632,7 @@
       "predecessors": [
         {
           "id": 112,
-          "count": 17
+          "count": 20
         }
       ],
       "symmetry": {
@@ -4744,6 +4770,15 @@
           "hamming_distance": 0
         },
         {
+          "recording": "E6C5-3L",
+          "broadcast": "E6C5-3L",
+          "ordinal": 9,
+          "time_s": 34.7667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 0
+        },
+        {
           "recording": "E6C5-N",
           "broadcast": "E6C5-N",
           "ordinal": 2,
@@ -4753,28 +4788,19 @@
           "hamming_distance": 0
         },
         {
+          "recording": "E6C6-1",
+          "broadcast": "E6C6-1",
+          "ordinal": 10,
+          "time_s": 44.9667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 0
+        },
+        {
           "recording": "E6C6-11",
           "broadcast": "E6C6-11",
           "ordinal": 12,
           "time_s": 16.1333,
-          "source": "FFmpeg automatic extraction",
-          "provisional": true,
-          "hamming_distance": 0
-        },
-        {
-          "recording": "E6C6-1R",
-          "broadcast": "E6C6-1R",
-          "ordinal": 10,
-          "time_s": 17.9333,
-          "source": "FFmpeg automatic extraction",
-          "provisional": true,
-          "hamming_distance": 0
-        },
-        {
-          "recording": "E6C6-21",
-          "broadcast": "E6C6-21",
-          "ordinal": 10,
-          "time_s": 18.4333,
           "source": "FFmpeg automatic extraction",
           "provisional": true,
           "hamming_distance": 0
@@ -4800,11 +4826,11 @@
       "first_video": "E6C2-1K",
       "first_frame": 227,
       "first_time_s": 7.5697,
-      "occurrences": 16,
+      "occurrences": 19,
       "manual_occurrences": 10,
-      "provisional_occurrences": 6,
-      "broadcast_count": 14,
-      "recording_count": 16,
+      "provisional_occurrences": 9,
+      "broadcast_count": 17,
+      "recording_count": 19,
       "recordings": [
         "E6C2-1K",
         "E6C4-16",
@@ -4818,10 +4844,13 @@
         "E6C4-30 [local capture]",
         "E6C4-35",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C5-N",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "broadcasts": [
         "E6C2-1K",
@@ -4834,10 +4863,13 @@
         "E6C4-30",
         "E6C4-35",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C5-N",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "cycles": [
         "E6C2",
@@ -4867,13 +4899,13 @@
         },
         {
           "id": 131,
-          "count": 4
+          "count": 7
         }
       ],
       "predecessors": [
         {
           "id": 38,
-          "count": 16
+          "count": 19
         }
       ],
       "symmetry": {
@@ -4993,6 +5025,15 @@
           "hamming_distance": 2
         },
         {
+          "recording": "E6C5-3L",
+          "broadcast": "E6C5-3L",
+          "ordinal": 10,
+          "time_s": 34.9667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 1
+        },
+        {
           "recording": "E6C5-N",
           "broadcast": "E6C5-N",
           "ordinal": 3,
@@ -5000,6 +5041,15 @@
           "source": "ArchiveInvest manual",
           "provisional": false,
           "hamming_distance": 0
+        },
+        {
+          "recording": "E6C6-1",
+          "broadcast": "E6C6-1",
+          "ordinal": 11,
+          "time_s": 45.1667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 3
         },
         {
           "recording": "E6C6-11",
@@ -5249,11 +5299,11 @@
       "first_video": "E6C2-1K",
       "first_frame": 244,
       "first_time_s": 8.1364,
-      "occurrences": 17,
+      "occurrences": 20,
       "manual_occurrences": 11,
-      "provisional_occurrences": 6,
-      "broadcast_count": 15,
-      "recording_count": 17,
+      "provisional_occurrences": 9,
+      "broadcast_count": 18,
+      "recording_count": 20,
       "recordings": [
         "E6C2-1K",
         "E6C4-13",
@@ -5268,10 +5318,13 @@
         "E6C4-30 [local capture]",
         "E6C4-35",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C5-N",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "broadcasts": [
         "E6C2-1K",
@@ -5285,10 +5338,13 @@
         "E6C4-30",
         "E6C4-35",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C5-N",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "cycles": [
         "E6C2",
@@ -5309,7 +5365,7 @@
       "successors": [
         {
           "id": 42,
-          "count": 17
+          "count": 20
         }
       ],
       "predecessors": [
@@ -5319,7 +5375,7 @@
         },
         {
           "id": 131,
-          "count": 4
+          "count": 7
         },
         {
           "id": 38,
@@ -5452,6 +5508,15 @@
           "hamming_distance": 1
         },
         {
+          "recording": "E6C5-3L",
+          "broadcast": "E6C5-3L",
+          "ordinal": 12,
+          "time_s": 35.3667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 0
+        },
+        {
           "recording": "E6C5-N",
           "broadcast": "E6C5-N",
           "ordinal": 5,
@@ -5459,6 +5524,15 @@
           "source": "ArchiveInvest manual",
           "provisional": false,
           "hamming_distance": 0
+        },
+        {
+          "recording": "E6C6-1",
+          "broadcast": "E6C6-1",
+          "ordinal": 13,
+          "time_s": 45.5667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 1
         },
         {
           "recording": "E6C6-11",
@@ -5474,15 +5548,6 @@
           "broadcast": "E6C6-1R",
           "ordinal": 13,
           "time_s": 18.5333,
-          "source": "FFmpeg automatic extraction",
-          "provisional": true,
-          "hamming_distance": 1
-        },
-        {
-          "recording": "E6C6-21",
-          "broadcast": "E6C6-21",
-          "ordinal": 13,
-          "time_s": 19.0333,
           "source": "FFmpeg automatic extraction",
           "provisional": true,
           "hamming_distance": 1
@@ -5508,11 +5573,11 @@
       "first_video": "E6C2-1K",
       "first_frame": 250,
       "first_time_s": 8.3363,
-      "occurrences": 19,
+      "occurrences": 22,
       "manual_occurrences": 12,
-      "provisional_occurrences": 7,
-      "broadcast_count": 17,
-      "recording_count": 19,
+      "provisional_occurrences": 10,
+      "broadcast_count": 20,
+      "recording_count": 22,
       "recordings": [
         "E6C2-1K",
         "E6C4-13",
@@ -5529,10 +5594,13 @@
         "E6C4-35",
         "E6C5-13",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C5-N",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "broadcasts": [
         "E6C2-1K",
@@ -5548,10 +5616,13 @@
         "E6C4-35",
         "E6C5-13",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C5-N",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "cycles": [
         "E6C2",
@@ -5572,13 +5643,13 @@
       "successors": [
         {
           "id": 43,
-          "count": 19
+          "count": 22
         }
       ],
       "predecessors": [
         {
           "id": 41,
-          "count": 17
+          "count": 20
         },
         {
           "id": 132,
@@ -5729,6 +5800,15 @@
           "hamming_distance": 2
         },
         {
+          "recording": "E6C5-3L",
+          "broadcast": "E6C5-3L",
+          "ordinal": 13,
+          "time_s": 35.5667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 2
+        },
+        {
           "recording": "E6C5-N",
           "broadcast": "E6C5-N",
           "ordinal": 6,
@@ -5738,19 +5818,10 @@
           "hamming_distance": 0
         },
         {
-          "recording": "E6C6-11",
-          "broadcast": "E6C6-11",
-          "ordinal": 16,
-          "time_s": 16.9333,
-          "source": "FFmpeg automatic extraction",
-          "provisional": true,
-          "hamming_distance": 2
-        },
-        {
-          "recording": "E6C6-1R",
-          "broadcast": "E6C6-1R",
+          "recording": "E6C6-1",
+          "broadcast": "E6C6-1",
           "ordinal": 14,
-          "time_s": 18.7333,
+          "time_s": 45.7667,
           "source": "FFmpeg automatic extraction",
           "provisional": true,
           "hamming_distance": 2
@@ -5783,11 +5854,11 @@
       "first_video": "E6C2-1K",
       "first_frame": 251,
       "first_time_s": 8.3697,
-      "occurrences": 19,
+      "occurrences": 22,
       "manual_occurrences": 12,
-      "provisional_occurrences": 7,
-      "broadcast_count": 17,
-      "recording_count": 19,
+      "provisional_occurrences": 10,
+      "broadcast_count": 20,
+      "recording_count": 22,
       "recordings": [
         "E6C2-1K",
         "E6C4-13",
@@ -5804,10 +5875,13 @@
         "E6C4-35",
         "E6C5-13",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C5-N",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "broadcasts": [
         "E6C2-1K",
@@ -5823,10 +5897,13 @@
         "E6C4-35",
         "E6C5-13",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C5-N",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "cycles": [
         "E6C2",
@@ -5847,13 +5924,13 @@
       "successors": [
         {
           "id": 44,
-          "count": 19
+          "count": 22
         }
       ],
       "predecessors": [
         {
           "id": 42,
-          "count": 19
+          "count": 22
         }
       ],
       "symmetry": {
@@ -6000,6 +6077,15 @@
           "hamming_distance": 3
         },
         {
+          "recording": "E6C5-3L",
+          "broadcast": "E6C5-3L",
+          "ordinal": 14,
+          "time_s": 35.7667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 3
+        },
+        {
           "recording": "E6C5-N",
           "broadcast": "E6C5-N",
           "ordinal": 7,
@@ -6009,19 +6095,10 @@
           "hamming_distance": 0
         },
         {
-          "recording": "E6C6-11",
-          "broadcast": "E6C6-11",
-          "ordinal": 17,
-          "time_s": 17.1333,
-          "source": "FFmpeg automatic extraction",
-          "provisional": true,
-          "hamming_distance": 2
-        },
-        {
-          "recording": "E6C6-1R",
-          "broadcast": "E6C6-1R",
+          "recording": "E6C6-1",
+          "broadcast": "E6C6-1",
           "ordinal": 15,
-          "time_s": 18.9333,
+          "time_s": 45.9667,
           "source": "FFmpeg automatic extraction",
           "provisional": true,
           "hamming_distance": 3
@@ -6046,11 +6123,11 @@
       "first_video": "E6C2-1K",
       "first_frame": 262,
       "first_time_s": 8.7363,
-      "occurrences": 19,
+      "occurrences": 22,
       "manual_occurrences": 12,
-      "provisional_occurrences": 7,
-      "broadcast_count": 17,
-      "recording_count": 19,
+      "provisional_occurrences": 10,
+      "broadcast_count": 20,
+      "recording_count": 22,
       "recordings": [
         "E6C2-1K",
         "E6C4-13",
@@ -6067,10 +6144,13 @@
         "E6C4-35",
         "E6C5-13",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C5-N",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "broadcasts": [
         "E6C2-1K",
@@ -6086,10 +6166,13 @@
         "E6C4-35",
         "E6C5-13",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C5-N",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "cycles": [
         "E6C2",
@@ -6110,13 +6193,13 @@
       "successors": [
         {
           "id": 45,
-          "count": 19
+          "count": 22
         }
       ],
       "predecessors": [
         {
           "id": 43,
-          "count": 19
+          "count": 22
         }
       ],
       "symmetry": {
@@ -6263,6 +6346,15 @@
           "hamming_distance": 3
         },
         {
+          "recording": "E6C5-3L",
+          "broadcast": "E6C5-3L",
+          "ordinal": 15,
+          "time_s": 35.9667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 2
+        },
+        {
           "recording": "E6C5-N",
           "broadcast": "E6C5-N",
           "ordinal": 8,
@@ -6272,19 +6364,10 @@
           "hamming_distance": 0
         },
         {
-          "recording": "E6C6-11",
-          "broadcast": "E6C6-11",
-          "ordinal": 18,
-          "time_s": 17.3333,
-          "source": "FFmpeg automatic extraction",
-          "provisional": true,
-          "hamming_distance": 1
-        },
-        {
-          "recording": "E6C6-1R",
-          "broadcast": "E6C6-1R",
+          "recording": "E6C6-1",
+          "broadcast": "E6C6-1",
           "ordinal": 16,
-          "time_s": 19.1333,
+          "time_s": 46.1667,
           "source": "FFmpeg automatic extraction",
           "provisional": true,
           "hamming_distance": 2
@@ -6315,11 +6398,11 @@
       "first_video": "E6C2-1K",
       "first_frame": 264,
       "first_time_s": 8.803,
-      "occurrences": 19,
+      "occurrences": 22,
       "manual_occurrences": 12,
-      "provisional_occurrences": 7,
-      "broadcast_count": 17,
-      "recording_count": 19,
+      "provisional_occurrences": 10,
+      "broadcast_count": 20,
+      "recording_count": 22,
       "recordings": [
         "E6C2-1K",
         "E6C4-13",
@@ -6336,10 +6419,13 @@
         "E6C4-35",
         "E6C5-13",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C5-N",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "broadcasts": [
         "E6C2-1K",
@@ -6355,10 +6441,13 @@
         "E6C4-35",
         "E6C5-13",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C5-N",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "cycles": [
         "E6C2",
@@ -6379,13 +6468,13 @@
       "successors": [
         {
           "id": 46,
-          "count": 19
+          "count": 22
         }
       ],
       "predecessors": [
         {
           "id": 44,
-          "count": 19
+          "count": 22
         }
       ],
       "symmetry": {
@@ -6532,6 +6621,15 @@
           "hamming_distance": 2
         },
         {
+          "recording": "E6C5-3L",
+          "broadcast": "E6C5-3L",
+          "ordinal": 16,
+          "time_s": 36.1667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 1
+        },
+        {
           "recording": "E6C5-N",
           "broadcast": "E6C5-N",
           "ordinal": 9,
@@ -6541,22 +6639,13 @@
           "hamming_distance": 0
         },
         {
-          "recording": "E6C6-11",
-          "broadcast": "E6C6-11",
-          "ordinal": 19,
-          "time_s": 17.5333,
+          "recording": "E6C6-1",
+          "broadcast": "E6C6-1",
+          "ordinal": 17,
+          "time_s": 46.3667,
           "source": "FFmpeg automatic extraction",
           "provisional": true,
           "hamming_distance": 2
-        },
-        {
-          "recording": "E6C6-1R",
-          "broadcast": "E6C6-1R",
-          "ordinal": 17,
-          "time_s": 19.3333,
-          "source": "FFmpeg automatic extraction",
-          "provisional": true,
-          "hamming_distance": 1
         }
       ]
     },
@@ -6581,11 +6670,11 @@
       "first_video": "E6C2-1K",
       "first_frame": 270,
       "first_time_s": 9.003,
-      "occurrences": 19,
+      "occurrences": 22,
       "manual_occurrences": 12,
-      "provisional_occurrences": 7,
-      "broadcast_count": 17,
-      "recording_count": 19,
+      "provisional_occurrences": 10,
+      "broadcast_count": 20,
+      "recording_count": 22,
       "recordings": [
         "E6C2-1K",
         "E6C4-13",
@@ -6602,10 +6691,13 @@
         "E6C4-35",
         "E6C5-13",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C5-N",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "broadcasts": [
         "E6C2-1K",
@@ -6621,10 +6713,13 @@
         "E6C4-35",
         "E6C5-13",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C5-N",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "cycles": [
         "E6C2",
@@ -6645,13 +6740,13 @@
       "successors": [
         {
           "id": 47,
-          "count": 19
+          "count": 22
         }
       ],
       "predecessors": [
         {
           "id": 45,
-          "count": 19
+          "count": 22
         }
       ],
       "symmetry": {
@@ -6798,6 +6893,15 @@
           "hamming_distance": 1
         },
         {
+          "recording": "E6C5-3L",
+          "broadcast": "E6C5-3L",
+          "ordinal": 17,
+          "time_s": 36.3667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 1
+        },
+        {
           "recording": "E6C5-N",
           "broadcast": "E6C5-N",
           "ordinal": 10,
@@ -6807,19 +6911,10 @@
           "hamming_distance": 0
         },
         {
-          "recording": "E6C6-11",
-          "broadcast": "E6C6-11",
-          "ordinal": 20,
-          "time_s": 17.7333,
-          "source": "FFmpeg automatic extraction",
-          "provisional": true,
-          "hamming_distance": 1
-        },
-        {
-          "recording": "E6C6-1R",
-          "broadcast": "E6C6-1R",
+          "recording": "E6C6-1",
+          "broadcast": "E6C6-1",
           "ordinal": 18,
-          "time_s": 19.5333,
+          "time_s": 46.5667,
           "source": "FFmpeg automatic extraction",
           "provisional": true,
           "hamming_distance": 1
@@ -6847,11 +6942,11 @@
       "first_video": "E6C2-1K",
       "first_frame": 275,
       "first_time_s": 9.1696,
-      "occurrences": 19,
+      "occurrences": 22,
       "manual_occurrences": 12,
-      "provisional_occurrences": 7,
-      "broadcast_count": 17,
-      "recording_count": 19,
+      "provisional_occurrences": 10,
+      "broadcast_count": 20,
+      "recording_count": 22,
       "recordings": [
         "E6C2-1K",
         "E6C4-13",
@@ -6868,10 +6963,13 @@
         "E6C4-35",
         "E6C5-13",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C5-N",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "broadcasts": [
         "E6C2-1K",
@@ -6887,10 +6985,13 @@
         "E6C4-35",
         "E6C5-13",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C5-N",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "cycles": [
         "E6C2",
@@ -6911,13 +7012,13 @@
       "successors": [
         {
           "id": 48,
-          "count": 19
+          "count": 22
         }
       ],
       "predecessors": [
         {
           "id": 46,
-          "count": 19
+          "count": 22
         }
       ],
       "symmetry": {
@@ -7064,6 +7165,15 @@
           "hamming_distance": 1
         },
         {
+          "recording": "E6C5-3L",
+          "broadcast": "E6C5-3L",
+          "ordinal": 18,
+          "time_s": 36.5667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 1
+        },
+        {
           "recording": "E6C5-N",
           "broadcast": "E6C5-N",
           "ordinal": 11,
@@ -7073,22 +7183,13 @@
           "hamming_distance": 0
         },
         {
-          "recording": "E6C6-11",
-          "broadcast": "E6C6-11",
-          "ordinal": 21,
-          "time_s": 17.9333,
-          "source": "FFmpeg automatic extraction",
-          "provisional": true,
-          "hamming_distance": 1
-        },
-        {
-          "recording": "E6C6-1R",
-          "broadcast": "E6C6-1R",
+          "recording": "E6C6-1",
+          "broadcast": "E6C6-1",
           "ordinal": 19,
-          "time_s": 19.7333,
+          "time_s": 46.7667,
           "source": "FFmpeg automatic extraction",
           "provisional": true,
-          "hamming_distance": 1
+          "hamming_distance": 2
         }
       ]
     },
@@ -7111,11 +7212,11 @@
       "first_video": "E6C2-1K",
       "first_frame": 281,
       "first_time_s": 9.3696,
-      "occurrences": 19,
+      "occurrences": 22,
       "manual_occurrences": 12,
-      "provisional_occurrences": 7,
-      "broadcast_count": 17,
-      "recording_count": 19,
+      "provisional_occurrences": 10,
+      "broadcast_count": 20,
+      "recording_count": 22,
       "recordings": [
         "E6C2-1K",
         "E6C4-13",
@@ -7132,10 +7233,13 @@
         "E6C4-35",
         "E6C5-13",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C5-N",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "broadcasts": [
         "E6C2-1K",
@@ -7151,10 +7255,13 @@
         "E6C4-35",
         "E6C5-13",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C5-N",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "cycles": [
         "E6C2",
@@ -7175,13 +7282,13 @@
       "successors": [
         {
           "id": 49,
-          "count": 19
+          "count": 22
         }
       ],
       "predecessors": [
         {
           "id": 47,
-          "count": 19
+          "count": 22
         }
       ],
       "symmetry": {
@@ -7328,6 +7435,15 @@
           "hamming_distance": 0
         },
         {
+          "recording": "E6C5-3L",
+          "broadcast": "E6C5-3L",
+          "ordinal": 19,
+          "time_s": 36.7667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 0
+        },
+        {
           "recording": "E6C5-N",
           "broadcast": "E6C5-N",
           "ordinal": 12,
@@ -7337,19 +7453,10 @@
           "hamming_distance": 0
         },
         {
-          "recording": "E6C6-11",
-          "broadcast": "E6C6-11",
-          "ordinal": 22,
-          "time_s": 18.1333,
-          "source": "FFmpeg automatic extraction",
-          "provisional": true,
-          "hamming_distance": 0
-        },
-        {
-          "recording": "E6C6-1R",
-          "broadcast": "E6C6-1R",
+          "recording": "E6C6-1",
+          "broadcast": "E6C6-1",
           "ordinal": 20,
-          "time_s": 19.9333,
+          "time_s": 46.9667,
           "source": "FFmpeg automatic extraction",
           "provisional": true,
           "hamming_distance": 0
@@ -7377,11 +7484,11 @@
       "first_video": "E6C2-1K",
       "first_frame": 287,
       "first_time_s": 9.5696,
-      "occurrences": 19,
+      "occurrences": 22,
       "manual_occurrences": 12,
-      "provisional_occurrences": 7,
-      "broadcast_count": 17,
-      "recording_count": 19,
+      "provisional_occurrences": 10,
+      "broadcast_count": 20,
+      "recording_count": 22,
       "recordings": [
         "E6C2-1K",
         "E6C4-13",
@@ -7398,10 +7505,13 @@
         "E6C4-35",
         "E6C5-13",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C5-N",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "broadcasts": [
         "E6C2-1K",
@@ -7417,10 +7527,13 @@
         "E6C4-35",
         "E6C5-13",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C5-N",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "cycles": [
         "E6C2",
@@ -7441,13 +7554,13 @@
       "successors": [
         {
           "id": 50,
-          "count": 19
+          "count": 21
         }
       ],
       "predecessors": [
         {
           "id": 48,
-          "count": 19
+          "count": 22
         }
       ],
       "symmetry": {
@@ -7594,6 +7707,15 @@
           "hamming_distance": 2
         },
         {
+          "recording": "E6C5-3L",
+          "broadcast": "E6C5-3L",
+          "ordinal": 20,
+          "time_s": 36.9667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 2
+        },
+        {
           "recording": "E6C5-N",
           "broadcast": "E6C5-N",
           "ordinal": 13,
@@ -7603,22 +7725,13 @@
           "hamming_distance": 0
         },
         {
-          "recording": "E6C6-11",
-          "broadcast": "E6C6-11",
-          "ordinal": 23,
-          "time_s": 18.3333,
-          "source": "FFmpeg automatic extraction",
-          "provisional": true,
-          "hamming_distance": 2
-        },
-        {
-          "recording": "E6C6-1R",
-          "broadcast": "E6C6-1R",
+          "recording": "E6C6-1",
+          "broadcast": "E6C6-1",
           "ordinal": 21,
-          "time_s": 20.1333,
+          "time_s": 47.1667,
           "source": "FFmpeg automatic extraction",
           "provisional": true,
-          "hamming_distance": 0
+          "hamming_distance": 1
         }
       ]
     },
@@ -7637,11 +7750,11 @@
       "first_video": "E6C2-1K",
       "first_frame": 293,
       "first_time_s": 9.7696,
-      "occurrences": 19,
+      "occurrences": 21,
       "manual_occurrences": 12,
-      "provisional_occurrences": 7,
-      "broadcast_count": 17,
-      "recording_count": 19,
+      "provisional_occurrences": 9,
+      "broadcast_count": 19,
+      "recording_count": 21,
       "recordings": [
         "E6C2-1K",
         "E6C4-13",
@@ -7658,7 +7771,9 @@
         "E6C4-35",
         "E6C5-13",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C5-N",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
         "E6C6-21"
@@ -7677,7 +7792,9 @@
         "E6C4-35",
         "E6C5-13",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C5-N",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
         "E6C6-21"
@@ -7701,13 +7818,13 @@
       "successors": [
         {
           "id": 51,
-          "count": 19
+          "count": 21
         }
       ],
       "predecessors": [
         {
           "id": 49,
-          "count": 19
+          "count": 21
         }
       ],
       "symmetry": {
@@ -7854,6 +7971,15 @@
           "hamming_distance": 0
         },
         {
+          "recording": "E6C5-3L",
+          "broadcast": "E6C5-3L",
+          "ordinal": 21,
+          "time_s": 37.1667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 0
+        },
+        {
           "recording": "E6C5-N",
           "broadcast": "E6C5-N",
           "ordinal": 14,
@@ -7863,19 +7989,10 @@
           "hamming_distance": 0
         },
         {
-          "recording": "E6C6-11",
-          "broadcast": "E6C6-11",
-          "ordinal": 24,
-          "time_s": 18.5333,
-          "source": "FFmpeg automatic extraction",
-          "provisional": true,
-          "hamming_distance": 1
-        },
-        {
-          "recording": "E6C6-1R",
-          "broadcast": "E6C6-1R",
+          "recording": "E6C6-1",
+          "broadcast": "E6C6-1",
           "ordinal": 22,
-          "time_s": 20.3333,
+          "time_s": 47.3667,
           "source": "FFmpeg automatic extraction",
           "provisional": true,
           "hamming_distance": 0
@@ -7897,11 +8014,11 @@
       "first_video": "E6C2-1K",
       "first_frame": 299,
       "first_time_s": 9.9696,
-      "occurrences": 19,
+      "occurrences": 21,
       "manual_occurrences": 12,
-      "provisional_occurrences": 7,
-      "broadcast_count": 17,
-      "recording_count": 19,
+      "provisional_occurrences": 9,
+      "broadcast_count": 19,
+      "recording_count": 21,
       "recordings": [
         "E6C2-1K",
         "E6C4-13",
@@ -7918,7 +8035,9 @@
         "E6C4-35",
         "E6C5-13",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C5-N",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
         "E6C6-21"
@@ -7937,7 +8056,9 @@
         "E6C4-35",
         "E6C5-13",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C5-N",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
         "E6C6-21"
@@ -7961,13 +8082,13 @@
         },
         {
           "id": 133,
-          "count": 4
+          "count": 5
         }
       ],
       "predecessors": [
         {
           "id": 50,
-          "count": 19
+          "count": 21
         }
       ],
       "symmetry": {
@@ -8114,6 +8235,15 @@
           "hamming_distance": 0
         },
         {
+          "recording": "E6C5-3L",
+          "broadcast": "E6C5-3L",
+          "ordinal": 22,
+          "time_s": 37.3667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 0
+        },
+        {
           "recording": "E6C5-N",
           "broadcast": "E6C5-N",
           "ordinal": 15,
@@ -8123,19 +8253,10 @@
           "hamming_distance": 0
         },
         {
-          "recording": "E6C6-11",
-          "broadcast": "E6C6-11",
-          "ordinal": 25,
-          "time_s": 18.7333,
-          "source": "FFmpeg automatic extraction",
-          "provisional": true,
-          "hamming_distance": 0
-        },
-        {
-          "recording": "E6C6-1R",
-          "broadcast": "E6C6-1R",
+          "recording": "E6C6-1",
+          "broadcast": "E6C6-1",
           "ordinal": 23,
-          "time_s": 20.5,
+          "time_s": 47.5667,
           "source": "FFmpeg automatic extraction",
           "provisional": true,
           "hamming_distance": 0
@@ -8564,24 +8685,27 @@
       "first_video": "E6C2-1K",
       "first_frame": 323,
       "first_time_s": 10.7696,
-      "occurrences": 3,
+      "occurrences": 4,
       "manual_occurrences": 2,
-      "provisional_occurrences": 1,
-      "broadcast_count": 3,
-      "recording_count": 3,
+      "provisional_occurrences": 2,
+      "broadcast_count": 4,
+      "recording_count": 4,
       "recordings": [
         "E6C2-1K",
         "E6C4-35",
+        "E6C5-3L",
         "E6C6-D"
       ],
       "broadcasts": [
         "E6C2-1K",
         "E6C4-35",
+        "E6C5-3L",
         "E6C6-D"
       ],
       "cycles": [
         "E6C2",
         "E6C4",
+        "E6C5",
         "E6C6"
       ],
       "phrases": [
@@ -8598,12 +8722,20 @@
         {
           "id": 56,
           "count": 3
+        },
+        {
+          "id": 122,
+          "count": 1
         }
       ],
       "predecessors": [
         {
           "id": 54,
           "count": 2
+        },
+        {
+          "id": 120,
+          "count": 1
         }
       ],
       "symmetry": {
@@ -8631,6 +8763,15 @@
           "source": "ArchiveInvest manual",
           "provisional": false,
           "hamming_distance": 0
+        },
+        {
+          "recording": "E6C5-3L",
+          "broadcast": "E6C5-3L",
+          "ordinal": 2,
+          "time_s": 33.3667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 5
         },
         {
           "recording": "E6C6-D",
@@ -9788,15 +9929,16 @@
       "first_video": "E6C2-1K",
       "first_frame": 396,
       "first_time_s": 13.2029,
-      "occurrences": 6,
+      "occurrences": 9,
       "manual_occurrences": 3,
-      "provisional_occurrences": 3,
-      "broadcast_count": 5,
-      "recording_count": 5,
+      "provisional_occurrences": 6,
+      "broadcast_count": 6,
+      "recording_count": 6,
       "recordings": [
         "E6C2-1K",
         "E6C4-30 [local capture]",
         "E6C4-35",
+        "E6C6-1",
         "E6C6-D",
         "Youtube_1"
       ],
@@ -9804,6 +9946,7 @@
         "E6C2-1K",
         "E6C4-30",
         "E6C4-35",
+        "E6C6-1",
         "E6C6-D",
         "Youtube_1"
       ],
@@ -9825,15 +9968,19 @@
       "family_size": 1,
       "successors": [
         {
+          "id": 67,
+          "count": 3
+        },
+        {
           "id": 135,
           "count": 3
         },
         {
-          "id": 67,
+          "id": 120,
           "count": 1
         },
         {
-          "id": 120,
+          "id": 24,
           "count": 1
         }
       ],
@@ -9844,7 +9991,7 @@
         },
         {
           "id": 67,
-          "count": 1
+          "count": 3
         }
       ],
       "symmetry": {
@@ -9890,6 +10037,33 @@
           "source": "ArchiveInvest manual",
           "provisional": false,
           "hamming_distance": 0
+        },
+        {
+          "recording": "E6C6-1",
+          "broadcast": "E6C6-1",
+          "ordinal": 1,
+          "time_s": 43.1667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 5
+        },
+        {
+          "recording": "E6C6-1",
+          "broadcast": "E6C6-1",
+          "ordinal": 2,
+          "time_s": 43.3667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 4
+        },
+        {
+          "recording": "E6C6-1",
+          "broadcast": "E6C6-1",
+          "ordinal": 3,
+          "time_s": 43.5667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 2
         },
         {
           "recording": "E6C6-D",
@@ -13358,11 +13532,11 @@
       "first_video": "E6C5-N",
       "first_frame": 1105,
       "first_time_s": 36.8446,
-      "occurrences": 17,
+      "occurrences": 21,
       "manual_occurrences": 11,
-      "provisional_occurrences": 6,
-      "broadcast_count": 15,
-      "recording_count": 17,
+      "provisional_occurrences": 10,
+      "broadcast_count": 18,
+      "recording_count": 20,
       "recordings": [
         "E6C4-13",
         "E6C4-16",
@@ -13377,10 +13551,13 @@
         "E6C4-30 [local capture]",
         "E6C4-35",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C5-N",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "broadcasts": [
         "E6C4-13",
@@ -13394,10 +13571,13 @@
         "E6C4-30",
         "E6C4-35",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C5-N",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "cycles": [
         "E6C4",
@@ -13413,13 +13593,21 @@
       "successors": [
         {
           "id": 38,
-          "count": 17
+          "count": 20
+        },
+        {
+          "id": 126,
+          "count": 1
         }
       ],
       "predecessors": [
         {
           "id": 126,
-          "count": 16
+          "count": 19
+        },
+        {
+          "id": 123,
+          "count": 1
         }
       ],
       "symmetry": {
@@ -13548,6 +13736,15 @@
           "hamming_distance": 0
         },
         {
+          "recording": "E6C5-3L",
+          "broadcast": "E6C5-3L",
+          "ordinal": 8,
+          "time_s": 34.5667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 0
+        },
+        {
           "recording": "E6C5-N",
           "broadcast": "E6C5-N",
           "ordinal": 1,
@@ -13557,28 +13754,28 @@
           "hamming_distance": 0
         },
         {
+          "recording": "E6C6-1",
+          "broadcast": "E6C6-1",
+          "ordinal": 7,
+          "time_s": 44.3667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 4
+        },
+        {
+          "recording": "E6C6-1",
+          "broadcast": "E6C6-1",
+          "ordinal": 9,
+          "time_s": 44.7667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 0
+        },
+        {
           "recording": "E6C6-11",
           "broadcast": "E6C6-11",
           "ordinal": 11,
           "time_s": 15.9333,
-          "source": "FFmpeg automatic extraction",
-          "provisional": true,
-          "hamming_distance": 0
-        },
-        {
-          "recording": "E6C6-1R",
-          "broadcast": "E6C6-1R",
-          "ordinal": 9,
-          "time_s": 17.7333,
-          "source": "FFmpeg automatic extraction",
-          "provisional": true,
-          "hamming_distance": 0
-        },
-        {
-          "recording": "E6C6-21",
-          "broadcast": "E6C6-21",
-          "ordinal": 9,
-          "time_s": 18.2333,
           "source": "FFmpeg automatic extraction",
           "provisional": true,
           "hamming_distance": 0
@@ -14191,11 +14388,11 @@
       "first_video": "E6C4-13",
       "first_frame": 424,
       "first_time_s": 14.1415,
-      "occurrences": 11,
+      "occurrences": 12,
       "manual_occurrences": 6,
-      "provisional_occurrences": 5,
-      "broadcast_count": 10,
-      "recording_count": 11,
+      "provisional_occurrences": 6,
+      "broadcast_count": 11,
+      "recording_count": 12,
       "recordings": [
         "E6C4-13",
         "E6C4-16",
@@ -14207,7 +14404,8 @@
         "E6C5-2J",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "broadcasts": [
         "E6C4-13",
@@ -14219,7 +14417,8 @@
         "E6C5-2J",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "cycles": [
         "E6C4",
@@ -14239,7 +14438,7 @@
       "successors": [
         {
           "id": 120,
-          "count": 11
+          "count": 12
         }
       ],
       "predecessors": [
@@ -14358,6 +14557,15 @@
           "source": "FFmpeg automatic extraction",
           "provisional": true,
           "hamming_distance": 2
+        },
+        {
+          "recording": "E6C6-N",
+          "broadcast": "E6C6-N",
+          "ordinal": 1,
+          "time_s": 11.5667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 2
         }
       ]
     },
@@ -14380,11 +14588,11 @@
       "first_video": "E6C4-13",
       "first_frame": 429,
       "first_time_s": 14.3082,
-      "occurrences": 13,
+      "occurrences": 15,
       "manual_occurrences": 7,
-      "provisional_occurrences": 6,
-      "broadcast_count": 11,
-      "recording_count": 13,
+      "provisional_occurrences": 8,
+      "broadcast_count": 13,
+      "recording_count": 15,
       "recordings": [
         "E6C4-13",
         "E6C4-16",
@@ -14396,9 +14604,11 @@
         "E6C4-30",
         "E6C4-30 [local capture]",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "broadcasts": [
         "E6C4-13",
@@ -14409,9 +14619,11 @@
         "E6C4-2T",
         "E6C4-30",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "cycles": [
         "E6C4",
@@ -14427,13 +14639,17 @@
       "successors": [
         {
           "id": 121,
-          "count": 13
+          "count": 14
+        },
+        {
+          "id": 55,
+          "count": 1
         }
       ],
       "predecessors": [
         {
           "id": 119,
-          "count": 11
+          "count": 12
         },
         {
           "id": 67,
@@ -14539,6 +14755,15 @@
           "hamming_distance": 1
         },
         {
+          "recording": "E6C5-3L",
+          "broadcast": "E6C5-3L",
+          "ordinal": 1,
+          "time_s": 33.1667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 3
+        },
+        {
           "recording": "E6C6-11",
           "broadcast": "E6C6-11",
           "ordinal": 4,
@@ -14564,6 +14789,15 @@
           "source": "FFmpeg automatic extraction",
           "provisional": true,
           "hamming_distance": 2
+        },
+        {
+          "recording": "E6C6-N",
+          "broadcast": "E6C6-N",
+          "ordinal": 2,
+          "time_s": 11.7667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 1
         }
       ]
     },
@@ -14587,11 +14821,11 @@
       "first_video": "E6C4-13",
       "first_frame": 430,
       "first_time_s": 14.3415,
-      "occurrences": 13,
+      "occurrences": 14,
       "manual_occurrences": 7,
-      "provisional_occurrences": 6,
-      "broadcast_count": 11,
-      "recording_count": 13,
+      "provisional_occurrences": 7,
+      "broadcast_count": 12,
+      "recording_count": 14,
       "recordings": [
         "E6C4-13",
         "E6C4-16",
@@ -14605,7 +14839,8 @@
         "E6C5-2J",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "broadcasts": [
         "E6C4-13",
@@ -14618,7 +14853,8 @@
         "E6C5-2J",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "cycles": [
         "E6C4",
@@ -14638,13 +14874,13 @@
       "successors": [
         {
           "id": 122,
-          "count": 13
+          "count": 14
         }
       ],
       "predecessors": [
         {
           "id": 120,
-          "count": 13
+          "count": 14
         }
       ],
       "symmetry": {
@@ -14771,6 +15007,15 @@
           "source": "FFmpeg automatic extraction",
           "provisional": true,
           "hamming_distance": 2
+        },
+        {
+          "recording": "E6C6-N",
+          "broadcast": "E6C6-N",
+          "ordinal": 3,
+          "time_s": 11.9667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 1
         }
       ]
     },
@@ -14791,11 +15036,11 @@
       "first_video": "E6C4-13",
       "first_frame": 439,
       "first_time_s": 14.6415,
-      "occurrences": 14,
+      "occurrences": 16,
       "manual_occurrences": 8,
-      "provisional_occurrences": 6,
-      "broadcast_count": 11,
-      "recording_count": 13,
+      "provisional_occurrences": 8,
+      "broadcast_count": 13,
+      "recording_count": 15,
       "recordings": [
         "E6C4-13",
         "E6C4-16",
@@ -14807,9 +15052,11 @@
         "E6C4-30",
         "E6C4-30 [local capture]",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "broadcasts": [
         "E6C4-13",
@@ -14820,9 +15067,11 @@
         "E6C4-2T",
         "E6C4-30",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "cycles": [
         "E6C4",
@@ -14842,7 +15091,7 @@
       "successors": [
         {
           "id": 123,
-          "count": 13
+          "count": 15
         },
         {
           "id": 122,
@@ -14852,10 +15101,14 @@
       "predecessors": [
         {
           "id": 121,
-          "count": 13
+          "count": 14
         },
         {
           "id": 122,
+          "count": 1
+        },
+        {
+          "id": 55,
           "count": 1
         }
       ],
@@ -14967,6 +15220,15 @@
           "hamming_distance": 1
         },
         {
+          "recording": "E6C5-3L",
+          "broadcast": "E6C5-3L",
+          "ordinal": 3,
+          "time_s": 33.5667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 3
+        },
+        {
           "recording": "E6C6-11",
           "broadcast": "E6C6-11",
           "ordinal": 6,
@@ -14992,6 +15254,15 @@
           "source": "FFmpeg automatic extraction",
           "provisional": true,
           "hamming_distance": 1
+        },
+        {
+          "recording": "E6C6-N",
+          "broadcast": "E6C6-N",
+          "ordinal": 4,
+          "time_s": 12.1667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 1
         }
       ]
     },
@@ -15008,11 +15279,11 @@
       "first_video": "E6C4-13",
       "first_frame": 444,
       "first_time_s": 14.8082,
-      "occurrences": 14,
+      "occurrences": 18,
       "manual_occurrences": 8,
-      "provisional_occurrences": 6,
-      "broadcast_count": 12,
-      "recording_count": 14,
+      "provisional_occurrences": 10,
+      "broadcast_count": 15,
+      "recording_count": 17,
       "recordings": [
         "E6C4-13",
         "E6C4-16",
@@ -15025,9 +15296,12 @@
         "E6C4-30",
         "E6C4-30 [local capture]",
         "E6C5-2J",
+        "E6C5-3L",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "broadcasts": [
         "E6C4-13",
@@ -15039,9 +15313,12 @@
         "E6C4-2T",
         "E6C4-30",
         "E6C5-2J",
+        "E6C5-3L",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "cycles": [
         "E6C4",
@@ -15061,13 +15338,29 @@
       "successors": [
         {
           "id": 124,
-          "count": 14
+          "count": 16
+        },
+        {
+          "id": 123,
+          "count": 1
+        },
+        {
+          "id": 112,
+          "count": 1
         }
       ],
       "predecessors": [
         {
           "id": 122,
-          "count": 13
+          "count": 15
+        },
+        {
+          "id": 24,
+          "count": 1
+        },
+        {
+          "id": 123,
+          "count": 1
         }
       ],
       "symmetry": {
@@ -15178,6 +15471,33 @@
           "hamming_distance": 1
         },
         {
+          "recording": "E6C5-3L",
+          "broadcast": "E6C5-3L",
+          "ordinal": 4,
+          "time_s": 33.7667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 2
+        },
+        {
+          "recording": "E6C6-1",
+          "broadcast": "E6C6-1",
+          "ordinal": 5,
+          "time_s": 43.9667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 2
+        },
+        {
+          "recording": "E6C6-1",
+          "broadcast": "E6C6-1",
+          "ordinal": 6,
+          "time_s": 44.1667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 4
+        },
+        {
           "recording": "E6C6-11",
           "broadcast": "E6C6-11",
           "ordinal": 7,
@@ -15203,6 +15523,15 @@
           "source": "FFmpeg automatic extraction",
           "provisional": true,
           "hamming_distance": 1
+        },
+        {
+          "recording": "E6C6-N",
+          "broadcast": "E6C6-N",
+          "ordinal": 5,
+          "time_s": 12.3667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 0
         }
       ]
     },
@@ -15224,11 +15553,11 @@
       "first_video": "E6C4-13",
       "first_frame": 445,
       "first_time_s": 14.8415,
-      "occurrences": 17,
+      "occurrences": 19,
       "manual_occurrences": 11,
-      "provisional_occurrences": 6,
-      "broadcast_count": 13,
-      "recording_count": 15,
+      "provisional_occurrences": 8,
+      "broadcast_count": 15,
+      "recording_count": 17,
       "recordings": [
         "E6C4-13",
         "E6C4-16",
@@ -15242,9 +15571,11 @@
         "E6C4-30",
         "E6C4-30 [local capture]",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "broadcasts": [
         "E6C4-13",
@@ -15257,9 +15588,11 @@
         "E6C4-2T",
         "E6C4-30",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "cycles": [
         "E6C4",
@@ -15275,7 +15608,7 @@
       "successors": [
         {
           "id": 125,
-          "count": 14
+          "count": 16
         },
         {
           "id": 124,
@@ -15289,7 +15622,7 @@
       "predecessors": [
         {
           "id": 123,
-          "count": 14
+          "count": 16
         },
         {
           "id": 124,
@@ -15431,6 +15764,15 @@
           "hamming_distance": 1
         },
         {
+          "recording": "E6C5-3L",
+          "broadcast": "E6C5-3L",
+          "ordinal": 5,
+          "time_s": 33.9667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 3
+        },
+        {
           "recording": "E6C6-11",
           "broadcast": "E6C6-11",
           "ordinal": 8,
@@ -15476,11 +15818,11 @@
       "first_video": "E6C4-13",
       "first_frame": 450,
       "first_time_s": 15.0082,
-      "occurrences": 15,
+      "occurrences": 17,
       "manual_occurrences": 9,
-      "provisional_occurrences": 6,
-      "broadcast_count": 14,
-      "recording_count": 15,
+      "provisional_occurrences": 8,
+      "broadcast_count": 16,
+      "recording_count": 17,
       "recordings": [
         "E6C4-13",
         "E6C4-16",
@@ -15494,9 +15836,11 @@
         "E6C4-30 [local capture]",
         "E6C4-35",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "broadcasts": [
         "E6C4-13",
@@ -15510,9 +15854,11 @@
         "E6C4-30",
         "E6C4-35",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "cycles": [
         "E6C4",
@@ -15528,13 +15874,13 @@
       "successors": [
         {
           "id": 126,
-          "count": 15
+          "count": 17
         }
       ],
       "predecessors": [
         {
           "id": 124,
-          "count": 14
+          "count": 16
         }
       ],
       "symmetry": {
@@ -15654,6 +16000,15 @@
           "hamming_distance": 1
         },
         {
+          "recording": "E6C5-3L",
+          "broadcast": "E6C5-3L",
+          "ordinal": 6,
+          "time_s": 34.1667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 2
+        },
+        {
           "recording": "E6C6-11",
           "broadcast": "E6C6-11",
           "ordinal": 9,
@@ -15679,6 +16034,15 @@
           "source": "FFmpeg automatic extraction",
           "provisional": true,
           "hamming_distance": 1
+        },
+        {
+          "recording": "E6C6-N",
+          "broadcast": "E6C6-N",
+          "ordinal": 7,
+          "time_s": 12.7667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 1
         }
       ]
     },
@@ -15698,11 +16062,11 @@
       "first_video": "E6C4-13",
       "first_frame": 455,
       "first_time_s": 15.1748,
-      "occurrences": 16,
+      "occurrences": 19,
       "manual_occurrences": 10,
-      "provisional_occurrences": 6,
-      "broadcast_count": 14,
-      "recording_count": 16,
+      "provisional_occurrences": 9,
+      "broadcast_count": 17,
+      "recording_count": 19,
       "recordings": [
         "E6C4-13",
         "E6C4-16",
@@ -15717,9 +16081,12 @@
         "E6C4-30 [local capture]",
         "E6C4-35",
         "E6C5-2J",
+        "E6C5-3L",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "broadcasts": [
         "E6C4-13",
@@ -15733,9 +16100,12 @@
         "E6C4-30",
         "E6C4-35",
         "E6C5-2J",
+        "E6C5-3L",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "cycles": [
         "E6C4",
@@ -15751,16 +16121,20 @@
       "successors": [
         {
           "id": 112,
-          "count": 16
+          "count": 19
         }
       ],
       "predecessors": [
         {
           "id": 125,
-          "count": 15
+          "count": 17
         },
         {
           "id": 124,
+          "count": 1
+        },
+        {
+          "id": 112,
           "count": 1
         }
       ],
@@ -15885,6 +16259,24 @@
           "broadcast": "E6C5-2J",
           "ordinal": 8,
           "time_s": 49.1333,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 0
+        },
+        {
+          "recording": "E6C5-3L",
+          "broadcast": "E6C5-3L",
+          "ordinal": 7,
+          "time_s": 34.3667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 0
+        },
+        {
+          "recording": "E6C6-1",
+          "broadcast": "E6C6-1",
+          "ordinal": 8,
+          "time_s": 44.5667,
           "source": "FFmpeg automatic extraction",
           "provisional": true,
           "hamming_distance": 0
@@ -16250,24 +16642,30 @@
       "first_video": "E6C4-17",
       "first_frame": 893,
       "first_time_s": 29.781,
-      "occurrences": 5,
+      "occurrences": 8,
       "manual_occurrences": 1,
-      "provisional_occurrences": 4,
-      "broadcast_count": 5,
-      "recording_count": 5,
+      "provisional_occurrences": 7,
+      "broadcast_count": 8,
+      "recording_count": 8,
       "recordings": [
         "E6C4-17",
         "E6C4-2T [local capture]",
         "E6C5-2J",
+        "E6C5-3L",
+        "E6C6-1",
         "E6C6-11",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "broadcasts": [
         "E6C4-17",
         "E6C4-2T",
         "E6C5-2J",
+        "E6C5-3L",
+        "E6C6-1",
         "E6C6-11",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
       "cycles": [
         "E6C4",
@@ -16288,7 +16686,7 @@
       "successors": [
         {
           "id": 41,
-          "count": 4
+          "count": 7
         },
         {
           "id": 132,
@@ -16298,7 +16696,7 @@
       "predecessors": [
         {
           "id": 39,
-          "count": 4
+          "count": 7
         },
         {
           "id": 130,
@@ -16341,6 +16739,24 @@
           "hamming_distance": 1
         },
         {
+          "recording": "E6C5-3L",
+          "broadcast": "E6C5-3L",
+          "ordinal": 11,
+          "time_s": 35.1667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 2
+        },
+        {
+          "recording": "E6C6-1",
+          "broadcast": "E6C6-1",
+          "ordinal": 12,
+          "time_s": 45.3667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 3
+        },
+        {
           "recording": "E6C6-11",
           "broadcast": "E6C6-11",
           "ordinal": 14,
@@ -16354,6 +16770,15 @@
           "broadcast": "E6C6-21",
           "ordinal": 12,
           "time_s": 18.8333,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 2
+        },
+        {
+          "recording": "E6C6-N",
+          "broadcast": "E6C6-N",
+          "ordinal": 12,
+          "time_s": 13.7667,
           "source": "FFmpeg automatic extraction",
           "provisional": true,
           "hamming_distance": 2
@@ -16449,21 +16874,23 @@
       "first_video": "E6C4-1G",
       "first_frame": 919,
       "first_time_s": 30.626,
-      "occurrences": 4,
+      "occurrences": 5,
       "manual_occurrences": 1,
-      "provisional_occurrences": 3,
-      "broadcast_count": 4,
-      "recording_count": 4,
+      "provisional_occurrences": 4,
+      "broadcast_count": 5,
+      "recording_count": 5,
       "recordings": [
         "E6C4-1G",
         "E6C4-30 [local capture]",
         "E6C5-13",
+        "E6C5-3L",
         "E6C6-11"
       ],
       "broadcasts": [
         "E6C4-1G",
         "E6C4-30",
         "E6C5-13",
+        "E6C5-3L",
         "E6C6-11"
       ],
       "cycles": [
@@ -16491,7 +16918,7 @@
       "predecessors": [
         {
           "id": 51,
-          "count": 4
+          "count": 5
         }
       ],
       "symmetry": {
@@ -16528,6 +16955,15 @@
           "source": "FFmpeg automatic extraction",
           "provisional": true,
           "hamming_distance": 1
+        },
+        {
+          "recording": "E6C5-3L",
+          "broadcast": "E6C5-3L",
+          "ordinal": 23,
+          "time_s": 37.5667,
+          "source": "FFmpeg automatic extraction",
+          "provisional": true,
+          "hamming_distance": 2
         },
         {
           "recording": "E6C6-11",
@@ -17957,6 +18393,17 @@
       "glyph_ids": "119 120 121 122 123 124 125 126 112 38 39 131 41 42 43 44 45 46 47 48 49 50 51"
     },
     {
+      "recording": "E6C5-3L",
+      "broadcast": "E6C5-3L",
+      "cycle": "E6C5",
+      "track": "Unknown",
+      "n_glyphs": 23,
+      "source": "provisional FFmpeg read",
+      "mean_hamming": 1.522,
+      "uncertain_gt2": 5,
+      "glyph_ids": "120 55 122 123 124 125 126 112 38 39 131 41 42 43 44 45 46 47 48 49 50 51 133"
+    },
+    {
       "recording": "E6C5-N",
       "broadcast": "E6C5-N",
       "cycle": "E6C5",
@@ -17966,6 +18413,17 @@
       "mean_hamming": 0,
       "uncertain_gt2": 0,
       "glyph_ids": "112 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52"
+    },
+    {
+      "recording": "E6C6-1",
+      "broadcast": "E6C6-1",
+      "cycle": "E6C6",
+      "track": "Unknown",
+      "n_glyphs": 23,
+      "source": "provisional FFmpeg read",
+      "mean_hamming": 1.957,
+      "uncertain_gt2": 8,
+      "glyph_ids": "67 67 67 24 123 123 112 126 112 38 39 131 41 42 43 44 45 46 47 48 49 50 51"
     },
     {
       "recording": "E6C6-11",
@@ -18010,6 +18468,17 @@
       "mean_hamming": 0.727,
       "uncertain_gt2": 1,
       "glyph_ids": "55 56 57 58 59 60 61 62 63 64 65 66 67 135 136 137 138 139 146 141 142 143"
+    },
+    {
+      "recording": "E6C6-N",
+      "broadcast": "E6C6-N",
+      "cycle": "E6C6",
+      "track": "Unknown",
+      "n_glyphs": 21,
+      "source": "provisional FFmpeg read",
+      "mean_hamming": 1.048,
+      "uncertain_gt2": 1,
+      "glyph_ids": "119 120 121 122 123 124 125 126 112 38 39 131 41 42 43 44 45 46 47 48 49"
     },
     {
       "recording": "Youtube_1",
@@ -18191,6 +18660,44 @@
       "n_broadcasts": 3
     },
     {
+      "length": 8,
+      "glyph_ids": [
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49
+      ],
+      "broadcasts": [
+        "E6C2-1K",
+        "E6C4-13",
+        "E6C4-16",
+        "E6C4-17",
+        "E6C4-18",
+        "E6C4-19",
+        "E6C4-1G",
+        "E6C4-1H",
+        "E6C4-2T",
+        "E6C4-2T [local capture]",
+        "E6C4-30",
+        "E6C4-30 [local capture]",
+        "E6C4-35",
+        "E6C5-13",
+        "E6C5-2J",
+        "E6C5-3L",
+        "E6C5-N",
+        "E6C6-1",
+        "E6C6-11",
+        "E6C6-1R",
+        "E6C6-21",
+        "E6C6-N"
+      ],
+      "n_broadcasts": 22
+    },
+    {
       "length": 10,
       "glyph_ids": [
         42,
@@ -18220,12 +18727,51 @@
         "E6C4-35",
         "E6C5-13",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C5-N",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
         "E6C6-21"
       ],
-      "n_broadcasts": 19
+      "n_broadcasts": 21
+    },
+    {
+      "length": 9,
+      "glyph_ids": [
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49
+      ],
+      "broadcasts": [
+        "E6C2-1K",
+        "E6C4-13",
+        "E6C4-16",
+        "E6C4-18",
+        "E6C4-19",
+        "E6C4-1G",
+        "E6C4-1H",
+        "E6C4-2T",
+        "E6C4-2T [local capture]",
+        "E6C4-30",
+        "E6C4-30 [local capture]",
+        "E6C4-35",
+        "E6C5-2J",
+        "E6C5-3L",
+        "E6C5-N",
+        "E6C6-1",
+        "E6C6-11",
+        "E6C6-1R",
+        "E6C6-21",
+        "E6C6-N"
+      ],
+      "n_broadcasts": 20
     },
     {
       "length": 11,
@@ -18256,12 +18802,14 @@
         "E6C4-30 [local capture]",
         "E6C4-35",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C5-N",
+        "E6C6-1",
         "E6C6-11",
         "E6C6-1R",
         "E6C6-21"
       ],
-      "n_broadcasts": 17
+      "n_broadcasts": 19
     },
     {
       "length": 5,
@@ -18284,11 +18832,13 @@
         "E6C4-30",
         "E6C4-30 [local capture]",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
-      "n_broadcasts": 14
+      "n_broadcasts": 16
     },
     {
       "length": 5,
@@ -18310,45 +18860,13 @@
         "E6C4-30 [local capture]",
         "E6C4-35",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
-      "n_broadcasts": 13
-    },
-    {
-      "length": 14,
-      "glyph_ids": [
-        38,
-        39,
-        40,
-        41,
-        42,
-        43,
-        44,
-        45,
-        46,
-        47,
-        48,
-        49,
-        50,
-        51
-      ],
-      "broadcasts": [
-        "E6C2-1K",
-        "E6C4-16",
-        "E6C4-18",
-        "E6C4-19",
-        "E6C4-1G",
-        "E6C4-1H",
-        "E6C4-2T",
-        "E6C4-30",
-        "E6C4-30 [local capture]",
-        "E6C4-35",
-        "E6C5-N",
-        "E6C6-1R"
-      ],
-      "n_broadcasts": 12
+      "n_broadcasts": 15
     },
     {
       "length": 6,
@@ -18370,11 +18888,13 @@
         "E6C4-30",
         "E6C4-30 [local capture]",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
-      "n_broadcasts": 12
+      "n_broadcasts": 14
     },
     {
       "length": 6,
@@ -18396,36 +18916,13 @@
         "E6C4-30",
         "E6C4-30 [local capture]",
         "E6C5-2J",
+        "E6C5-3L",
         "E6C6-11",
         "E6C6-1R",
-        "E6C6-21"
+        "E6C6-21",
+        "E6C6-N"
       ],
-      "n_broadcasts": 12
-    },
-    {
-      "length": 5,
-      "glyph_ids": [
-        120,
-        121,
-        122,
-        123,
-        124
-      ],
-      "broadcasts": [
-        "E6C4-13",
-        "E6C4-16",
-        "E6C4-18",
-        "E6C4-1G",
-        "E6C4-1H",
-        "E6C4-2T [local capture]",
-        "E6C4-30",
-        "E6C4-30 [local capture]",
-        "E6C5-2J",
-        "E6C6-11",
-        "E6C6-1R",
-        "E6C6-21"
-      ],
-      "n_broadcasts": 12
+      "n_broadcasts": 14
     }
   ],
   "cell_usage": [

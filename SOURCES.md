@@ -3,8 +3,9 @@
 ## Canonical glyph research
 
 - **George Peralta / QZRChedders** — creator and maintainer of [QZRChedders/ArchiveInvest](https://github.com/QZRChedders/ArchiveInvest), including the collected source videos, manual 9×9 pattern tags, canonical glyph dictionary, transcripts, cluster analysis, and grid-tagging interface. The repository history available during this build lists `QZRChedders <george.ej.peralta@gmail.com>` as its author.
-- **Locally supplied recordings** — the eight configured Cycle 4–6 captures contribute 181 provisional classifications. Additional locally available variants and earlier-cycle files are identity-recorded in the published SHA-256 manifest but do not silently enter the catalogue.
+- **Locally supplied recordings** — the eleven configured Cycle 4–6 captures contribute 248 provisional classifications. Additional locally available variants and earlier-cycle files are identity-recorded in the published SHA-256 manifest but do not silently enter the catalogue.
 - **E6C4-17 source comparison** — the ArchiveInvest MP4 and independently supplied WebM were both used for the registered seven-frame audit of glyph #130. Their exact hashes and media metadata are published in `data/source_integrity.json`.
+- **Official EVE Frontier artifact API snapshot** — a user-supplied snapshot of 31 published `transmission` records is preserved verbatim in [`data/official_artifacts.json`](data/official_artifacts.json). The explorer uses its artifact ID/URL mapping to link matching broadcast evidence to the official artifact. The API's `createdAt` field is explicitly treated as artifact-record creation time, not asserted as original broadcast publication time. The three new glyph-bearing downloads (`E6C5-3L.webm`, `E6C6-1.webm`, and `E6C6-N.webm`) are integrity-recorded but the raw media is not committed.
 
 ## Supporting datasets
 

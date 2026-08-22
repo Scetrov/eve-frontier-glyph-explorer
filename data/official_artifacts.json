@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "source": {
+    "provider": "EVE Frontier artifact API",
+    "source_type": "User-supplied API snapshot",
+    "scope": "Published transmission artifact records",
+    "created_at_note": "createdAt is the artifact record creation time returned by the API. It is not asserted to be the original broadcast publication time."
+  },
+  "artifacts": [
+    {"id":"E6C6-21","title":"E6C6-21","url":"https://artifacts.evefrontier.com/videos/E6C6-21.webm","type":"transmission","published":true,"createdAt":"2026-08-18T14:24:48.236345Z"},
+    {"id":"E6C6-1R","title":"E6C6-1R","url":"https://artifacts.evefrontier.com/videos/E6C6-1R.webm","type":"transmission","published":true,"createdAt":"2026-08-14T15:08:08.393503Z"},
+    {"id":"E6C6-11","title":"E6C6-11","url":"https://artifacts.evefrontier.com/videos/E6C6-11.webm","type":"transmission","published":true,"createdAt":"2026-07-21T15:16:56.457961Z"},
+    {"id":"E6C6-N","title":"E6C6-N","url":"https://artifacts.evefrontier.com/videos/E6C6-N.webm","type":"transmission","published":true,"createdAt":"2026-07-15T11:35:28.283407Z"},
+    {"id":"E6C6-D","title":"E6C6-D","url":"https://artifacts.evefrontier.com/videos/E6C6-D.webm","type":"transmission","published":true,"createdAt":"2026-07-07T17:45:59.701073Z"},
+    {"id":"E6C6-1","title":"E6C6-1","url":"http://artifacts.evefrontier.com/videos/E6C6-1.webm","type":"transmission","published":true,"createdAt":"2026-06-25T12:28:47.21389Z"},
+    {"id":"E6C5-3L","title":"E6C5-3L","url":"http://artifacts.evefrontier.com/videos/E6C5-3L.webm","type":"transmission","published":true,"createdAt":"2026-06-19T13:01:59.662742Z"},
+    {"id":"E6C5-2J","title":"E6C5-2J","url":"https://artifacts.evefrontier.com/videos/E6C5-2J.webm","type":"transmission","published":true,"createdAt":"2026-05-20T11:15:13.43859Z"},
+    {"id":"SEEKER_ENTRY_02","title":"SEEKER_ENTRY_02","url":"https://artifacts.evefrontier.com/videos/SEEKER_ENTRY_02.webm","type":"transmission","published":true,"createdAt":"2026-04-21T12:38:55.426004Z"},
+    {"id":"SEEKER_ENTRY_01","title":"SEEKER_ENTRY_01","url":"http://artifacts.evefrontier.com/videos/SEEKER_ENTRY_01.webm","type":"transmission","published":true,"createdAt":"2026-04-15T11:34:19.421891Z"},
+    {"id":"E6C5-13","title":"E6C5-13","url":"https://artifacts.evefrontier.com/videos/E6C5-13.webm","type":"transmission","published":true,"createdAt":"2026-04-10T14:53:40.111655Z"},
+    {"id":"E6C5-N","title":"E6C5-N","url":"https://artifacts.evefrontier.com/videos/E6C5-N.webm","type":"transmission","published":true,"createdAt":"2026-03-31T11:09:26.840069Z"},
+    {"id":"E6C4-35","title":"E6C4-35","url":"https://artifacts.evefrontier.com/videos/E6C4-35.webm","type":"transmission","published":true,"createdAt":"2026-03-06T15:55:07.945991Z"},
+    {"id":"E6C4-30","title":"E6C4-30","url":"http://artifacts.evefrontier.com/videos/E6C4-30.webm","type":"transmission","published":true,"createdAt":"2026-03-06T15:54:52.077829Z"},
+    {"id":"E6C4-2T","title":"E6C4-2T","url":"http://artifacts.evefrontier.com/videos/E6C4-2T.webm","type":"transmission","published":true,"createdAt":"2026-03-06T15:54:40.942809Z"},
+    {"id":"E6C4-1H","title":"E6C4-1H","url":"https://artifacts.evefrontier.com/videos/E6C4-1H.webm","type":"transmission","published":true,"createdAt":"2026-03-06T15:54:19.75132Z"},
+    {"id":"E6C4-1G","title":"E6C4-1G","url":"https://artifacts.evefrontier.com/videos/E6C4-1G.webm","type":"transmission","published":true,"createdAt":"2026-03-06T15:54:05.973899Z"},
+    {"id":"E6C4-19","title":"E6C4-19","url":"https://artifacts.evefrontier.com/videos/E6C4-19.webm","type":"transmission","published":true,"createdAt":"2026-03-06T15:53:53.872156Z"},
+    {"id":"E6C4-18","title":"E6C4-18","url":"https://artifacts.evefrontier.com/videos/E6C4-18.webm","type":"transmission","published":true,"createdAt":"2026-03-06T15:53:36.665919Z"},
+    {"id":"E6C4-17","title":"E6C4-17","url":"https://artifacts.evefrontier.com/videos/E6C4-17.webm","type":"transmission","published":true,"createdAt":"2026-03-06T15:53:20.093405Z"},
+    {"id":"E6C4-16","title":"E6C4-16","url":"https://artifacts.evefrontier.com/videos/E6C4-16.webm","type":"transmission","published":true,"createdAt":"2026-03-06T15:53:07.479952Z"},
+    {"id":"E6C4-13","title":"E6C4-13","url":"https://artifacts.evefrontier.com/videos/E6C4-13.webm","type":"transmission","published":true,"createdAt":"2026-03-06T15:52:54.641694Z"},
+    {"id":"E6C4-V","title":"E6C4-V","url":"https://artifacts.evefrontier.com/videos/E6C4-V.webm","type":"transmission","published":true,"createdAt":"2026-03-06T15:52:43.145039Z"},
+    {"id":"E6C3-1L","title":"E6C3-1L","url":"http://artifacts.evefrontier.com/videos/E6C3-1L.webm","type":"transmission","published":true,"createdAt":"2026-03-06T15:51:51.549973Z"},
+    {"id":"E6C3-9","title":"E6C3-9","url":"https://artifacts.evefrontier.com/videos/E6C3-9.webm","type":"transmission","published":true,"createdAt":"2026-03-06T15:51:33.845627Z"},
+    {"id":"E6C3-18","title":"E6C3-18","url":"http://artifacts.evefrontier.com/videos/E6C3-18.webm","type":"transmission","published":true,"createdAt":"2026-03-06T15:50:51.750664Z"},
+    {"id":"E6C3-2","title":"E6C3-2","url":"https://artifacts.evefrontier.com/videos/E6C3-2.webm","type":"transmission","published":true,"createdAt":"2026-03-06T15:50:30.262978Z"},
+    {"id":"E6C2-1N","title":"E6C2-1N","url":"https://artifacts.evefrontier.com/videos/E6C2-1N.webm","type":"transmission","published":true,"createdAt":"2026-03-06T15:50:07.043114Z"},
+    {"id":"E6C2-1K","title":"E6C2-1K","url":"https://artifacts.evefrontier.com/videos/E6C2-1K.webm","type":"transmission","published":true,"createdAt":"2026-03-06T15:49:55.648459Z"},
+    {"id":"E6C2-11","title":"E6C2-11","url":"http://artifacts.evefrontier.com/videos/E6C2-11.webm","type":"transmission","published":true,"createdAt":"2026-03-06T15:49:39.643622Z"},
+    {"id":"E6C2-N","title":"E6C2-N","url":"http://artifacts.evefrontier.com/videos/E6C2-N.webm","type":"transmission","published":true,"createdAt":"2026-03-06T15:49:22.653241Z"}
+  ]
+}

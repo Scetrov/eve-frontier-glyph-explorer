@@ -38,6 +38,8 @@ python pipeline\inventory_sources.py --verify --downloaded-dir <source-videos> `
 
 Never replace a file in place while retaining its old manifest entry. A changed SHA-256 is a distinct source variant and requires provenance/frame-alignment review.
 
+If the source has an official EVE Frontier artifact API record, add or update the exact record in `data/official_artifacts.json` and its browser lookup in `data/official_artifacts.js`. Preserve the API-returned URL and `createdAt` exactly; label `createdAt` as artifact-record creation time rather than a broadcast date. Ensure the logical broadcast label makes matching sequence and evidence views link to that official artifact.
+
 Probe the exact file:
 
 ```powershell
