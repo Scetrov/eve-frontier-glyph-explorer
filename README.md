@@ -25,3 +25,16 @@ Every evidence record names its source video, exact source-frame number, timesta
 Frame numbers are relative to the exact filename in each evidence record. In particular, the `E6C2-1K` pattern CSV was tagged against `E6C2-1K zoomed.mp4`, not the longer plain `E6C2-1K.mp4` source.
 
 EVE Frontier and associated marks belong to their respective owners. This community research tool is not affiliated with or endorsed by the game's creators.
+
+## Maintaining the project
+
+Start with [AGENTS.md](AGENTS.md) for the repository architecture, data contracts, build order, validation gates, provenance rules, and release process. Reusable agent workflows live in [`.agents/skills/`](.agents/skills/) and follow the [Agent Skills](https://agentskills.io/) format used by [skills.sh](https://skills.sh/).
+
+Run the repository validator before every data or evidence release:
+
+```powershell
+python scripts/validate_repository.py
+node --check assets/app.js
+node --check data/catalogue.js
+node --check data/evidence.js
+```
