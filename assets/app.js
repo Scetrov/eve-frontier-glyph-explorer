@@ -8,6 +8,13 @@
   }
 
   const glyphs = data.glyphs;
+  const evidence = Array.isArray(window.GLYPH_EVIDENCE) ? window.GLYPH_EVIDENCE : [];
+  const evidenceByGlyph = new Map();
+  evidence.forEach(item => {
+    const glyphId = Number(item.glyph_id);
+    if (!evidenceByGlyph.has(glyphId)) evidenceByGlyph.set(glyphId, []);
+    evidenceByGlyph.get(glyphId).push(item);
+  });
   const byId = new Map(glyphs.map(glyph => [Number(glyph.id), glyph]));
   const sequences = data.sequences.map(row => ({
     ...row,
@@ -38,6 +45,8 @@
     selectedCanvas: document.getElementById('selected-canvas'),
     selectedStats: document.getElementById('selected-stats'),
     recordingList: document.getElementById('recording-list'),
+    evidenceCount: document.getElementById('evidence-count'),
+    evidenceList: document.getElementById('evidence-list'),
     contextList: document.getElementById('context-list'),
     nearList: document.getElementById('near-list'),
     copyFingerprint: document.getElementById('copy-fingerprint'),
@@ -57,6 +66,12 @@
     analysisMetrics: document.getElementById('analysis-metrics'),
     repeatedBlocks: document.getElementById('repeated-blocks'),
     heatmap: document.getElementById('cell-heatmap')
+    ,evidenceDialog: document.getElementById('evidence-dialog')
+    ,evidenceDialogClose: document.getElementById('evidence-dialog-close')
+    ,evidenceDialogImage: document.getElementById('evidence-dialog-image')
+    ,evidenceDialogCanonical: document.getElementById('evidence-dialog-canonical')
+    ,evidenceDialogTitle: document.getElementById('evidence-dialog-title')
+    ,evidenceDialogMeta: document.getElementById('evidence-dialog-meta')
   };
 
   const state = {
@@ -260,6 +275,7 @@
     if (!glyph.recordings.length) elements.recordingList.textContent = 'No occurrence record';
 
     renderContexts(glyph);
+    renderEvidence(glyph);
     renderNearTwins(glyph);
     elements.permalink.href = `${location.pathname}?glyph=${glyph.id}#atlas`;
     elements.permalink.textContent = `Link to #${glyph.id}`;
@@ -275,6 +291,65 @@
       url.searchParams.set('glyph', glyph.id);
       history.replaceState(null, '', `${url.pathname}${url.search}#atlas`);
     }
+  }
+
+  function renderEvidence(glyph) {
+    const records = evidenceByGlyph.get(glyph.id) || [];
+    elements.evidenceCount.textContent = `${records.length} frame${records.length === 1 ? '' : 's'}`;
+    elements.evidenceList.replaceChildren();
+    if (!records.length) {
+      elements.evidenceList.textContent = 'No source-frame evidence packaged.';
+      return;
+    }
+    const fragment = document.createDocumentFragment();
+    records.forEach(record => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = `evidence-card${record.assigned_hamming ? ' evidence-card-difference' : ''}`;
+      button.setAttribute('aria-label', `${record.source_video}, frame ${record.frame}, matched to glyph ${glyph.id}`);
+      const image = document.createElement('img');
+      image.src = record.image;
+      image.loading = 'lazy';
+      image.alt = `Actual frame ${record.frame} from ${record.source_video}`;
+      const meta = document.createElement('span');
+      meta.className = 'evidence-card-meta';
+      const source = document.createElement('strong');
+      source.textContent = record.source_video;
+      const reference = document.createElement('span');
+      reference.textContent = `FRAME ${String(record.frame).padStart(6, '0')} · T+${Number(record.time_s).toFixed(4)}S`;
+      const status = document.createElement('span');
+      status.className = 'evidence-card-status';
+      status.textContent = record.assigned_hamming
+        ? `${record.assigned_hamming} CELL${record.assigned_hamming === 1 ? '' : 'S'} FROM ASSIGNED GLYPH`
+        : 'EXACT ASSIGNED PATTERN';
+      meta.append(source, reference, status);
+      button.append(image, meta);
+      button.addEventListener('click', () => openEvidence(record));
+      fragment.appendChild(button);
+    });
+    elements.evidenceList.appendChild(fragment);
+  }
+
+  function openEvidence(record) {
+    const glyph = byId.get(Number(record.glyph_id));
+    elements.evidenceDialogTitle.textContent = `${record.source_video} / frame ${record.frame}`;
+    elements.evidenceDialogImage.src = record.image;
+    elements.evidenceDialogImage.alt = `Actual frame ${record.frame} from ${record.source_video}`;
+    drawGlyph(elements.evidenceDialogCanonical, glyph, { size: 440, carrier: true });
+    const changed = record.difference_cells.length ? record.difference_cells.join(' ') : 'none';
+    elements.evidenceDialogMeta.innerHTML = [
+      ['Matched glyph', `#${record.glyph_id}`],
+      ['Source recording', record.recording],
+      ['Source file', record.source_video],
+      ['Frame reference', `frame ${record.frame} · glyph position ${record.ordinal}`],
+      ['Timestamp', `${Number(record.time_s).toFixed(4)} seconds`],
+      ['Assignment', record.assignment_basis],
+      ['Assigned Hamming', `${record.assigned_hamming} changed cells`],
+      ['Differing cells', changed],
+      ['Evidence class', record.provisional ? 'provisional automatic read' : 'manual exact tag']
+    ].map(([label, value]) => `<div><span>${escapeText(label)}</span><strong>${escapeText(value)}</strong></div>`).join('');
+    if (typeof elements.evidenceDialog.showModal === 'function') elements.evidenceDialog.showModal();
+    else window.open(record.image, '_blank', 'noopener');
   }
 
   function renderContexts(glyph) {
@@ -507,6 +582,10 @@
   elements.compareLeft.addEventListener('change', updateComparison);
   elements.compareRight.addEventListener('change', updateComparison);
   elements.recordingSelect.addEventListener('change', event => renderSequence(event.target.value));
+  elements.evidenceDialogClose.addEventListener('click', () => elements.evidenceDialog.close());
+  elements.evidenceDialog.addEventListener('click', event => {
+    if (event.target === elements.evidenceDialog) elements.evidenceDialog.close();
+  });
 
   window.addEventListener('keydown', event => {
     if (event.target.matches('input, select, button, textarea')) return;

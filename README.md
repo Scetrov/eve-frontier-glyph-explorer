@@ -16,8 +16,10 @@ No build step, package manager, server, API key, or database is required. The si
 
 - `data/catalogue.js` powers the explorer without a network request.
 - `data/catalogue.json` is the full machine-readable dataset.
+- `data/evidence.js` and `data/evidence_manifest.csv` map every matched occurrence to its actual source frame.
+- `evidence/` contains one 480×480 audit image for each of the 768 occurrence records.
 - The CSV files are downloadable from the Method section.
 
-The 181 automatically extracted local-video occurrences are marked provisional. Canonical dictionary patterns and manual tags are derived from [QZRChedders/ArchiveInvest](https://github.com/QZRChedders/ArchiveInvest).
+Every evidence record names its source video, exact source-frame number, timestamp, matching basis, and canonical/observed Hamming distance. The 181 automatically extracted local-video occurrences are marked provisional. Canonical dictionary patterns and manual tags are derived from [QZRChedders/ArchiveInvest](https://github.com/QZRChedders/ArchiveInvest).
 
 EVE Frontier and associated marks belong to their respective owners. This community research tool is not affiliated with or endorsed by the game's creators.

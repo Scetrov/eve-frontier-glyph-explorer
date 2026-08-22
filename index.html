@@ -108,6 +108,10 @@
             <h4>Observed in</h4>
             <div id="recording-list" class="token-list"></div>
           </div>
+          <div class="inspector-block frame-evidence-block">
+            <div class="inspector-block-heading"><h4>Frame evidence</h4><span id="evidence-count">0 frames</span></div>
+            <div id="evidence-list" class="evidence-list"></div>
+          </div>
           <div class="inspector-block">
             <h4>Sequence context</h4>
             <div id="context-list" class="context-list"></div>
@@ -204,11 +208,30 @@
         <a href="data/glyph_catalogue.csv" download>Download glyph catalogue CSV</a>
         <a href="data/glyph_occurrences.csv" download>Download occurrences CSV</a>
         <a href="data/sequences.csv" download>Download sequences CSV</a>
+        <a href="data/evidence_manifest.csv" download>Download frame-evidence manifest</a>
         <a href="data/catalogue.json" download>Download full JSON</a>
       </div>
       <p class="source-note">Canonical glyph research and manual tagging were created by George Peralta / QZRChedders in the community <a href="https://github.com/QZRChedders/ArchiveInvest">ArchiveInvest repository</a>. Supporting universe-data research references <a href="https://github.com/Scetrov/evefrontier_datasets">Scetrov/evefrontier_datasets</a>. See the <a href="credits.html">full credits and sources</a>. EVE Frontier and associated marks belong to their respective owners.</p>
     </section>
   </main>
+
+  <dialog id="evidence-dialog" class="evidence-dialog" aria-labelledby="evidence-dialog-title">
+    <div class="evidence-dialog-header">
+      <div><p class="eyebrow">SOURCE FRAME / MATCH AUDIT</p><h2 id="evidence-dialog-title">Frame evidence</h2></div>
+      <button id="evidence-dialog-close" type="button" aria-label="Close frame evidence">Close ×</button>
+    </div>
+    <div class="evidence-dialog-grid">
+      <figure>
+        <img id="evidence-dialog-image" alt="">
+        <figcaption>Actual cropped video frame</figcaption>
+      </figure>
+      <figure>
+        <canvas id="evidence-dialog-canonical" width="480" height="480" aria-label="Canonical matched glyph"></canvas>
+        <figcaption>Canonical matched payload with carrier guide</figcaption>
+      </figure>
+    </div>
+    <div id="evidence-dialog-meta" class="evidence-dialog-meta"></div>
+  </dialog>
 
   <footer>
     <span>FRONTIER ARCHIVE // GLYPH EXPLORER</span>
@@ -217,6 +240,7 @@
   </footer>
 
   <script src="data/catalogue.js"></script>
+  <script src="data/evidence.js"></script>
   <script src="assets/app.js"></script>
 </body>
 </html>
