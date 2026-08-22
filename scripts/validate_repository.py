@@ -72,6 +72,24 @@ def main() -> int:
     if catalogue_js != catalogue:
         fail(errors, "catalogue.js payload differs from catalogue.json")
 
+    cycles = read_json(DATA / "cycles.json")
+    cycles_js = read_js_payload(DATA / "cycles.js", "CYCLE_DATA")
+    if cycles_js != cycles:
+        fail(errors, "cycles.js payload differs from cycles.json")
+    cycle_rows = cycles.get("cycles")
+    if cycles.get("time_zone") != "UTC" or not isinstance(cycle_rows, list) or len(cycle_rows) != 14:
+        fail(errors, "cycles.json must define 14 supplied UTC intervals")
+    elif any(not all(isinstance(row.get(field), str) for field in ("Name", "ShortName", "StartDateTime", "EndDateTime")) for row in cycle_rows):
+        fail(errors, "Each cycle interval requires Name, ShortName, StartDateTime, and EndDateTime strings")
+    else:
+        by_name = {row["Name"]: row for row in cycle_rows}
+        if by_name.get("Era 6, Cycle 6", {}).get("ShortName") != "e6c5":
+            fail(errors, "Cycle reference must preserve the supplied duplicated E6C6 short name")
+        if by_name.get("Era 6, Cycle 2", {}).get("EndDateTime") != "2025-10-15T11:59:59+00:00":
+            fail(errors, "Cycle reference must preserve the supplied E6C2 end timestamp")
+        if by_name.get("Era 6, Cycle 3", {}).get("StartDateTime") != "2025-10-15T11:00:00+00:00":
+            fail(errors, "Cycle reference must preserve the supplied E6C3 start timestamp")
+
     glyphs = catalogue.get("glyphs", [])
     glyph_ids = [int(glyph["id"]) for glyph in glyphs]
     if len(glyph_ids) != len(set(glyph_ids)):
@@ -221,7 +239,7 @@ def main() -> int:
         fail(errors, "Evidence manifest order/IDs differ from evidence.json")
 
     index_text = (ROOT / "index.html").read_text(encoding="utf-8")
-    for reference in ("data/catalogue.js", "data/evidence.js", "data/disputed_cell_audit.js", "assets/app.js"):
+    for reference in ("data/catalogue.js", "data/evidence.js", "data/disputed_cell_audit.js", "assets/release.js", "assets/app.js"):
         if reference not in index_text:
             fail(errors, f"index.html does not reference {reference}")
     for element_id in ("cell-heatmap", "cell-review", "cell-pattern-list", "cell-evidence-list"):
@@ -233,6 +251,8 @@ def main() -> int:
             fail(errors, f"index.html is missing issue-report link #{element_id}")
     if repository_url not in index_text:
         fail(errors, "Explorer does not link to its GitHub repository")
+    if 'href="cycles.html"' not in index_text:
+        fail(errors, "Explorer does not link to the cycle reference page")
     if 'id="release-commit"' not in index_text or "© 2026 SCETROV" not in index_text:
         fail(errors, "Footer must identify the current release link and Scetrov copyright")
     credits_text = (ROOT / "credits.html").read_text(encoding="utf-8")
@@ -242,9 +262,25 @@ def main() -> int:
         fail(errors, "Fenris Creations puzzle acknowledgement is incomplete")
 
     app_text = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
-    for behavior in ("selectCell", "renderCellReview", "createEvidenceCard", "issueUrl", "glyphIssueBody", "frameIssueBody", "cellIssueBody", "renderReleaseCommit"):
+    for behavior in ("selectCell", "renderCellReview", "createEvidenceCard", "issueUrl", "glyphIssueBody", "frameIssueBody", "cellIssueBody"):
         if behavior not in app_text:
             fail(errors, f"assets/app.js is missing Cell Activation behavior {behavior}")
+
+    release_text = (ROOT / "assets" / "release.js").read_text(encoding="utf-8")
+    if "release-commit" not in release_text or "data/release.json" not in release_text:
+        fail(errors, "assets/release.js must render the deployed commit link")
+    cycles_page = ROOT / "cycles.html"
+    if not cycles_page.is_file():
+        fail(errors, "Missing cycle reference page")
+    else:
+        cycles_text = cycles_page.read_text(encoding="utf-8")
+        for reference in ("data/cycles.js", "assets/cycles.js", "assets/release.js", 'id="cycle-table-body"'):
+            if reference not in cycles_text:
+                fail(errors, f"cycles.html is missing {reference}")
+    cycle_script = (ROOT / "assets" / "cycles.js").read_text(encoding="utf-8")
+    for behavior in ("CYCLE_DATA", "forEach", "noteFor", "cycle-table-body"):
+        if behavior not in cycle_script:
+            fail(errors, f"assets/cycles.js is missing cycle-reference behavior {behavior}")
 
     release = read_json(DATA / "release.json")
     if not isinstance(release.get("commit"), str) or not isinstance(release.get("short_commit"), str):

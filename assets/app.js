@@ -89,8 +89,7 @@
     evidenceDialogCanonical: document.getElementById('evidence-dialog-canonical'),
     evidenceDialogTitle: document.getElementById('evidence-dialog-title'),
     evidenceDialogMeta: document.getElementById('evidence-dialog-meta'),
-    reportEvidence: document.getElementById('report-evidence'),
-    releaseCommit: document.getElementById('release-commit')
+    reportEvidence: document.getElementById('report-evidence')
   };
 
   const state = {
@@ -105,22 +104,6 @@
   function initialGlyphId() {
     const requested = Number(new URLSearchParams(location.search).get('glyph'));
     return byId.has(requested) ? requested : 40;
-  }
-
-  function renderReleaseCommit() {
-    if (!elements.releaseCommit) return;
-    fetch('data/release.json', { cache: 'no-store' })
-      .then(response => response.ok ? response.json() : null)
-      .then(release => {
-        if (!release || !/^[0-9a-f]{40}$/i.test(release.commit || '')) return;
-        const shortCommit = /^[0-9a-f]{7,40}$/i.test(release.short_commit || '')
-          ? release.short_commit.slice(0, 7)
-          : release.commit.slice(0, 7);
-        elements.releaseCommit.textContent = shortCommit;
-        elements.releaseCommit.href = `${repositoryUrl}/commit/${release.commit}`;
-        elements.releaseCommit.title = release.commit;
-      })
-      .catch(() => {});
   }
 
   function issueUrl(template, title, label, body) {
@@ -789,5 +772,4 @@
   renderAnalysis();
   renderGrid();
   selectGlyph(state.selectedId, false);
-  renderReleaseCommit();
 })();

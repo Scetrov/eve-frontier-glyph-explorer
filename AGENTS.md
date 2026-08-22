@@ -31,7 +31,10 @@ The explorer is an unofficial research tool. Do not present a speculative decodi
 | --- | --- | --- |
 | `index.html` | Main explorer shell and accessible dialog markup | Keep it static and usable under a GitHub project-pages subpath. |
 | `credits.html` | Human-readable credits and source context | Update whenever a new contributor, dataset, or material source is added. |
+| `cycles.html` | Human-readable Phase and Era/Cycle UTC reference | Preserve supplied timestamps and anomalies verbatim; never silently normalise boundaries or short codes. |
 | `assets/app.js` | Filtering, rendering, glyph canvases, evidence gallery, modal behavior | Uses globals from generated `data/*.js`; no bundler is involved. |
+| `assets/cycles.js` | Renders the standalone cycle-date reference table | Uses `window.CYCLE_DATA`; show supplied anomalies as review notes. |
+| `assets/release.js` | Stamps the deployed commit into shared footers | Fetches release metadata only when a `#release-commit` element exists. |
 | `assets/styles.css` | EVE Frontier-inspired visual system and responsive layout | Preserve focus states, readable contrast, and mobile evidence layouts. |
 | `assets/glyph-atlas.png` | Generated overview of canonical glyphs | Regenerate after canonical catalogue changes. |
 | `data/catalogue.json` | Readable canonical catalogue, statistics, sequences, and analysis | Authoritative site data representation. |
@@ -44,6 +47,7 @@ The explorer is an unofficial research tool. Do not present a speculative decodi
 | `data/evidence_manifest.csv` | Downloadable flat evidence manifest | Must describe the exact source filename and frame. |
 | `data/source_integrity.json`, `.csv` | Published source identity, SHA-256, and media metadata | Contains logical filenames, never private absolute paths. |
 | `data/disputed_cell_audit.json`, `.csv` | Reproducible multi-frame audit of carrier-edge cells | Records hashes, frames, registration, scores, thresholds, and verdicts. |
+| `data/cycles.json`, `.js` | Supplied Phase and Era/Cycle UTC date reference | JS wrapper must equal JSON exactly; duplicate supplied short names are valid data. |
 | `evidence/<recording-slug>/` | 480×480 JPEG audit frames | Filename form is `gNNN_fNNNNNN.jpg`. Paths are unique per occurrence. |
 | `evidence/audits/` | Multi-frame median audit images | Derived review artifacts, not additional occurrence records. |
 | `scripts/validate_repository.py` | Dependency-free structural/data validator | Run before every commit that touches data, evidence, or skills. |
@@ -64,7 +68,7 @@ The explorer is an unofficial research tool. Do not present a speculative decodi
 
 There is no production build step, package manager, API, server, database, analytics service, or secret. GitHub Pages serves the repository as static files.
 
-`index.html` loads `data/catalogue.js`, then `data/evidence.js`, then `assets/app.js`. The generated JavaScript files assign JSON objects to `window.GLYPH_DATA` and `window.GLYPH_EVIDENCE`. This avoids a fetch dependency when the site is opened locally while retaining JSON and CSV downloads for researchers.
+`index.html` loads `data/catalogue.js`, then `data/evidence.js`, then `assets/release.js` and `assets/app.js`. The generated JavaScript files assign JSON objects to `window.GLYPH_DATA` and `window.GLYPH_EVIDENCE`. `cycles.html` likewise loads `data/cycles.js` into `window.CYCLE_DATA`. These wrappers avoid a data fetch dependency when pages are opened locally while retaining JSON and CSV downloads for researchers. `assets/release.js` makes one optional fetch for deployment metadata so every shared footer can link to the actual published commit.
 
 All URLs in HTML, CSS, and JavaScript must remain relative so the explorer works at `/eve-frontier-glyph-explorer/` rather than only at a domain root.
 
@@ -141,8 +145,11 @@ For every data or evidence change, run:
 python pipeline\inventory_sources.py --verify --downloaded-dir <source-videos> --archive-video-dir <ArchiveInvest>\Videos
 python scripts/validate_repository.py
 node --check assets/app.js
+node --check assets/release.js
+node --check assets/cycles.js
 node --check data/catalogue.js
 node --check data/evidence.js
+node --check data/cycles.js
 ```
 
 Also perform task-specific checks:
@@ -165,7 +172,8 @@ The validator checks structural invariants, not semantic correctness. A passing 
 - Preserve keyboard access, dialog close behavior, visible focus, alt text, responsive layouts, and reduced-motion expectations.
 - Load only the evidence for the selected glyph in the interface; do not eagerly render all 768 images.
 - Keep generated JSON readable and generated JavaScript compact.
-- Do not hand-edit `catalogue.js` or `evidence.js` independently of their JSON counterparts.
+- Do not hand-edit `catalogue.js`, `evidence.js`, or `cycles.js` independently of their JSON counterparts.
+- Treat `data/cycles.json` as a supplied temporal reference, not a derived timeline. Preserve timestamp precision, offsets, overlapping boundaries, and duplicate codes; surface irregularities in the page notes and validator rather than correcting them.
 
 ## Provenance and source additions
 

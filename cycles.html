@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0b0b">
+  <meta name="description" content="UTC start and end dates for EVE Frontier phases and cycles, retained as supplied for Frontier Archive research.">
+  <title>Cycle Reference // Frontier Archive Glyph Explorer</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#cycle-reference">Skip to cycle reference</a>
+  <div class="ambient-grid" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="brand-block">
+      <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div><p class="eyebrow">FRONTIER ARCHIVE / TEMPORAL REFERENCE</p><h1>Cycle reference</h1></div>
+    </div>
+    <nav class="primary-nav" aria-label="Primary navigation">
+      <a href="index.html#atlas">01 Atlas</a>
+      <a href="index.html#sequences">02 Sequences</a>
+      <a href="index.html#analysis">03 Analysis</a>
+      <a href="index.html#method">04 Method</a>
+      <a href="cycles.html" aria-current="page">05 Cycles</a>
+      <a href="https://github.com/Scetrov/eve-frontier-glyph-explorer" target="_blank" rel="noopener">Repository ↗</a>
+    </nav>
+    <p class="unofficial">Community research tool · Unofficial</p>
+  </header>
+
+  <main class="reference-main">
+    <section class="hero reference-hero" aria-labelledby="reference-title">
+      <div class="hero-copy">
+        <p class="eyebrow">UTC / SUPPLIED REFERENCE RECORD</p>
+        <h2 id="reference-title">Locate the<br><span>transmission window.</span></h2>
+        <p class="hero-intro">A compact reference for EVE Frontier phases and cycles. These values are displayed in UTC and deliberately retained exactly as supplied, including boundary anomalies that may matter when comparing recordings.</p>
+      </div>
+      <div class="reference-summary" aria-label="Cycle reference summary">
+        <span id="cycle-count">14 intervals</span>
+        <small>Phases and cycles</small>
+        <span>UTC</span>
+        <small>No date normalisation</small>
+      </div>
+    </section>
+
+    <section id="cycle-reference" class="section" aria-labelledby="cycle-table-title">
+      <div class="section-heading">
+        <div><p class="section-index">01 / TEMPORAL INDEX</p><h2 id="cycle-table-title">Cycle start / end dates</h2></div>
+        <p>Use the short code when cross-referencing filenames such as E6C4-17. The table preserves the supplied timestamp precision, offsets, and short names.</p>
+      </div>
+      <div class="cycle-table-wrap" tabindex="0" aria-label="Cycle dates table; scroll horizontally on smaller screens">
+        <table class="cycle-table">
+          <thead><tr><th scope="col">Name</th><th scope="col">Code</th><th scope="col">Start (UTC)</th><th scope="col">End (UTC)</th><th scope="col">Record note</th></tr></thead>
+          <tbody id="cycle-table-body"></tbody>
+        </table>
+      </div>
+      <div class="reference-notes">
+        <article><p class="eyebrow">VERBATIM RECORD</p><p>The source-supplied date values are not corrected or rounded by this explorer. The terminal 9999 date is presented as an open-ended interval.</p></article>
+        <article><p class="eyebrow">BOUNDARY FLAGS</p><p>E6C2 ends at 11:59:59 while E6C3 starts at 11:00:00; E6C5 and E6C6 share 11:59:59. E6C6 also carries the supplied duplicate short name <code>e6c5</code>.</p></article>
+      </div>
+      <div class="download-row"><a href="data/cycles.json" download>Download cycle dates JSON</a><a href="index.html#method">Read the glyph methodology</a></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-provenance">
+      <p class="eyebrow">SOURCES / ACKNOWLEDGEMENTS</p>
+      <p>Canonical glyph research and manual tagging were created by George Peralta / QZRChedders in the community <a href="https://github.com/QZRChedders/ArchiveInvest">ArchiveInvest repository</a>. Supporting universe-data research references <a href="https://github.com/Scetrov/evefrontier_datasets">Scetrov/evefrontier_datasets</a>. The Archive broadcasts appear to form a puzzle created by <a href="https://fenris.com/products">Fenris Creations</a>—thank you to the team for such a fun mystery to investigate. See the <a href="credits.html">full credits and sources</a>. EVE Frontier and associated marks belong to their respective owners.</p>
+    </div>
+    <div class="footer-bar">
+      <span>FRONTIER ARCHIVE // CYCLE REFERENCE · © 2026 SCETROV</span>
+      <span id="build-stamp">Dataset build 2026-08-22 · Commit <a id="release-commit" href="https://github.com/Scetrov/eve-frontier-glyph-explorer/commits/main" target="_blank" rel="noopener">main</a></span>
+      <span><a href="https://github.com/Scetrov/eve-frontier-glyph-explorer" target="_blank" rel="noopener">Repository ↗</a> · <a href="credits.html">Credits &amp; sources</a> · <a href="index.html">Return to explorer ↑</a></span>
+    </div>
+  </footer>
+
+  <script src="data/cycles.js"></script>
+  <script src="assets/release.js"></script>
+  <script src="assets/cycles.js"></script>
+</body>
+</html>

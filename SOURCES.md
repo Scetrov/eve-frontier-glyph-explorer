@@ -9,6 +9,7 @@
 ## Supporting datasets
 
 - **Scetrov** — creator and maintainer of [Scetrov/evefrontier_datasets](https://github.com/Scetrov/evefrontier_datasets), referenced for star-system and celestial-object hypotheses. The current explorer does not claim that this dataset decodes the glyphs.
+- **Cycle-date reference** — the Phase and Era/Cycle timestamps in [`data/cycles.json`](data/cycles.json) were supplied for this explorer and are retained verbatim, including timestamp boundary anomalies and the duplicate E6C6 short name.
 
 ## Official context and design reference
 

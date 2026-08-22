@@ -4,6 +4,8 @@ An unofficial, static explorer for the 9×9 glyph sequences found in EVE Frontie
 
 Source, release history, and issue reporting live at [Scetrov/eve-frontier-glyph-explorer](https://github.com/Scetrov/eve-frontier-glyph-explorer). The explorer supplies prefilled GitHub Issue links for selected glyphs, individual frame evidence, and reviewed cells; use them to preserve the exact context needed to reproduce a concern.
 
+The published [Cycle reference](cycles.html) records supplied UTC start/end dates for Phases 1–5 and Era 5–6 cycles. Its `data/cycles.json` source intentionally preserves the supplied E6C2/E6C3 overlap and duplicated E6C6 short name rather than normalising them.
+
 ## Publish with GitHub Pages
 
 1. Create a new GitHub repository.
@@ -21,6 +23,7 @@ No build step, package manager, server, API key, or database is required. The si
 - `data/evidence.js` and `data/evidence_manifest.csv` map every matched occurrence to its actual source frame.
 - `data/source_integrity.json` publishes SHA-256 and FFprobe metadata for every available raw source without redistributing the media.
 - `data/disputed_cell_audit.json` records the registered multi-frame review of glyphs #130 and #140.
+- `data/cycles.json` is the supplied, verbatim UTC reference for phases and cycles; `data/cycles.js` lets the standalone reference page work without fetch.
 - `evidence/` contains one 480×480 audit image for each of the 768 occurrence records.
 - The CSV files are downloadable from the Method section.
 
@@ -52,6 +55,8 @@ Run the repository validator before every data or evidence release:
 ```powershell
 python scripts/validate_repository.py
 node --check assets/app.js
+node --check assets/release.js
+node --check assets/cycles.js
 node --check data/catalogue.js
 node --check data/evidence.js
 ```
