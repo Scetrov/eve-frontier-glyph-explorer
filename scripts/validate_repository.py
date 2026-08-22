@@ -283,6 +283,7 @@ def main() -> int:
 
     vision_config_path = ROOT / "pipeline" / "vision_spike_config.json"
     vision_results_path = ROOT / "research" / "vision-registration-spike" / "results.json"
+    hybrid_results_path = ROOT / "research" / "hybrid-registration-spike" / "results.json"
     if not vision_config_path.is_file() or not vision_results_path.is_file():
         fail(errors, "Vision registration spike is missing its config or committed results")
     else:
@@ -303,6 +304,27 @@ def main() -> int:
             render = ROOT / "research" / "vision-registration-spike" / row.get("render", "")
             if not render.is_file():
                 fail(errors, f"Missing vision spike render: {row.get('render')}")
+        if not hybrid_results_path.is_file():
+            fail(errors, "Hybrid registration spike is missing its committed results")
+        else:
+            hybrid_results = read_json(hybrid_results_path)
+            if hybrid_results.get("status") != "experimental-not-canonical":
+                fail(errors, "Hybrid registration results must remain explicitly non-canonical")
+            if hybrid_results.get("checkpoint", {}).get("sha256") != checkpoint.get("sha256"):
+                fail(errors, "Hybrid/config checkpoint hashes differ")
+            hybrid_rows = hybrid_results.get("results", [])
+            if len(hybrid_rows) != 8 or hybrid_results.get("summary", {}).get("pairs") != len(hybrid_rows):
+                fail(errors, "Hybrid registration trial must retain all eight evaluated pairs")
+            for row in hybrid_rows:
+                if hashes_by_filename.get(row.get("source_video")) != row.get("source_sha256"):
+                    fail(errors, f"Hybrid source hash differs from integrity manifest: {row.get('source_video')}")
+                if any(key in row for key in ("fingerprint", "glyph_id", "cell_values", "overlay_enabled")):
+                    fail(errors, "Hybrid result improperly contains corpus or promotion values")
+                render = ROOT / "research" / "hybrid-registration-spike" / row.get("render", "")
+                if not render.is_file():
+                    fail(errors, f"Missing hybrid registration render: {row.get('render')}")
+                if row.get("operational_consensus") and "manual review required" not in row.get("operational_status", ""):
+                    fail(errors, "Hybrid candidate does not retain its manual-review requirement")
 
     audit = read_json(DATA / "disputed_cell_audit.json")
     audit_js = read_js_payload(DATA / "disputed_cell_audit.js", "GLYPH_CELL_AUDIT")
@@ -428,6 +450,7 @@ def main() -> int:
         "pipeline/corpus.json", "pipeline/requirements.txt", "pipeline/requirements-vision-spike.txt", "pipeline/README.md",
         "pipeline/common.py", "pipeline/analyze_sources.py", "pipeline/build_site.py", "pipeline/run_pipeline.py",
         "pipeline/inventory_sources.py", "pipeline/audit_disputed_cells.py", "pipeline/vision_registration_spike.py",
+        "pipeline/hybrid_registration_spike.py",
     )
     for relative in pipeline_files:
         if not (ROOT / relative).is_file():

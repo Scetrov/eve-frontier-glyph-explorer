@@ -58,7 +58,9 @@ The explorer is an unofficial research tool. Do not present a speculative decodi
 | `pipeline/analyze_sources.py` | FFmpeg frame extraction and provisional 9×9 classification | Review contact sheets and high-distance reads. |
 | `pipeline/analyze_manual_geometry.py` | Blind grid-line and ring-state analysis for ArchiveInvest-tagged frames | Compares with the tag only after detection and never promotes an overlay automatically. |
 | `pipeline/vision_registration_spike.py` | Optional LoFTR reference-frame geometry experiment | Uses isolated dependencies and hash-verified weights; research output only, never automatic overlay promotion. |
+| `pipeline/hybrid_registration_spike.py` | Conservative learned/classical geometry-consensus experiment | Compares direct and temporal proposals with independent lattice and diamond support; manual target geometry is evaluation-only. |
 | `research/vision-registration-spike/` | Reproducible model feasibility record | Keeps exact frames, source hashes, manual geometry, metrics and false-lock counterexamples distinct from canonical evidence. |
+| `research/hybrid-registration-spike/` | Hybrid feasibility record and renders | Records proposal provenance, intermediate frames, conservative rejections and held-back evaluation separately from evidence. |
 | `pipeline/build_site.py` | Catalogue derivation, codex rendering, and occurrence evidence generation | Regenerates the full artifact contract together. |
 | `pipeline/inventory_sources.py` | Generate/verify deterministic SHA-256 and FFprobe manifests | Run before any media analysis. |
 | `pipeline/audit_disputed_cells.py` | Registered seven-frame carrier-edge re-audit | Requires a verified integrity manifest. |
@@ -169,7 +171,7 @@ Also perform task-specific checks:
 
 The validator checks structural invariants, not semantic correctness. A passing result does not replace visual review.
 
-Vision-spike results have the same limitation. LoFTR/homography inlier counts and reprojection error can remain convincing when a repeating lattice is displaced by one whole row. Require an independent geometry or temporal check and human review before promoting any proposed coordinates.
+Vision-spike results have the same limitation. LoFTR/homography inlier counts and reprojection error can remain convincing while target geometry is materially wrong, as E6C4-35 frame 340 demonstrates. Reference annotations can also be wrong by a whole pitch; the hybrid diamond check exposed and corrected that problem in frame 57. Require independent geometry, temporal checks and human review before promoting any proposed coordinates.
 
 ## Site editing conventions
 

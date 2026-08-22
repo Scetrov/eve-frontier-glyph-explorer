@@ -50,7 +50,7 @@ python pipeline\run_pipeline.py `
 
 Use `--check-inputs` first to validate the source layout without modifying generated files. The [pipeline guide](pipeline/README.md) includes exact filenames, a fresh-fork setup, FFmpeg examples, and worked manual/provisional source additions.
 
-An isolated [LoFTR registration spike](research/vision-registration-spike/README.md) evaluates reference-frame geometry propagation across four exact, integrity-verified recordings. Its outputs are explicitly experimental and are not used by the catalogue or evidence overlays.
+An isolated [LoFTR registration spike](research/vision-registration-spike/README.md) evaluates reference-frame geometry propagation across four exact, integrity-verified recordings. Its [hybrid follow-up](research/hybrid-registration-spike/README.md) adds temporal, carrier, lattice and diamond consensus checks. Both are explicitly experimental and are not used by the catalogue or evidence overlays.
 
 Run the repository validator before every data or evidence release:
 

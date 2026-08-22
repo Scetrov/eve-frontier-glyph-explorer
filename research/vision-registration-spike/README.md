@@ -23,7 +23,7 @@ The exact pretrained checkpoint used was 46,341,978 bytes with SHA-256 `21f5bec5
 
 ## Result
 
-On a CPU-only PyTorch 2.13.0 run at 480×480, inference took a median 3.43 seconds per image pair. The primary all-correspondence strategy passed 5 of 8 proposed gates and produced a median 4.41 px corner RMSE against the approximate manual geometry.
+On a CPU-only PyTorch 2.13.0 run at 480×480, inference took a median 3.50 seconds per image pair. The primary all-correspondence strategy passed 6 of 8 proposed gates and produced a median 3.91 px corner RMSE against the approximate manual geometry.
 
 | Recording | Pair | Matches / inliers | Median match error | Corner RMSE | Gate |
 | --- | --- | ---: | ---: | ---: | --- |
@@ -31,8 +31,8 @@ On a CPU-only PyTorch 2.13.0 run at 480×480, inference took a median 3.43 secon
 | E6C4-16 | 491 → 653 | 661 / 317 | 1.19 px | 2.64 px | pass |
 | E6C4-13 | 415 → 445 | 1118 / 758 | 0.91 px | 2.30 px | pass |
 | E6C4-13 | 415 → 537 | 897 / 634 | 1.10 px | 1.65 px | pass |
-| E6C4-35 | 57 → 159 | 574 / 135 | 1.52 px | 37.71 px | reject |
-| E6C4-35 | 57 → 340 | 193 / 16 | 0.96 px | 54.26 px | reject |
+| E6C4-35 | 57 → 159 | 574 / 135 | 1.52 px | 5.17 px | pass |
+| E6C4-35 | 57 → 340 | 193 / 16 | 0.96 px | 22.28 px | reject |
 | E6C2-1K | 238 → 310 | 624 / 277 | 1.43 px | 6.18 px | pass |
 | E6C2-1K | 238 → 389 | 264 / 48 | 1.64 px | 7.16 px | reject: low inlier ratio |
 
@@ -40,21 +40,24 @@ Orange is the model-projected lattice. The pale dashed rectangle is the independ
 
 ![Accepted E6C4-16 extreme crop registration](renders/E6C4-16_f000491_to_f000653_all-correspondences.jpg)
 
-The E6C4-35 `57 → 159` result demonstrates the important counterexample. The matcher reports 135 inliers with a low 1.52 px median reprojection error, but the projected lattice is displaced by approximately one repeating grid period. Match statistics alone therefore cannot prove correct registration.
+The initial E6C4-35 reference annotation was one row high: its grid centre did not coincide with the independently observed diamond centre. Correcting that reference by exactly one pitch reduced frame 159 from an apparent 37.71 px failure to a 5.17 px pass. This is an annotation correction, not model tuning, and demonstrates why reference geometry itself needs independent review.
 
-![Rejected E6C4-35 one-row false lock](renders/E6C4-35_f000057_to_f000159_all-correspondences.jpg)
+![Accepted E6C4-35 registration after correcting the reference](renders/E6C4-35_f000057_to_f000159_all-correspondences.jpg)
 
-Filtering reference matches to points outside the labelled payload grid did not solve the ambiguity: it accepted 4 of 7 estimable pairs and retained the E6C4-35 false lock. Complete matrices, predicted/manual corners, source hashes, thresholds and all renders are in [`results.json`](results.json).
+Frame 340 remains a useful counterexample: 16 robust-estimator inliers and a 0.96 px median reprojection error still produce 22.28 px corner RMSE. Match statistics alone therefore cannot prove correct registration.
+
+![Rejected E6C4-35 extreme zoom](renders/E6C4-35_f000057_to_f000340_all-correspondences.jpg)
+
+Filtering reference matches to points outside the labelled payload grid accepted 5 of 7 estimable pairs but became under-constrained on extreme crops. Complete matrices, predicted/manual corners, source hashes, thresholds and all renders are in [`results.json`](results.json).
 
 ## Decision
 
-LoFTR is useful as a **registration proposal generator**, not as the sole authority for an evidence overlay. A production attempt should add at least:
+LoFTR is useful as a **registration proposal generator**, not as the sole authority for an evidence overlay. The follow-up [hybrid registration spike](../hybrid-registration-spike/README.md) adds:
 
-- multiple reviewed reference templates for distinct zoom regimes;
-- an independent grid-line or diamond-geometry fit;
-- temporal agreement with adjacent decoded frames;
-- explicit rejection when strategies disagree by a material fraction of one cell pitch;
-- whole-recording holdouts before any automatic promotion.
+- short-hop temporal geometry propagation;
+- carrier-only propagation where the carrier is sufficiently visible;
+- independent lattice-edge and diamond-line measurements;
+- explicit rejection when proposals disagree by more than a fraction of one cell pitch.
 
 A trained landmark heatmap model remains a reasonable fallback if these checks cannot provide sufficient coverage. Its training labels should contain geometry only, and corpus fingerprints must remain excluded until post-detection comparison.
 

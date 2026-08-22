@@ -15,12 +15,25 @@
     "maximum_median_reprojection_error_px": 2.5,
     "maximum_manual_corner_rmse_px": 8.0
   },
+  "hybrid": {
+    "temporal_step_frames": 24,
+    "maximum_consensus_disagreement_cells": 0.25,
+    "minimum_temporal_step_inliers": 20,
+    "minimum_temporal_step_inlier_ratio": 0.15,
+    "maximum_lattice_rms_px": 6.0,
+    "maximum_weak_boundaries": 6,
+    "maximum_diamond_rms_px": 8.0,
+    "minimum_diamond_supported_sides": 3
+  },
   "sources": [
     {
       "recording": "E6C4-16",
       "source_video": "E6C4-16.mp4",
       "location": "archive-invest",
       "reference_frame": 491,
+      "diamond_check_enabled": false,
+      "carrier_temporal_required": false,
+      "reference_diamond_corners_normalized": [[0.5, -0.018], [1.145, 0.57], [0.5, 1.18], [-0.15, 0.57]],
       "samples": [
         {"frame": 491, "grid_corners_normalized": [[0.1344, 0.2109], [0.8594, 0.2109], [0.8594, 0.9359], [0.1344, 0.9359]]},
         {"frame": 575, "grid_corners_normalized": [[0.0344, 0.1094], [0.9609, 0.1094], [0.9609, 1.0344], [0.0344, 1.0344]]},
@@ -32,6 +45,9 @@
       "source_video": "E6C4-13.mp4",
       "location": "archive-invest",
       "reference_frame": 415,
+      "diamond_check_enabled": true,
+      "carrier_temporal_required": true,
+      "reference_diamond_corners_normalized": [[0.501, 0.1906], [0.892, 0.578], [0.502, 0.973], [0.111, 0.578]],
       "samples": [
         {"frame": 415, "grid_corners_normalized": [[0.2625, 0.3453], [0.7375, 0.3453], [0.7375, 0.8188], [0.2625, 0.8188]]},
         {"frame": 445, "grid_corners_normalized": [[0.2109, 0.2906], [0.7875, 0.2906], [0.7875, 0.8672], [0.2109, 0.8672]]},
@@ -43,8 +59,11 @@
       "source_video": "E6C4-35.mp4",
       "location": "archive-invest",
       "reference_frame": 57,
+      "diamond_check_enabled": true,
+      "carrier_temporal_required": true,
+      "reference_diamond_corners_normalized": [[0.502, 0.1375], [0.877, 0.509], [0.503, 0.884], [0.127, 0.509]],
       "samples": [
-        {"frame": 57, "grid_corners_normalized": [[0.2734, 0.2297], [0.7281, 0.2297], [0.7281, 0.6859], [0.2734, 0.6859]]},
+        {"frame": 57, "grid_corners_normalized": [[0.2734, 0.2804], [0.7281, 0.2804], [0.7281, 0.7366], [0.2734, 0.7366]]},
         {"frame": 159, "grid_corners_normalized": [[0.1891, 0.2031], [0.8156, 0.2031], [0.8156, 0.8297], [0.1891, 0.8297]]},
         {"frame": 340, "grid_corners_normalized": [[0.0453, 0.0594], [0.9563, 0.0594], [0.9563, 0.9719], [0.0453, 0.9719]]}
       ]
@@ -54,6 +73,9 @@
       "source_video": "E6C2-1K zoomed.mp4",
       "location": "archive-invest",
       "reference_frame": 238,
+      "diamond_check_enabled": true,
+      "carrier_temporal_required": true,
+      "reference_diamond_corners_normalized": [[0.509, 0.203], [0.814, 0.508], [0.509, 0.812], [0.202, 0.508]],
       "samples": [
         {"frame": 238, "grid_corners_normalized": [[0.325, 0.3109], [0.6953, 0.3109], [0.6953, 0.6891], [0.325, 0.6891]]},
         {"frame": 310, "grid_corners_normalized": [[0.175, 0.175], [0.8313, 0.175], [0.8313, 0.8344], [0.175, 0.8344]]},

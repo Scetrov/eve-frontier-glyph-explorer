@@ -134,7 +134,19 @@ Install those packages in an isolated environment, download the checkpoint ident
   --checkpoint .\loftr_outdoor.ckpt
 ```
 
-The runner verifies both source-video and checkpoint SHA-256 values. It writes only to `.pipeline-work/vision-spike/run/` unless `--output-dir` is supplied. Current methodology, metrics, counterexamples and reviewed renders are preserved in [`research/vision-registration-spike/`](../research/vision-registration-spike/README.md). The E6C4-35 false lock proves that low homography reprojection error is not sufficient acceptance evidence on a repeating lattice.
+The runner verifies both source-video and checkpoint SHA-256 values. It writes only to `.pipeline-work/vision-spike/run/` unless `--output-dir` is supplied. Current methodology, metrics, corrections and reviewed renders are preserved in [`research/vision-registration-spike/`](../research/vision-registration-spike/README.md). E6C4-35 frame 340 proves that low homography reprojection error is not sufficient acceptance evidence, while the corrected frame 57 reference proves that geometry labels themselves require independent review.
+
+Run the conservative hybrid follow-up with the same inputs:
+
+```powershell
+.\.vision-venv\Scripts\python.exe pipeline\hybrid_registration_spike.py `
+  --archive-invest ..\ArchiveInvest `
+  --video-dir ..\source-videos `
+  --ffmpeg C:\tools\ffmpeg\bin\ffmpeg.exe `
+  --checkpoint .\loftr_outdoor.ckpt
+```
+
+The hybrid compares direct registration with short-hop all-feature and carrier-only temporal chains, then requires independent lattice and—where visible—diamond support. Manual target corners are consulted only after the operational decision. The current eight-pair trial yields six review candidates, zero false-positive candidates, one conservative false rejection and one correct rejection. See [`research/hybrid-registration-spike/`](../research/hybrid-registration-spike/README.md).
 
 ## Add a provisional capture: worked example
 
