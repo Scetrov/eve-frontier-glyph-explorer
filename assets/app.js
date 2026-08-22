@@ -500,7 +500,7 @@
     elements.evidenceDialogImage.src = record.image;
     elements.evidenceDialogImage.alt = `Actual frame ${record.frame} from ${record.source_video}`;
     drawEvidenceOverlay(elements.evidenceDialogOverlay, record);
-    const confidence = Number(record.confidence);
+    const confidence = record.confidence === null || record.confidence === '' ? Number.NaN : Number(record.confidence);
     const registration = overlayGeometry(record)?.registration === 'detector-ring-fit'
       ? 'detector-ring registration'
       : overlayGeometry(record)?.registration === 'image-edge-fit'
