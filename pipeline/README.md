@@ -108,6 +108,18 @@ python pipeline\audit_disputed_cells.py `
 
 The audit independently registers each source lattice, takes a pixelwise median over seven settled frames, scores the central aperture, and publishes the exact frame list, source SHA-256, geometry, score, and median image. It currently resolves `(2,6)` in glyph #130 and `(5,2)` in glyph #140 as carrier/inactive. Under the old empirical 26-cell hypothesis they are unused payload candidates; under the symmetric 28-cell hypothesis they are excluded. After correction both hypotheses produce the same 146 IDs, but the symmetric model cleanly explains all 28 unused positions.
 
+## Produce manual-frame geometry candidates
+
+Manual ArchiveInvest tags do not contain the detector coordinates needed for a trustworthy QA overlay. Generate independent source-frame grid-line candidates separately; this writes `data/manual_geometry_review.json` and `.csv` with source SHA-256, decoded frame, candidate centre/pitches, fit scores, method, and a mandatory `pending` review state:
+
+```powershell
+python pipeline\analyze_manual_geometry.py `
+  --archive-invest ..\ArchiveInvest `
+  --ffmpeg C:\tools\ffmpeg\bin\ffmpeg.exe
+```
+
+The script never reads a glyph fingerprint and never enables an overlay. Review each candidate against its unmasked source frame before promoting it through a future approved-geometry workflow.
+
 ## Add a provisional capture: worked example
 
 Suppose `E6C7-AB.mov` has a visible glyph interval whose transitions begin at decoded frame 600 and end at 720, with a six-frame cadence. First establish the exact-file contract:

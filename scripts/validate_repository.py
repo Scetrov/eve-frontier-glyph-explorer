@@ -235,6 +235,20 @@ def main() -> int:
     if len(committed_images) != len(evidence):
         fail(errors, "Committed evidence-image count differs from evidence records")
 
+    review_path = DATA / "manual_geometry_review.json"
+    if review_path.is_file():
+        review_rows = read_json(review_path)
+        manual_evidence = [row for row in evidence if not row.get("provisional")]
+        review_keys = {(row.get("recording"), row.get("ordinal"), row.get("frame"), row.get("source_video")) for row in review_rows}
+        manual_keys = {(row.get("recording"), row.get("ordinal"), row.get("frame"), row.get("source_video")) for row in manual_evidence}
+        if review_keys != manual_keys:
+            fail(errors, "Manual geometry review ledger does not cover manual evidence exactly")
+        for row in review_rows:
+            if row.get("review_status") != "pending" or row.get("overlay_enabled") is not False:
+                fail(errors, "Manual geometry candidates must remain pending with overlays disabled")
+            if not row.get("source_sha256") or not row.get("method"):
+                fail(errors, "Manual geometry candidate lacks source identity or method")
+
     integrity = read_json(DATA / "source_integrity.json")
     integrity_rows = integrity.get("entries", [])
     if integrity.get("hash_algorithm") != "SHA-256" or not integrity_rows:
