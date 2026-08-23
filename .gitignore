@@ -5,3 +5,9 @@
 source-videos/
 __pycache__/
 *.py[cod]
+
+# OpenSpec skills and workflows
+.agent/
+.pi/
+.agents/skills/openspec-*/
+.agents/skills/.openspec-target
