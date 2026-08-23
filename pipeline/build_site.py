@@ -445,9 +445,14 @@ def build_evidence(site: Path, archive: Path, video_dir: Path, analysis: Path, c
         record["image"] = record["image"].replace(".pipeline-work/evidence-next/", "evidence/")
     data_dir = site / "data"
     (data_dir / "evidence.json").write_text(json.dumps(records, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+    from generate_provenance_overlay import process_all_evidence
+    records, _ = process_all_evidence(site)
+
+    (data_dir / "evidence.json").write_text(json.dumps(records, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     (data_dir / "evidence.js").write_text(f"window.GLYPH_EVIDENCE={json.dumps(records, separators=(',', ':'), ensure_ascii=False)};\n", encoding="utf-8")
-    fields = ["evidence_id", "glyph_id", "recording", "broadcast", "source_video", "ordinal", "frame", "time_s", "source", "provisional", "reported_hamming", "assigned_hamming", "confidence", "overlay_center_x", "overlay_center_y", "overlay_pitch", "overlay_registration", "assignment_basis", "verification_status", "difference_cells", "image", "observed_fingerprint", "canonical_fingerprint"]
-    csv_rows = [{**record, "difference_cells": " ".join(record["difference_cells"])} for record in records]
+    fields = ["evidence_id", "glyph_id", "recording", "broadcast", "source_video", "ordinal", "frame", "time_s", "source", "provisional", "reported_hamming", "assigned_hamming", "confidence", "overlay_center_x", "overlay_center_y", "overlay_pitch", "overlay_registration", "overlay_deviation_px", "assignment_basis", "verification_status", "difference_cells", "image", "observed_fingerprint", "canonical_fingerprint", "cell_provenance"]
+    csv_rows = [{**record, "difference_cells": " ".join(record["difference_cells"]), "cell_provenance": " ".join(record.get("cell_provenance", []))} for record in records]
     write_csv(data_dir / "evidence_manifest.csv", csv_rows, fields)
 
 

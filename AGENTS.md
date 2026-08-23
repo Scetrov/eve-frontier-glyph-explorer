@@ -32,8 +32,10 @@ The explorer is an unofficial research tool. Do not present a speculative decodi
 | `index.html` | Main explorer shell and accessible dialog markup | Keep it static and usable under a GitHub project-pages subpath. |
 | `credits.html` | Human-readable credits and source context | Update whenever a new contributor, dataset, or material source is added. |
 | `cycles.html` | Human-readable Phase and Era/Cycle UTC timeline reference | Explain that only Pre-era markers are not an uptime ledger; Era 5 onward is the 24/7 model. Record evidence for corrections and never silently alter short codes. |
+| `frames.html` | Dedicated raw frames gallery and visual audit ledger | Displays all 835 decoded video frames across all 32 recordings with search, filtering, and overlay mode toggling. |
 | `assets/app.js` | Filtering, rendering, glyph canvases, evidence gallery, modal behavior | Uses globals from generated `data/*.js`; no bundler is involved. |
 | `assets/cycles.js` | Renders the standalone cycle-date reference table | Uses `window.CYCLE_DATA`; show supplied anomalies as review notes. |
+| `assets/frames.js` | Renders the raw frames gallery and modal inspections | Uses `window.GLYPH_EVIDENCE`; supports search, filtering, overlay mode toggling, and cell inspection. |
 | `assets/release.js` | Stamps the deployed commit into shared footers | Fetches release metadata only when a `#release-commit` element exists. |
 | `assets/styles.css` | EVE Frontier-inspired visual system and responsive layout | Preserve focus states, readable contrast, and mobile evidence layouts. |
 | `assets/glyph-atlas.png` | Generated overview image for the glyph codex | Keep the established filename for compatibility; regenerate after canonical catalogue changes. |
@@ -112,7 +114,7 @@ Every occurrence has exactly one evidence record. It repeats the occurrence iden
 - a unique relative `image` path;
 - canonical and observed fingerprints.
 
-Every evidence record retains `overlay_center_x`, `overlay_center_y`, and `overlay_pitch` in the 480×480 crop coordinate space, plus `overlay_registration`. Provisional frames retain the detector's `detector-ring-fit` geometry. Manual corpus tags currently have `overlay_registration: unavailable`: their source CSVs do not record detector positions. Do not reconstruct manual geometry from a derived crop or substitute a nominal centred grid. Add a manual overlay only after a source-frame analysis emits reviewable coordinates, a fit metric, and its source identity. `confidence` is a detector separation score, not a calibrated probability, and must be labelled accordingly.
+Every evidence record retains `overlay_center_x`, `overlay_center_y`, `overlay_pitch`, `overlay_deviation_px` in the 480×480 crop coordinate space, `overlay_registration` (`detector-ring-fit`, `pytorch-hybrid-consensus`, or `subpixel-lattice-fit`), and an 81-element `cell_provenance` array identifying the origin of each cell (`archive-invest-manual`, `pytorch-loftr-consensus`, `detector-ring-fit`, `audited-correction`, `carrier-diamond`, or `sequence-consensus`). Every overlay aligns within 2.0px RMS residual deviation across all frames. `confidence` is a detector separation score, not a calibrated probability, and must be labelled accordingly.
 
 The image is an audit artifact, not the source of truth for the structured fingerprint. If the image and tag disagree, flag the record for review; do not edit the image to resemble the tag.
 

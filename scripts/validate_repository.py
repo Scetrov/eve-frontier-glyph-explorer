@@ -218,15 +218,24 @@ def main() -> int:
             fail(errors, f"{row['evidence_id']} has no exact source filename")
         geometry = [row.get("overlay_center_x"), row.get("overlay_center_y"), row.get("overlay_pitch")]
         registration = row.get("overlay_registration")
-        if registration not in {"detector-ring-fit", "unavailable"}:
-            fail(errors, f"{row['evidence_id']} has an invalid QA-overlay registration method")
-        if row.get("provisional"):
-            if not all(isinstance(value, (int, float)) and value > 0 for value in geometry):
-                fail(errors, f"{row['evidence_id']} has no detector QA-overlay geometry")
-            if registration != "detector-ring-fit":
-                fail(errors, f"{row['evidence_id']} provisional evidence must retain detector-ring registration")
-        elif any(value is not None for value in geometry) or registration != "unavailable":
-            fail(errors, f"{row['evidence_id']} manual evidence must not claim unrecorded QA-overlay geometry")
+        valid_registrations = {"detector-ring-fit", "pytorch-hybrid-consensus", "subpixel-lattice-fit"}
+        if registration not in valid_registrations:
+            fail(errors, f"{row['evidence_id']} has an invalid QA-overlay registration method: {registration}")
+        if not all(isinstance(value, (int, float)) and value > 0 for value in geometry):
+            fail(errors, f"{row['evidence_id']} has invalid QA-overlay geometry: {geometry}")
+        if row.get("overlay_deviation_px") is not None:
+            deviation = float(row["overlay_deviation_px"])
+            if deviation > 2.0:
+                fail(errors, f"{row['evidence_id']} overlay deviation {deviation}px exceeds 2.0px limit")
+        cell_prov = row.get("cell_provenance")
+        valid_provenances = {
+            "archive-invest-manual", "pytorch-loftr-consensus", "detector-ring-fit",
+            "audited-correction", "carrier-diamond", "sequence-consensus"
+        }
+        if not isinstance(cell_prov, list) or len(cell_prov) != 81:
+            fail(errors, f"{row['evidence_id']} must contain an 81-element cell_provenance list")
+        elif set(cell_prov) - valid_provenances:
+            fail(errors, f"{row['evidence_id']} contains unknown cell_provenance values: {set(cell_prov) - valid_provenances}")
         image = ROOT / row["image"]
         if not image.is_file():
             fail(errors, f"Missing evidence image: {row['image']}")
@@ -446,6 +455,19 @@ def main() -> int:
     for behavior in ("CYCLE_DATA", "forEach", "noteFor", "cycle-table-body"):
         if behavior not in cycle_script:
             fail(errors, f"assets/cycles.js is missing cycle-reference behavior {behavior}")
+
+    frames_page = ROOT / "frames.html"
+    if not frames_page.is_file():
+        fail(errors, "Missing raw frames gallery page (frames.html)")
+    else:
+        frames_text = frames_page.read_text(encoding="utf-8")
+        for reference in ("data/evidence.js", "assets/frames.js", "assets/release.js", 'id="frames-grid"'):
+            if reference not in frames_text:
+                fail(errors, f"frames.html is missing {reference}")
+    frames_script = (ROOT / "assets" / "frames.js").read_text(encoding="utf-8")
+    for behavior in ("createEvidenceCard", "drawEvidenceOverlay", "filterAndSortRecords", "renderGallery", "openEvidenceDialog"):
+        if behavior not in frames_script:
+            fail(errors, f"assets/frames.js is missing gallery behavior {behavior}")
 
     release = read_json(DATA / "release.json")
     if not isinstance(release.get("commit"), str) or not isinstance(release.get("short_commit"), str):

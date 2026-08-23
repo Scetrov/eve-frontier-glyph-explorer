@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0b0b">
+  <meta name="description" content="Search, filter, and visually audit all 835 decoded video frames and precision cell overlays in the Frontier Archive Glyph Explorer.">
+  <title>Raw Frames // Frontier Archive Glyph Explorer</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#frames-gallery">Skip to raw frames gallery</a>
+  <div class="ambient-grid" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="brand-block">
+      <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div>
+        <p class="eyebrow">FRONTIER ARCHIVE / FRAME EVIDENCE</p>
+        <h1>Raw Frames</h1>
+      </div>
+    </div>
+    <nav class="primary-nav" aria-label="Primary navigation">
+      <a class="nav-link" href="index.html#atlas">01 Codex</a>
+      <a class="nav-link" href="index.html#sequences">02 Sequences</a>
+      <a class="nav-link" href="index.html#analysis">03 Analysis</a>
+      <a class="nav-link" href="index.html#method">04 Method</a>
+      <a class="nav-link" href="cycles.html">05 Cycles</a>
+      <a class="nav-link" href="frames.html" aria-current="page">06 Raw Frames</a>
+      <a class="nav-link nav-external" href="https://github.com/Scetrov/eve-frontier-glyph-explorer" target="_blank" rel="noopener">Repository ↗</a>
+    </nav>
+    <div class="unofficial-badge"><span class="unofficial-dot" aria-hidden="true"></span><span>Community research · Unofficial</span></div>
+  </header>
+
+  <main class="frames-main">
+    <section class="hero frames-hero" aria-labelledby="frames-hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow">RECORD EVIDENCE / COMPLETE AUDIT LEDGER</p>
+        <h2 id="frames-hero-title">Inspect every<br><span>observed frame.</span></h2>
+        <p class="hero-intro">An exhaustive gallery of all 835 decoded video frames across all 32 recordings. Audit 9×9 cell alignments, toggle provenance overlays, filter by recording or glyph ID, and inspect every individual source frame.</p>
+      </div>
+      <div class="hero-telemetry" aria-label="Evidence summary">
+        <article><span id="stat-frames">835</span><small>Total frames</small></article>
+        <article><span id="stat-recordings">32</span><small>Video records</small></article>
+        <article><span id="stat-manual">587</span><small>Manual corpus</small></article>
+        <article><span id="stat-provisional">248</span><small>Provisional</small></article>
+      </div>
+    </section>
+
+    <section id="frames-gallery" class="section" aria-labelledby="gallery-title">
+      <div class="section-heading">
+        <div>
+          <p class="section-index">01 / ALL FRAME OBSERVATIONS</p>
+          <h2 id="gallery-title">Frame evidence gallery</h2>
+        </div>
+        <p>Filter by recording, source type, glyph ID, or search exact frame numbers. Switch between QA State, Cell Provenance, and Clean Frame modes.</p>
+      </div>
+
+      <div class="frames-controls" role="search" aria-label="Filter raw frames">
+        <label class="field">
+          <span>Search frames</span>
+          <input id="frames-search" type="search" placeholder="Frame 701, E6C2-1N, #40..." autocomplete="off">
+        </label>
+        <label class="field">
+          <span>Recording</span>
+          <select id="frames-recording">
+            <option value="all">All recordings (32)</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Source type</span>
+          <select id="frames-source-type">
+            <option value="all">All sources (835)</option>
+            <option value="manual">Manual corpus (587)</option>
+            <option value="provisional">Provisional detector (248)</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Glyph</span>
+          <select id="frames-glyph-id">
+            <option value="all">All glyphs (146)</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Order</span>
+          <select id="frames-sort">
+            <option value="chronological">Recording &amp; Ordinal</option>
+            <option value="frame">Frame index</option>
+            <option value="glyph">Glyph ID</option>
+            <option value="hamming">Hamming distance</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="frames-mode-bar">
+        <div id="frames-status" class="frames-status" aria-live="polite">
+          Showing <strong>835</strong> of <strong>835</strong> frames
+        </div>
+        <div class="overlay-mode-controls">
+          <span class="mode-label">Overlay view:</span>
+          <button id="mode-qa" type="button" class="mode-button active" aria-pressed="true">QA State</button>
+          <button id="mode-provenance" type="button" class="mode-button" aria-pressed="false">Cell Provenance</button>
+          <button id="mode-clean" type="button" class="mode-button" aria-pressed="false">Clean Frame</button>
+          <div class="overlay-opacity-control">
+            <label for="frames-overlay-opacity" class="opacity-label">Opacity:</label>
+            <input id="frames-overlay-opacity" class="opacity-slider" type="range" min="0" max="100" step="5" value="100" aria-label="Overlay transparency">
+            <span id="frames-overlay-opacity-val" class="opacity-value">100%</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="frames-grid" class="frames-grid" aria-label="Evidence frames list"></div>
+
+      <div class="download-row">
+        <a href="data/evidence.json" download>Download evidence JSON</a>
+        <a href="data/evidence_manifest.csv" download>Download evidence manifest CSV</a>
+        <a href="index.html#method">Read the methodology</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Evidence Inspection Modal Dialog -->
+  <dialog id="evidence-dialog" class="evidence-dialog" aria-labelledby="evidence-dialog-title">
+    <div class="evidence-dialog-header">
+      <div>
+        <p class="eyebrow">SOURCE FRAME / MATCH AUDIT</p>
+        <h2 id="evidence-dialog-title">Evidence review</h2>
+      </div>
+      <div class="evidence-dialog-actions">
+        <a id="report-evidence" class="report-link" href="https://github.com/Scetrov/eve-frontier-glyph-explorer/issues/new/choose" target="_blank" rel="noopener">Report frame ↗</a>
+        <button id="evidence-dialog-close" type="button" aria-label="Close frame evidence">Close ×</button>
+      </div>
+    </div>
+    <div class="evidence-dialog-toolbar">
+      <div class="overlay-mode-controls">
+        <span class="mode-label">Overlay view:</span>
+        <button id="evidence-mode-qa" type="button" class="mode-button active" aria-pressed="true">QA State</button>
+        <button id="evidence-mode-provenance" type="button" class="mode-button" aria-pressed="false">Cell Provenance</button>
+        <div class="overlay-opacity-control">
+          <label for="dialog-overlay-opacity-frames" class="opacity-label">Opacity:</label>
+          <input id="dialog-overlay-opacity-frames" class="opacity-slider" type="range" min="0" max="100" step="5" value="100" aria-label="Overlay transparency">
+          <span id="dialog-overlay-opacity-frames-val" class="opacity-value">100%</span>
+        </div>
+      </div>
+      <div id="evidence-dialog-cell-inspector" class="evidence-cell-inspector" aria-live="polite">
+        <span class="inspector-prompt">Hover or tap any cell in the overlay to inspect its exact provenance and alignment.</span>
+      </div>
+    </div>
+    <div class="evidence-dialog-grid">
+      <figure>
+        <div class="evidence-image-stage evidence-image-stage-dialog">
+          <img id="evidence-dialog-image" alt="">
+          <svg id="evidence-dialog-overlay" class="evidence-overlay" viewBox="0 0 480 480" preserveAspectRatio="none" aria-hidden="true"></svg>
+        </div>
+        <figcaption id="evidence-dialog-source-caption">Actual cropped video frame with observed-state QA overlay</figcaption>
+      </figure>
+      <figure>
+        <canvas id="evidence-dialog-canonical" width="480" height="480" aria-label="Canonical matched glyph"></canvas>
+        <figcaption>Canonical payload with excluded carrier cells shaded</figcaption>
+      </figure>
+    </div>
+    <div id="evidence-dialog-assessment" class="evidence-dialog-assessment" aria-label="Geometry assessment panel"></div>
+    <div id="evidence-dialog-meta" class="evidence-dialog-meta"></div>
+  </dialog>
+
+  <footer>
+    <div class="footer-provenance">
+      <p class="eyebrow">SOURCES / ACKNOWLEDGEMENTS</p>
+      <p>Canonical glyph research and manual tagging were created by George Peralta / QZRChedders in the community <a href="https://github.com/QZRChedders/ArchiveInvest">ArchiveInvest repository</a>. Supporting universe-data research references <a href="https://github.com/Scetrov/evefrontier_datasets">Scetrov/evefrontier_datasets</a>. The Archive broadcasts appear to form a puzzle created by <a href="https://fenris.com/products">Fenris Creations</a>—thank you to the team for such a fun mystery to investigate. See the <a href="credits.html">full credits and sources</a>. EVE Frontier and associated marks belong to their respective owners.</p>
+    </div>
+    <div class="footer-bar">
+      <span>FRONTIER ARCHIVE // RAW FRAMES AUDIT · © 2026 SCETROV</span>
+      <span id="build-stamp">Dataset build 2026-08-22 · Commit <a id="release-commit" href="https://github.com/Scetrov/eve-frontier-glyph-explorer/commits/main" target="_blank" rel="noopener">main</a></span>
+      <span><a href="https://github.com/Scetrov/eve-frontier-glyph-explorer" target="_blank" rel="noopener">Repository ↗</a> · <a href="credits.html">Credits &amp; sources</a> · <a href="index.html">Return to explorer ↑</a></span>
+    </div>
+  </footer>
+
+  <script src="data/catalogue.js"></script>
+  <script src="data/evidence.js"></script>
+  <script src="data/official_artifacts.js"></script>
+  <script src="data/manual_hybrid_geometry_review.js"></script>
+  <script src="assets/release.js"></script>
+  <script src="assets/frames.js"></script>
+</body>
+</html>

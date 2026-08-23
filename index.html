@@ -30,6 +30,7 @@
       <a class="nav-link" href="#analysis">03 Analysis</a>
       <a class="nav-link" href="#method">04 Method</a>
       <a class="nav-link" href="cycles.html">05 Cycles</a>
+      <a class="nav-link" href="frames.html">06 Raw Frames</a>
       <a class="nav-link nav-external" href="https://github.com/Scetrov/eve-frontier-glyph-explorer" target="_blank" rel="noopener">Repository ↗</a>
     </nav>
     <div class="unofficial-badge"><span class="unofficial-dot" aria-hidden="true"></span><span>Community research · Unofficial</span></div>
@@ -260,6 +261,21 @@
       <div class="evidence-dialog-actions">
         <a id="report-evidence" class="report-link" href="https://github.com/Scetrov/eve-frontier-glyph-explorer/issues/new/choose" target="_blank" rel="noopener">Report frame ↗</a>
         <button id="evidence-dialog-close" type="button" aria-label="Close frame evidence">Close ×</button>
+      </div>
+    </div>
+    <div class="evidence-dialog-toolbar">
+      <div class="overlay-mode-controls">
+        <span class="mode-label">Overlay view:</span>
+        <button id="evidence-mode-qa" type="button" class="mode-button active" aria-pressed="true">QA State</button>
+        <button id="evidence-mode-provenance" type="button" class="mode-button" aria-pressed="false">Cell Provenance</button>
+        <div class="overlay-opacity-control">
+          <label for="dialog-overlay-opacity-index" class="opacity-label">Opacity:</label>
+          <input id="dialog-overlay-opacity-index" class="opacity-slider" type="range" min="0" max="100" step="5" value="100" aria-label="Overlay transparency">
+          <span id="dialog-overlay-opacity-index-val" class="opacity-value">100%</span>
+        </div>
+      </div>
+      <div id="evidence-dialog-cell-inspector" class="evidence-cell-inspector" aria-live="polite">
+        <span class="inspector-prompt">Hover or tap any cell in the overlay to inspect its exact provenance and alignment.</span>
       </div>
     </div>
     <div class="evidence-dialog-grid">

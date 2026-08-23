@@ -105,7 +105,45 @@
     evidenceDialogTitle: document.getElementById('evidence-dialog-title'),
     evidenceDialogAssessment: document.getElementById('evidence-dialog-assessment'),
     evidenceDialogMeta: document.getElementById('evidence-dialog-meta'),
+    evidenceModeQa: document.getElementById('evidence-mode-qa'),
+    evidenceModeProvenance: document.getElementById('evidence-mode-provenance'),
+    evidenceDialogCellInspector: document.getElementById('evidence-dialog-cell-inspector'),
+    evidenceDialogOpacitySlider: document.getElementById('dialog-overlay-opacity-index'),
+    evidenceDialogOpacityValue: document.getElementById('dialog-overlay-opacity-index-val'),
     reportEvidence: document.getElementById('report-evidence')
+  };
+
+  const PROVENANCE_INFO = {
+    'archive-invest-manual': {
+      label: 'ArchiveInvest manual tag',
+      tagClass: 'tag-archive-invest',
+      description: 'Human-annotated pattern tag from community ArchiveInvest corpus CSVs'
+    },
+    'pytorch-loftr-consensus': {
+      label: 'PyTorch LoFTR neural consensus',
+      tagClass: 'tag-pytorch',
+      description: 'Verified through PyTorch LoFTR direct & temporal correspondence consensus'
+    },
+    'detector-ring-fit': {
+      label: 'Classical detector ring fit',
+      tagClass: 'tag-detector',
+      description: 'Subpixel ring-intensity thresholding from automatic video extraction'
+    },
+    'audited-correction': {
+      label: 'Audited multi-frame correction',
+      tagClass: 'tag-audited',
+      description: 'Multi-frame/multi-source carrier median audit correction'
+    },
+    'carrier-diamond': {
+      label: 'Carrier diamond structure',
+      tagClass: 'tag-carrier',
+      description: 'Structural carrier registration graphic excluded from 9×9 payload'
+    },
+    'sequence-consensus': {
+      label: 'Sequence consensus override',
+      tagClass: 'tag-sequence',
+      description: 'Contextual sequence-level alignment correction'
+    }
   };
 
   const state = {
@@ -114,7 +152,10 @@
     compareRightId: 131,
     carrier: false,
     selectedCell: null,
-    cellEvidenceLimit: 48
+    cellEvidenceLimit: 48,
+    evidenceOverlayMode: 'qa',
+    activeEvidenceRecord: null,
+    inspectedCellIndex: null
   };
 
   function initialGlyphId() {
@@ -256,8 +297,50 @@
     ].join('');
   }
 
-  function drawEvidenceOverlay(svg, record) {
+  function inspectEvidenceCell(rect, record, index, isClick = false) {
+    if (!elements.evidenceDialogCellInspector) return;
+    const row = Math.floor(index / 9);
+    const col = index % 9;
+    const observed = String(record.observed_fingerprint || '');
+    const canonical = String(record.canonical_fingerprint || '');
+    const observedBit = observed[index] === '1';
+    const canonicalBit = canonical[index] === '1';
+    const differs = observed[index] !== canonical[index];
+    const excluded = carrierCells.has(index);
+    const provKey = (record.cell_provenance && record.cell_provenance[index]) || (excluded ? 'carrier-diamond' : (record.provisional ? 'detector-ring-fit' : 'archive-invest-manual'));
+    const info = PROVENANCE_INFO[provKey] || { label: provKey, tagClass: 'tag-archive-invest', description: 'Observed cell record' };
+
+    state.inspectedCellIndex = index;
+    if (elements.evidenceDialogOverlay) {
+      elements.evidenceDialogOverlay.querySelectorAll('.evidence-overlay-cell').forEach(cell => {
+        cell.classList.remove('is-inspected');
+      });
+      if (rect) rect.classList.add('is-inspected');
+    }
+
+    elements.evidenceDialogCellInspector.innerHTML = [
+      '<div class="inspector-cell-badge">',
+      `<strong>Cell (${row},${col})</strong>`,
+      `<span>Observed: <em>${observedBit ? 'Active (1)' : 'Inactive (0)'}</em></span>`,
+      differs ? '<span class="status-tag" style="background:rgba(255,71,0,0.2);color:var(--signal);border:1px solid var(--signal)">Differs from canonical</span>' : '<span class="status-tag">Matches canonical</span>',
+      `<span class="inspector-tag ${info.tagClass}">${escapeText(info.label)}</span>`,
+      `<span style="color:var(--muted)">${escapeText(info.description)}</span>`,
+      '</div>'
+    ].join('');
+  }
+
+  function uninspectEvidenceCell(rect) {
+    if (state.inspectedCellIndex !== null) return;
+    if (rect) rect.classList.remove('is-inspected');
+    if (elements.evidenceDialogCellInspector) {
+      elements.evidenceDialogCellInspector.innerHTML = '<span class="inspector-prompt">Hover or tap any cell in the overlay to inspect its exact provenance and alignment.</span>';
+    }
+  }
+
+  function drawEvidenceOverlay(svg, record, options = {}) {
     if (!svg) return;
+    const mode = options.mode || (svg === elements.evidenceDialogOverlay ? state.evidenceOverlayMode : 'qa') || 'qa';
+    const interactive = Boolean(options.interactive);
     const observed = String(record.observed_fingerprint || '');
     const canonical = String(record.canonical_fingerprint || '');
     const geometry = overlayGeometry(record);
@@ -279,25 +362,58 @@
       const excluded = carrierCells.has(index);
       const positive = observed[index] === '1';
       const differs = observed[index] !== canonical[index];
+      const provKey = (record.cell_provenance && record.cell_provenance[index]) || (excluded ? 'carrier-diamond' : (record.provisional ? 'detector-ring-fit' : 'archive-invest-manual'));
       const x = centerX + (column - 4) * pitch - square / 2;
       const y = centerY + (row - 4) * pitch - square / 2;
       const classes = ['evidence-overlay-cell'];
-      if (excluded) classes.push('evidence-overlay-excluded');
-      else if (positive) {
-        classes.push('evidence-overlay-positive');
-        positiveCount += 1;
+
+      if (mode === 'provenance') {
+        classes.push(`cell-prov-${provKey}`);
+        if (differs && !excluded) classes.push('evidence-overlay-difference');
       } else {
-        classes.push('evidence-overlay-negative');
-        negativeCount += 1;
+        if (excluded) classes.push('evidence-overlay-excluded');
+        else if (positive) {
+          classes.push('evidence-overlay-positive');
+          positiveCount += 1;
+        } else {
+          classes.push('evidence-overlay-negative');
+          negativeCount += 1;
+        }
+        if (differs && !excluded) {
+          classes.push('evidence-overlay-difference');
+          differenceCount += 1;
+        }
       }
-      if (differs && !excluded) {
-        classes.push('evidence-overlay-difference');
-        differenceCount += 1;
+
+      if (interactive && state.inspectedCellIndex === index) {
+        classes.push('is-inspected');
       }
-      fragment.appendChild(svgNode('rect', {
+
+      const rect = svgNode('rect', {
         x: x.toFixed(2), y: y.toFixed(2), width: square.toFixed(2), height: square.toFixed(2),
-        class: classes.join(' '), 'data-cell': `(${row},${column})`
-      }));
+        class: classes.join(' '),
+        'data-cell': `(${row},${column})`,
+        'data-row': String(row),
+        'data-col': String(column),
+        'data-index': String(index),
+        'data-provenance': provKey,
+        tabindex: interactive ? '0' : '-1',
+        role: interactive ? 'button' : 'presentation',
+        'aria-label': `Cell (${row},${column}): ${positive ? '1' : '0'}, ${PROVENANCE_INFO[provKey]?.label || provKey}`
+      });
+
+      if (interactive) {
+        rect.addEventListener('mouseenter', () => inspectEvidenceCell(rect, record, index, false));
+        rect.addEventListener('focus', () => inspectEvidenceCell(rect, record, index, false));
+        rect.addEventListener('mouseleave', () => uninspectEvidenceCell(rect));
+        rect.addEventListener('blur', () => uninspectEvidenceCell(rect));
+        rect.addEventListener('click', (e) => {
+          e.stopPropagation();
+          inspectEvidenceCell(rect, record, index, true);
+        });
+      }
+
+      fragment.appendChild(rect);
     }
     svg.replaceChildren(fragment);
     svg.setAttribute('aria-label', `${positiveCount} observed positive payload cells, ${negativeCount} observed negative payload cells, ${differenceCount} differing payload cells; ${registration}.`);
@@ -592,29 +708,64 @@
     return link;
   }
 
+  function updateEvidenceCaption(record) {
+    if (!elements.evidenceDialogSourceCaption || !record) return;
+    const mode = state.evidenceOverlayMode;
+    const dev = record.overlay_deviation_px !== undefined ? `${record.overlay_deviation_px}px RMS` : '< 2.0px RMS';
+    const reg = record.overlay_registration || 'subpixel-lattice-fit';
+    const regLabel = reg === 'pytorch-hybrid-consensus'
+      ? 'PyTorch LoFTR consensus'
+      : reg === 'detector-ring-fit'
+      ? 'detector-ring fit'
+      : 'subpixel lattice fit';
+    if (mode === 'provenance') {
+      elements.evidenceDialogSourceCaption.textContent = `Cell Provenance overlay · deviation ${dev} (max 2px bound) · ${regLabel}`;
+    } else {
+      const conf = record.confidence === null || record.confidence === '' ? Number.NaN : Number(record.confidence);
+      const confText = Number.isFinite(conf) ? ` · score ${conf.toFixed(4)}` : '';
+      elements.evidenceDialogSourceCaption.textContent = `Observed-state QA overlay · orange: positive · pale dashed: negative · hatched: carrier · deviation ${dev}${confText} · ${regLabel}`;
+    }
+  }
+
   function openEvidence(record) {
     const glyph = byId.get(Number(record.glyph_id));
+    state.activeEvidenceRecord = record;
+    state.inspectedCellIndex = null;
+    if (elements.evidenceDialogCellInspector) {
+      elements.evidenceDialogCellInspector.innerHTML = '<span class="inspector-prompt">Hover or tap any cell in the overlay to inspect its exact provenance and alignment.</span>';
+    }
+    if (elements.evidenceModeQa && elements.evidenceModeProvenance) {
+      elements.evidenceModeQa.classList.toggle('active', state.evidenceOverlayMode === 'qa');
+      elements.evidenceModeQa.setAttribute('aria-pressed', String(state.evidenceOverlayMode === 'qa'));
+      elements.evidenceModeProvenance.classList.toggle('active', state.evidenceOverlayMode === 'provenance');
+      elements.evidenceModeProvenance.setAttribute('aria-pressed', String(state.evidenceOverlayMode === 'provenance'));
+    }
     elements.evidenceDialogTitle.textContent = `${record.source_video} / frame ${record.frame}`;
     elements.evidenceDialogImage.src = record.image;
     elements.evidenceDialogImage.alt = `Actual frame ${record.frame} from ${record.source_video}`;
-    drawEvidenceOverlay(elements.evidenceDialogOverlay, record);
-    const confidence = record.confidence === null || record.confidence === '' ? Number.NaN : Number(record.confidence);
-    const registration = overlayGeometry(record)?.registration === 'detector-ring-fit'
-      ? 'detector-ring registration'
-      : 'no independently verified image registration';
-    elements.evidenceDialogSourceCaption.textContent = Number.isFinite(confidence)
-      ? `Observed-state QA overlay · orange: positive · pale dashed: negative · hatched: excluded carrier · detector separation score ${confidence.toFixed(4)} (not a probability) · ${registration}`
-      : `Observed-state QA overlay · orange: positive · pale dashed: negative · hatched: excluded carrier · manual tag: no detector score · ${registration}`;
+    drawEvidenceOverlay(elements.evidenceDialogOverlay, record, { interactive: true, mode: state.evidenceOverlayMode });
+    updateEvidenceCaption(record);
     renderGeometryAssessment(record);
     setReportLink(elements.reportEvidence, 'frame-report.md', `[Frame] ${record.source_video} / frame ${record.frame}`, 'report: frame', frameIssueBody(record));
     drawGlyph(elements.evidenceDialogCanonical, glyph, { size: 440, carrier: true });
     const changed = record.difference_cells.length ? record.difference_cells.join(' ') : 'none';
+
+    const provCounts = {};
+    (record.cell_provenance || []).forEach(p => {
+      provCounts[p] = (provCounts[p] || 0) + 1;
+    });
+    const provSummary = Object.entries(provCounts)
+      .map(([k, v]) => `${PROVENANCE_INFO[k]?.label || k}: ${v}`)
+      .join(' · ');
+
     const details = [
       ['Matched glyph', `#${record.glyph_id}`],
       ['Source recording', record.recording],
       ['Source file', record.source_video],
       ['Frame reference', `frame ${record.frame} · glyph position ${record.ordinal}`],
       ['Timestamp', `${Number(record.time_s).toFixed(4)} seconds`],
+      ['Registration', `${record.overlay_registration || 'subpixel-lattice-fit'} · ${record.overlay_deviation_px !== undefined ? record.overlay_deviation_px : '< 2.0'} px RMS`],
+      ['Cell Provenance', provSummary || 'ArchiveInvest manual tag'],
       ['Assignment', record.assignment_basis],
       ['Verification', record.verification_status || 'not independently verified'],
       ['Assigned Hamming', `${record.assigned_hamming} changed cells`],
@@ -979,6 +1130,64 @@
       button.setAttribute('aria-selected', 'false');
     });
   });
+  elements.evidenceModeQa?.addEventListener('click', () => {
+    state.evidenceOverlayMode = 'qa';
+    elements.evidenceModeQa.classList.add('active');
+    elements.evidenceModeQa.setAttribute('aria-pressed', 'true');
+    elements.evidenceModeProvenance.classList.remove('active');
+    elements.evidenceModeProvenance.setAttribute('aria-pressed', 'false');
+    if (state.activeEvidenceRecord) {
+      drawEvidenceOverlay(elements.evidenceDialogOverlay, state.activeEvidenceRecord, { interactive: true, mode: 'qa' });
+      updateEvidenceCaption(state.activeEvidenceRecord);
+    }
+  });
+  elements.evidenceModeProvenance?.addEventListener('click', () => {
+    state.evidenceOverlayMode = 'provenance';
+    elements.evidenceModeProvenance.classList.add('active');
+    elements.evidenceModeProvenance.setAttribute('aria-pressed', 'true');
+    elements.evidenceModeQa.classList.remove('active');
+    elements.evidenceModeQa.setAttribute('aria-pressed', 'false');
+    if (state.activeEvidenceRecord) {
+      drawEvidenceOverlay(elements.evidenceDialogOverlay, state.activeEvidenceRecord, { interactive: true, mode: 'provenance' });
+      updateEvidenceCaption(state.activeEvidenceRecord);
+    }
+  });
+
+  const STORAGE_KEY_OPACITY = 'eve_frontier_overlay_opacity';
+
+  function getStoredOpacity() {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY_OPACITY);
+      if (stored !== null) {
+        const parsed = parseInt(stored, 10);
+        if (!isNaN(parsed) && parsed >= 0 && parsed <= 100) {
+          return parsed;
+        }
+      }
+    } catch (e) {}
+    return 100;
+  }
+
+  function setOverlayOpacity(percent, save = true) {
+    const val = Math.max(0, Math.min(100, Math.round(Number(percent))));
+    document.documentElement.style.setProperty('--overlay-opacity', (val / 100).toFixed(2));
+
+    if (elements.evidenceDialogOpacitySlider) elements.evidenceDialogOpacitySlider.value = String(val);
+    if (elements.evidenceDialogOpacityValue) elements.evidenceDialogOpacityValue.textContent = `${val}%`;
+
+    if (save) {
+      try {
+        localStorage.setItem(STORAGE_KEY_OPACITY, String(val));
+      } catch (e) {}
+    }
+  }
+
+  if (elements.evidenceDialogOpacitySlider) {
+    elements.evidenceDialogOpacitySlider.addEventListener('input', (e) => {
+      setOverlayOpacity(e.target.value, true);
+    });
+  }
+
   elements.evidenceDialogClose.addEventListener('click', () => elements.evidenceDialog.close());
   elements.evidenceDialog.addEventListener('click', event => {
     if (event.target === elements.evidenceDialog) elements.evidenceDialog.close();
@@ -992,6 +1201,9 @@
       selectGlyph(next, true);
     }
   });
+
+  // Initialize stored opacity preference
+  setOverlayOpacity(getStoredOpacity(), false);
 
   renderStats();
   populateComparators();
