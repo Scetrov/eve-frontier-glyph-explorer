@@ -69,6 +69,7 @@
     nearList: document.getElementById('near-list'),
     copyFingerprint: document.getElementById('copy-fingerprint'),
     copyStatus: document.getElementById('copy-status'),
+    compareShortcut: document.getElementById('compare-shortcut'),
     permalink: document.getElementById('permalink'),
     reportGlyph: document.getElementById('report-glyph'),
     compareLeft: document.getElementById('compare-left'),
@@ -86,6 +87,7 @@
     repeatedBlocks: document.getElementById('repeated-blocks'),
     heatmap: document.getElementById('cell-heatmap'),
     cellReview: document.getElementById('cell-review'),
+    cellReviewClose: document.getElementById('cell-review-close'),
     cellReviewTitle: document.getElementById('cell-review-title'),
     cellReviewSummary: document.getElementById('cell-review-summary'),
     cellPatternCount: document.getElementById('cell-pattern-count'),
@@ -440,7 +442,19 @@
     if (!rows.length) {
       const empty = document.createElement('div');
       empty.className = 'empty-state';
-      empty.textContent = 'No glyphs match the current signal filters.';
+      const msg = document.createElement('p');
+      msg.textContent = 'No glyphs match the current search or signal filters.';
+      const resetBtn = document.createElement('button');
+      resetBtn.type = 'button';
+      resetBtn.className = 'action-button secondary';
+      resetBtn.textContent = 'Reset all filters';
+      resetBtn.addEventListener('click', () => {
+        elements.search.value = '';
+        elements.filter.value = 'all';
+        elements.sort.value = 'id';
+        renderGrid();
+      });
+      empty.append(msg, resetBtn);
       elements.grid.appendChild(empty);
       return;
     }
@@ -507,6 +521,12 @@
     document.querySelectorAll('.glyph-tile').forEach(tile => {
       tile.setAttribute('aria-pressed', String(Number(tile.dataset.glyphId) === glyph.id));
     });
+
+    if (elements.sequenceStrip) {
+      elements.sequenceStrip.querySelectorAll('.sequence-token').forEach(token => {
+        token.classList.toggle('active-glyph', Number(token.dataset.glyphId) === glyph.id);
+      });
+    }
 
     if (updateAddress) {
       const url = new URL(location.href);
@@ -606,8 +626,12 @@
       ...details.map(([label, value]) => `<div><span>${escapeText(label)}</span><strong>${escapeText(value)}</strong></div>`),
       ...artifactDetails.map(([label, value]) => `<div><span>${escapeText(label)}</span><strong>${value}</strong></div>`)
     ].join('');
-    if (typeof elements.evidenceDialog.showModal === 'function') elements.evidenceDialog.showModal();
-    else window.open(record.image, '_blank', 'noopener');
+    if (typeof elements.evidenceDialog.showModal === 'function') {
+      elements.evidenceDialog.showModal();
+      elements.evidenceDialogClose?.focus();
+    } else {
+      window.open(record.image, '_blank', 'noopener');
+    }
   }
 
   function renderContexts(glyph) {
@@ -662,7 +686,7 @@
     const glyph = byId.get(state.selectedId);
     try {
       await navigator.clipboard.writeText(glyph.fingerprint);
-      elements.copyStatus.textContent = 'Fingerprint copied to clipboard.';
+      elements.copyStatus.textContent = '✓ Fingerprint copied to clipboard';
     } catch {
       const temporary = document.createElement('textarea');
       temporary.value = glyph.fingerprint;
@@ -672,7 +696,7 @@
       temporary.select();
       document.execCommand('copy');
       temporary.remove();
-      elements.copyStatus.textContent = 'Fingerprint copied to clipboard.';
+      elements.copyStatus.textContent = '✓ Fingerprint copied to clipboard';
     }
     window.setTimeout(() => { elements.copyStatus.textContent = ''; }, 2200);
   }
@@ -731,7 +755,8 @@
       if (!glyph) return;
       const button = document.createElement('button');
       button.type = 'button';
-      button.className = `sequence-token${String(sequence.source).startsWith('provisional') ? ' provisional' : ''}`;
+      button.className = `sequence-token${String(sequence.source).startsWith('provisional') ? ' provisional' : ''}${id === state.selectedId ? ' active-glyph' : ''}`;
+      button.dataset.glyphId = id;
       button.setAttribute('aria-label', `Position ${index + 1}, glyph ${id}`);
       const canvas = document.createElement('canvas');
       const label = document.createElement('span');
@@ -940,6 +965,19 @@
   elements.cellEvidenceMore.addEventListener('click', () => {
     state.cellEvidenceLimit += 48;
     renderCellReview();
+  });
+  elements.compareShortcut?.addEventListener('click', () => {
+    state.compareLeftId = state.selectedId;
+    elements.compareLeft.value = String(state.selectedId);
+    updateComparison();
+    document.querySelector('.compare-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  elements.cellReviewClose?.addEventListener('click', () => {
+    elements.cellReview.hidden = true;
+    state.selectedCell = null;
+    elements.heatmap.querySelectorAll('.heatmap-cell').forEach(button => {
+      button.setAttribute('aria-selected', 'false');
+    });
   });
   elements.evidenceDialogClose.addEventListener('click', () => elements.evidenceDialog.close());
   elements.evidenceDialog.addEventListener('click', event => {

@@ -25,14 +25,14 @@
       </div>
     </div>
     <nav class="primary-nav" aria-label="Primary navigation">
-      <a href="#atlas">01 Codex</a>
-      <a href="#sequences">02 Sequences</a>
-      <a href="#analysis">03 Analysis</a>
-      <a href="#method">04 Method</a>
-      <a href="cycles.html">05 Cycles</a>
-      <a href="https://github.com/Scetrov/eve-frontier-glyph-explorer" target="_blank" rel="noopener">Repository ↗</a>
+      <a class="nav-link" href="#atlas">01 Codex</a>
+      <a class="nav-link" href="#sequences">02 Sequences</a>
+      <a class="nav-link" href="#analysis">03 Analysis</a>
+      <a class="nav-link" href="#method">04 Method</a>
+      <a class="nav-link" href="cycles.html">05 Cycles</a>
+      <a class="nav-link nav-external" href="https://github.com/Scetrov/eve-frontier-glyph-explorer" target="_blank" rel="noopener">Repository ↗</a>
     </nav>
-    <p class="unofficial">Community research tool · Unofficial</p>
+    <div class="unofficial-badge"><span class="unofficial-dot" aria-hidden="true"></span><span>Community research · Unofficial</span></div>
   </header>
 
   <main>
@@ -62,7 +62,7 @@
       <div class="control-deck" aria-label="Glyph codex controls">
         <label class="field search-field">
           <span>Search index</span>
-          <input id="search" type="search" placeholder="#40, E6C6, cluster D" autocomplete="off">
+          <input id="search" type="search" placeholder="#40, E6C6, cluster D..." autocomplete="off">
         </label>
         <label class="field">
           <span>Signal class</span>
@@ -86,7 +86,7 @@
         </label>
         <label class="switch-control">
           <input id="carrier-toggle" type="checkbox">
-          <span>Carrier-cell mask</span>
+          <span>Carrier mask</span>
         </label>
       </div>
 
@@ -124,8 +124,11 @@
           </div>
           <div class="inspector-actions">
             <button id="copy-fingerprint" type="button" class="action-button">Copy 81-bit fingerprint</button>
-            <a id="permalink" class="text-action" href="?glyph=40#atlas">Link to glyph</a>
-            <a id="report-glyph" class="report-link" href="https://github.com/Scetrov/eve-frontier-glyph-explorer/issues/new/choose" target="_blank" rel="noopener">Report glyph ↗</a>
+            <button id="compare-shortcut" type="button" class="action-button secondary">Compare in differential view</button>
+            <div class="inspector-sub-actions">
+              <a id="permalink" class="text-action" href="?glyph=40#atlas">Link to glyph</a>
+              <a id="report-glyph" class="report-link" href="https://github.com/Scetrov/eve-frontier-glyph-explorer/issues/new/choose" target="_blank" rel="noopener">Report glyph ↗</a>
+            </div>
           </div>
           <p id="copy-status" class="copy-status" aria-live="polite"></p>
         </aside>
@@ -139,6 +142,11 @@
           <h2 id="compare-title">Compare patterns</h2>
         </div>
         <p>Use cell differences to separate probable variants from unrelated symbols.</p>
+      </div>
+      <div class="compare-legend">
+        <span><i class="legend-swatch swatch-left"></i>Left signal</span>
+        <span><i class="legend-swatch swatch-right"></i>Right signal</span>
+        <span><i class="legend-swatch swatch-shared"></i>Shared active cells</span>
       </div>
       <div class="compare-controls">
         <label class="field"><span>Left signal</span><select id="compare-left"></select></label>
@@ -196,6 +204,7 @@
             <div class="cell-review-actions">
               <span id="cell-review-summary" aria-live="polite">Select a cell above</span>
               <a id="report-cell" class="report-link" href="https://github.com/Scetrov/eve-frontier-glyph-explorer/issues/new/choose" target="_blank" rel="noopener">Report cell ↗</a>
+              <button id="cell-review-close" type="button" class="action-button secondary" aria-label="Close cell review">Close review ×</button>
             </div>
           </div>
           <div class="cell-review-section">
