@@ -31,6 +31,14 @@ python -m pip install -r pipeline\requirements.txt
 git clone https://github.com/QZRChedders/ArchiveInvest ..\ArchiveInvest
 ```
 
+`requirements.txt` pins Pillow and NumPy with PyPI SHA-256 hashes and enforces
+hash verification during installation. Python 3.11 uses the latest compatible
+NumPy 2.3 release; Python 3.12+ uses NumPy 2.5. Pillow 13.0.0 fixes
+[GHSA-65qm-jvmh-6pqg](https://github.com/advisories/GHSA-65qm-jvmh-6pqg).
+After installation, run `python scripts/test_pillow_security.py` to check that a
+rejected oversized GIF frame leaves the image dimensions unchanged. The check
+does not attempt an oversized allocation. CI runs it before structural validation.
+
 Place the additional captures in `..\source-videos\` with these exact names:
 
 ```text
